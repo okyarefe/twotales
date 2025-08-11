@@ -23,6 +23,7 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { languages, languageLevels } from "@/constants";
 import { language } from "@/types";
+import { Plus } from "lucide-react";
 
 export default function TopicCreateForm() {
   const [formState, action, isPending] = useActionState(createStory, {
@@ -42,7 +43,11 @@ export default function TopicCreateForm() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className="bg-purple-400">Create story</Button>
+        <Button className="bg-purple-400">
+          {" "}
+          <Plus className="w-4 h-4 mr-2" />
+          Create story
+        </Button>
       </PopoverTrigger>
       <PopoverContent>
         <form onSubmit={handleSubmit} noValidate>
@@ -51,11 +56,11 @@ export default function TopicCreateForm() {
             <div className="flex flex-col sm:flex-row gap-4 w-full">
               <div className="w-full">
                 <DropdownMenu>
-                  <DropdownMenuTrigger 
+                  <DropdownMenuTrigger
                     className={`w-full p-2 border rounded-md text-left ${
-                      formState.errors.language 
-                        ? 'border-red-500 bg-red-50' 
-                        : 'border-gray-300'
+                      formState.errors.language
+                        ? "border-red-500 bg-red-50"
+                        : "border-gray-300"
                     }`}
                   >
                     {selectedLanguage || "Select a language"}
@@ -78,15 +83,19 @@ export default function TopicCreateForm() {
                     {formState.errors.language.join(", ")}
                   </p>
                 )}
-                <input type="hidden" name="language" value={selectedLanguage || ""} />
+                <input
+                  type="hidden"
+                  name="language"
+                  value={selectedLanguage || ""}
+                />
               </div>
               <div className="w-full">
                 <DropdownMenu>
-                  <DropdownMenuTrigger 
+                  <DropdownMenuTrigger
                     className={`w-full p-2 border rounded-md text-left ${
-                      formState.errors.languageLevel 
-                        ? 'border-red-500 bg-red-50' 
-                        : 'border-gray-300'
+                      formState.errors.languageLevel
+                        ? "border-red-500 bg-red-50"
+                        : "border-gray-300"
                     }`}
                   >
                     {selectedLanguageLevel || "Select a Level"}

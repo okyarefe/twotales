@@ -47,7 +47,6 @@ export async function createStory(
   });
 
   if (!result.success) {
-  
     return {
       errors: result.error.flatten().fieldErrors,
     };
@@ -76,6 +75,7 @@ export async function createStory(
       total_tokens: story.totalTokens,
       user_id: user.id,
       translate_to: result.data.language,
+      title: result.data.title,
     };
     // TODO: QUERY TO DATABASE.
 
@@ -98,7 +98,7 @@ export async function createStory(
     }
   }
 
-  revalidatePath("/");
+  revalidatePath("/stories");
   // redirect
-  redirect("/");
+  redirect("/stories");
 }

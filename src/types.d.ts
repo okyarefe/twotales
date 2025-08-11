@@ -5,11 +5,12 @@ export interface Story {
   created_at: string;
   english_version: string;
   translated_version: string;
-  level: string;
-  length: string;
+  level: languageLevel;
+  length: storyLength;
   total_tokens: number;
   user_id: string;
   translate_to: string;
+  title: string;
 }
 
 type StoryInsert = Omit<Story, "id" | "created_at">;
