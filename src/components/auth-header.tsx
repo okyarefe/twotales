@@ -4,17 +4,17 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { ClipLoader } from "react-spinners";
-import { signOut } from "@/actions/sign-out";
-import { createClient } from "@/lib/supabase/client";
 
-import { useEffect, useState, CSSProperties } from "react";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/client";
+import { useUser } from "@/contexts/user-context";
+import { useState } from "react";
+import type { CSSProperties } from "react";
 
 export default function HeaderAuth() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSessionLoading, setIsSessionLoading] = useState(true);
-  const [error] = useState<string | null>(null);
-  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const { user, userData, isLoading } = useUser();
+  const [isSigningOut, setIsSigningOut] = useState(false);
+  const supabase = createClient();
+
   const getInitial = (email?: string) => email?.charAt(0).toUpperCase() || "?";
 
   const override: CSSProperties = {
@@ -23,33 +23,16 @@ export default function HeaderAuth() {
     borderColor: "red",
   };
 
-  console.log("User", user);
-  const supabase = createClient();
-  useEffect(() => {
-    async function checkSession() {
-      setIsSessionLoading(true);
-      const { data } = await supabase.auth.getSession();
-      console.log("Session - data", data);
-      setUser(data.session?.user ?? null);
-      setIsSessionLoading(false);
-    }
-
-    checkSession();
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-
-    return () => {
-      listener?.subscription.unsubscribe();
-    };
-  }, [supabase]);
-
-  // Helper for avatar fallback
+  console.log("🎭 Auth Header Render:", {
+    user: user?.email || "Not logged in",
+    userData: userData
+      ? `${userData.storiesCreated} stories, ${userData.credits} credits`
+      : "No data",
+    isLoading,
+  });
 
   const handleSignIn = async () => {
+    console.log("🔑 User clicked Sign In, redirecting to Google OAuth...");
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -59,20 +42,22 @@ export default function HeaderAuth() {
   };
 
   const handleSignOut = async () => {
-    setIsLoading(true);
+    console.log("🚪 User clicked Sign Out, logging out...");
+    setIsSigningOut(true);
     try {
-      await signOut();
-      setUser(null);
+      // Use client-side sign out so the auth state change listener detects it
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      console.log("✅ Sign out successful");
     } catch (error) {
-      console.error("Sign out Failed", error);
+      console.error("❌ Sign out failed:", error);
     } finally {
-      setIsLoading(false);
+      setIsSigningOut(false);
     }
   };
 
-  // Auth content (sign in/up or sign out)
-  let authContent: React.ReactNode;
-  if (isLoading || isSessionLoading) {
+  // Show loading spinner while checking session or during sign out
+  if (isLoading || isSigningOut) {
     return (
       <ClipLoader
         color="purple"
@@ -83,12 +68,14 @@ export default function HeaderAuth() {
         data-testid="loader"
       />
     );
-    authContent = null; // Or show a spinner if you prefer
-  } else if (user?.email) {
-    authContent = (
+  }
+
+  // User is logged in - show avatar with dropdown
+  if (user?.email) {
+    return (
       <Popover>
         <PopoverTrigger asChild>
-          <Avatar className="border-2 border-purple-700 h-10 w-10">
+          <Avatar className="border-2 border-purple-700 h-10 w-10 cursor-pointer">
             <AvatarImage
               src={
                 typeof user.user_metadata.avatar_url === "string"
@@ -100,47 +87,56 @@ export default function HeaderAuth() {
           </Avatar>
         </PopoverTrigger>
         <PopoverContent>
-          <div className="p-4">
-            <Button
-              type="submit"
-              className="w-full md:w-auto"
-              onClick={handleSignOut}
-            >
+          <div className="p-4 space-y-3">
+            <div className="text-sm text-gray-600">
+              <p>
+                <strong>Email:</strong> {user.email}
+              </p>
+              {userData && (
+                <>
+                  <p>
+                    <strong>Role:</strong>{" "}
+                    <span className="capitalize">{userData.role}</span>
+                  </p>
+                  <p>
+                    <strong>Membership:</strong>{" "}
+                    <span className="capitalize">
+                      {userData.membershipType}
+                    </span>
+                  </p>
+                  <p>
+                    <strong>Story Credits:</strong> {userData.storyCredit}
+                  </p>
+                  <p>
+                    <strong>TTS Credits:</strong> {userData.ttsCredit}
+                  </p>
+                </>
+              )}
+            </div>
+            <Button type="button" className="w-full" onClick={handleSignOut}>
               Sign Out
             </Button>
           </div>
         </PopoverContent>
       </Popover>
     );
-  } else {
-    authContent = (
-      <div className="flex flex-row gap-2 w-full md:w-auto">
-        {error && (
-          <div className="mb-2 p-2 text-sm text-red-700 bg-red-100 rounded">
-            {error}
-          </div>
-        )}
-
-        <Button
-          type="submit"
-          className="w-full md:w-auto"
-          color="secondary"
-          onClick={handleSignIn}
-        >
-          Sign In
-        </Button>
-
-        <Button
-          type="submit"
-          className="w-full md:w-auto"
-          color="primary"
-          onClick={handleSignIn}
-        >
-          Sign Up
-        </Button>
-      </div>
-    );
   }
 
-  return <div className="w-full md:w-auto">{authContent}</div>;
+  // User is not logged in - show sign in/up buttons
+  return (
+    <div className="flex flex-row gap-2 w-full md:w-auto">
+      <Button
+        type="button"
+        className="w-full md:w-auto"
+        variant="outline"
+        onClick={handleSignIn}
+      >
+        Sign In
+      </Button>
+
+      <Button type="button" className="w-full md:w-auto" onClick={handleSignIn}>
+        Sign Up
+      </Button>
+    </div>
+  );
 }
