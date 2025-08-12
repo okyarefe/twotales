@@ -23,16 +23,7 @@ export default function HeaderAuth() {
     borderColor: "red",
   };
 
-  console.log("🎭 Auth Header Render:", {
-    user: user?.email || "Not logged in",
-    userData: userData
-      ? `${userData.storiesCreated} stories, ${userData.credits} credits`
-      : "No data",
-    isLoading,
-  });
-
   const handleSignIn = async () => {
-    console.log("🔑 User clicked Sign In, redirecting to Google OAuth...");
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -42,15 +33,12 @@ export default function HeaderAuth() {
   };
 
   const handleSignOut = async () => {
-    console.log("🚪 User clicked Sign Out, logging out...");
     setIsSigningOut(true);
     try {
       // Use client-side sign out so the auth state change listener detects it
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      console.log("✅ Sign out successful");
     } catch (error) {
-      console.error("❌ Sign out failed:", error);
     } finally {
       setIsSigningOut(false);
     }

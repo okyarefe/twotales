@@ -5,10 +5,13 @@ import { redirect } from "next/navigation";
 
 import { revalidatePath } from "next/cache";
 import { languages, languageLevels } from "@/constants";
-import { saveStory } from "@/lib/supabase/queries";
-import { generateStory } from "@/services/openai/generateStory";
+import { saveQuizQuestions, saveStory } from "@/lib/supabase/queries";
+import {
+  generateQuizFromStory,
+  generateStory,
+} from "@/services/openai/generateStory";
 import { createClient } from "@/lib/supabase/server";
-import { storyLength } from "@/types";
+import { Story, storyLength } from "@/types";
 
 const createStorySchema = z.object({
   title: z
@@ -80,7 +83,12 @@ export async function createStory(
     };
     // TODO: QUERY TO DATABASE.
 
-    await saveStory(storyData, user.id);
+    const savedStory: Story = await saveStory(storyData, user.id);
+    console.log("Story saved to db -> ", savedStory);
+    const quiz = await generateQuizFromStory(story);
+    console.log("Quiz generated from server action - b4 save to db", quiz);
+
+    saveQuizQuestions(savedStory.id, quiz.questions, story.totalTokens);
 
     // DECREASE USER'S TOKENS
   } catch (error: unknown) {

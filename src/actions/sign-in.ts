@@ -2,7 +2,8 @@
 import { createClient } from "@/lib/supabase/server";
 export async function signIn() {
   const supabase = await createClient();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  console.log("---SITE URL ----", siteUrl);
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
