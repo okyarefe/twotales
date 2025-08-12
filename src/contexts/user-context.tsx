@@ -133,7 +133,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       console.log("🧹 Cleaning up auth listener...");
       listener?.subscription.unsubscribe();
     };
-  }, [supabase]);
+  }, [supabase, router]);
 
   return (
     <UserContext.Provider

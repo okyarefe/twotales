@@ -14,8 +14,6 @@ interface MyStoriesViewProps {
 export function MyStoriesView({
   savedStories,
   setIsCreateModalOpen,
-  handleStorySelect,
-  handleQuizSelect,
 }: MyStoriesViewProps) {
   return (
     <div className="space-y-6">
@@ -39,12 +37,7 @@ export function MyStoriesView({
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {savedStories.map((story) => (
-          <StoryCard
-            key={story.id}
-            story={story}
-            onSelectStory={handleStorySelect}
-            onSelectQuiz={handleQuizSelect}
-          />
+          <StoryCard key={story.id} story={story} />
         ))}
       </div>
     </div>

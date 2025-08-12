@@ -8,6 +8,7 @@ import { languages, languageLevels } from "@/constants";
 import { saveStory } from "@/lib/supabase/queries";
 import { generateStory } from "@/services/openai/generateStory";
 import { createClient } from "@/lib/supabase/server";
+import { storyLength } from "@/types";
 
 const createStorySchema = z.object({
   title: z
@@ -71,7 +72,7 @@ export async function createStory(
       english_version: story.english,
       translated_version: story.translated,
       level: result.data.languageLevel,
-      length: "medium",
+      length: "medium" as storyLength,
       total_tokens: story.totalTokens,
       user_id: user.id,
       translate_to: result.data.language,
