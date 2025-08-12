@@ -1,6 +1,6 @@
 "use client";
 import { useUser } from "@/contexts/user-context";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 
 export default function UserDashboard({ type }: { type: string }) {
@@ -15,7 +15,7 @@ export default function UserDashboard({ type }: { type: string }) {
   }
 
   if (!userData) {
-    return <span className="text-gray-500">No data</span>;
+    return <span className="text-gray-500">You need to login</span>;
   }
 
   let value;
