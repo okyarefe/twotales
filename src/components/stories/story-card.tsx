@@ -67,18 +67,21 @@ export function StoryCard({ story }: StoryCardProps) {
 
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2 justify-between">
-          <div className="flex items-center p-2 rounded justify-center hover:bg-purple-200 text-xs font-medium hover:border-rounded border-1 border-black">
-            <BookOpen className="w-5 h-5 mr-1"></BookOpen>
-            <Link href={`/stories/${story.id}`}>Read Story</Link>
-          </div>
-          <div className="flex items-center p-2 rounded justify-center hover:bg-purple-200 text-xs font-medium hover:border-rounded border-1 border-black">
-            <Brain className="w-5 h-5 mr-1" />
+          <Link
+            href={`/stories/${story.id}`}
+            className="flex items-center p-2 rounded justify-center hover:bg-purple-200 text-xs font-medium hover:border-rounded border-1 border-black"
+          >
+            {" "}
+            <BookOpen className="w-5 h-5 mr-1"></BookOpen>Read Story
+          </Link>
 
-            <Link href={`/stories/${story.id}`} className="text-l">
-              {" "}
-              Take Quiz
-            </Link>
-          </div>
+          <Link
+            href={`/stories/${story.id}`}
+            className="flex items-center p-2 rounded justify-center hover:bg-purple-200 text-xs font-medium hover:border-rounded border-1 border-black"
+          >
+            <Brain className="w-5 h-5" />
+            Take Quiz
+          </Link>
         </div>
       </CardContent>
     </Card>
