@@ -35,9 +35,9 @@ export default function HeaderAuth() {
   const handleSignOut = async () => {
     setIsSigningOut(true);
     try {
-      // Use client-side sign out so the auth state change listener detects it
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
     } finally {
       setIsSigningOut(false);

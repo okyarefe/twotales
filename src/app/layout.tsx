@@ -20,9 +20,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <UserProvider>
-          <div className="container mx-auto px-4 max-w-6xl">
+          <div>
             <Header></Header>
-            {children}
+            <div className="container mx-auto px-4 max-w-6xl rounded">
+              {" "}
+              {children}
+            </div>
           </div>
         </UserProvider>
       </body>

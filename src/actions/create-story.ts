@@ -103,6 +103,8 @@ export async function createStory(
     saveQuizQuestions(savedStory.id, quiz.questions, story.totalTokens);
 
     // DECREASE THE USER'S CREDIT with supabase stored procedure
+    // TODO: Modify user table to keep track of number of stories created ?
+    // and update the procedure ?
     await deductUserCredit(user.id);
   } catch (error: unknown) {
     if (error instanceof Error) {
