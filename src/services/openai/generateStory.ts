@@ -74,7 +74,11 @@ export async function generateStory(props: GenerateStoryProps) {
   }
 }
 
-export async function generateQuizFromStory(story: any): Promise<{
+export async function generateQuizFromStory(story: {
+  english: string;
+  translated: string;
+  total_tokens?: number;
+}): Promise<{
   id: string;
   totalTokens: number;
   questions: { question: string; answer: string }[];

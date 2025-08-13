@@ -19,7 +19,7 @@ export default async function StoryShowPage({ params }: PageProps) {
       return <div>Story does not exist.</div>;
     }
 
-    const StoryQuizTabs = (await import("@/components/stories/StoryQuizTabs"))
+    const StoryQuizTabs = (await import("@/components/stories/story-quiz-tabs"))
       .StoryQuizTabs;
     return <StoryQuizTabs story={story} quizQuestions={quizQuestions || []} />;
   } catch {

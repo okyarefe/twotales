@@ -5,7 +5,12 @@ import { redirect } from "next/navigation";
 
 import { revalidatePath } from "next/cache";
 import { languages, languageLevels } from "@/constants";
-import { saveQuizQuestions, saveStory } from "@/lib/supabase/queries";
+import {
+  deductUserCredit,
+  getUserCredits,
+  saveQuizQuestions,
+  saveStory,
+} from "@/lib/supabase/queries";
 import {
   generateQuizFromStory,
   generateStory,
@@ -55,7 +60,7 @@ export async function createStory(
       errors: result.error.flatten().fieldErrors,
     };
   }
-  // Auth Check - is user logged in?
+  // Auth Check
   const supabase = await createClient();
   const {
     data: { user },
@@ -67,7 +72,16 @@ export async function createStory(
   }
 
   try {
-    // TODO: CHECK IF USER HAS ENOUGH TOKENS
+    //CHECK IF USER HAS ENOUGH CREDIT
+
+    const userCredit = await getUserCredits(user.id);
+    if (userCredit < 1) {
+      return {
+        errors: { _form: ["You do not have enough credits to create a story"] },
+      };
+    }
+
+    //API CALL TO openAI to create STORY
     const story = await generateStory(result.data);
 
     // Prepare data to save into database
@@ -82,15 +96,14 @@ export async function createStory(
       title: result.data.title,
     };
     // TODO: QUERY TO DATABASE.
-
     const savedStory: Story = await saveStory(storyData, user.id);
-    console.log("Story saved to db -> ", savedStory);
+
     const quiz = await generateQuizFromStory(story);
-    console.log("Quiz generated from server action - b4 save to db", quiz);
 
     saveQuizQuestions(savedStory.id, quiz.questions, story.totalTokens);
 
-    // DECREASE USER'S TOKENS
+    // DECREASE THE USER'S CREDIT with supabase stored procedure
+    await deductUserCredit(user.id);
   } catch (error: unknown) {
     if (error instanceof Error) {
       return {

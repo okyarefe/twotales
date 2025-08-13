@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { StorySideBySide } from "@/components/stories/StorySideBySide";
-import { QuizShowPage, QuizQuestion } from "@/components/stories/QuizShowPage";
+import { StorySideBySide } from "@/components/stories/stories-sided";
+import { QuizShowPage, QuizQuestion } from "@/components/stories/quiz-show";
 
 interface TabsProps {
   story: {
