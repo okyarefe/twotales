@@ -13,6 +13,16 @@ export interface Story {
   title: string;
 }
 
+export interface UserData {
+  id: string;
+  email: string;
+  role: string;
+  membershipType: string;
+  storyCredit: number;
+  ttsCredit: number;
+  storiesCreated: number;
+}
+
 type StoryInsert = Omit<Story, "id" | "created_at">;
 
 export const languages = [

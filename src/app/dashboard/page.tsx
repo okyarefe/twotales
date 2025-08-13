@@ -2,8 +2,26 @@ import UserDashboard from "@/app/dashboard/user-dashboard";
 import TopicCreateForm from "@/components/stories/story-create-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Coins } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import { getUserData } from "@/actions/user-data";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await (await supabase).auth.getUser();
+
+  if (!user) {
+    return <p>You need to login</p>;
+  }
+
+  const userId = user.id;
+  const userData = await getUserData(userId);
+
+  if (!userData) {
+    return <p>User data not found.</p>;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 font-sans">
       <div className="container mx-auto px-4 py-4 max-w-6xl">
@@ -27,7 +45,7 @@ export default function DashboardPage() {
                 <BookOpen className="h-4 w-4 text-purple-600" />
               </CardHeader>
               <CardContent>
-                <UserDashboard type="role" />
+                <UserDashboard userData={userData} type="role" />
               </CardContent>
             </Card>
             <Card>
@@ -38,7 +56,7 @@ export default function DashboardPage() {
                 <Coins className="h-4 w-4 text-yellow-600" />
               </CardHeader>
               <CardContent>
-                <UserDashboard type="storyCredit" />
+                <UserDashboard userData={userData} type="storyCredit" />
               </CardContent>
             </Card>
             <Card>
@@ -49,7 +67,7 @@ export default function DashboardPage() {
                 <Coins className="h-4 w-4 text-blue-600" />
               </CardHeader>
               <CardContent>
-                <UserDashboard type="ttsCredit" />
+                <UserDashboard userData={userData} type="ttsCredit" />
               </CardContent>
             </Card>
             <Card>
@@ -60,7 +78,7 @@ export default function DashboardPage() {
                 <BookOpen className="h-4 w-4 text-green-600" />
               </CardHeader>
               <CardContent>
-                <UserDashboard type="storiesCreated" />
+                <UserDashboard userData={userData} type="storiesCreated" />
               </CardContent>
             </Card>
           </div>

@@ -20,7 +20,6 @@ interface UserData {
   ttsCredit: number;
   // For backward compatibility
   storiesCreated: number;
-  credits: number;
 }
 
 interface UserContextType {
@@ -44,7 +43,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const fetchUserData = async (userId: string) => {
-    console.log("🔄 Fetching user data for:", userId);
     try {
       // Import the server action dynamically to avoid SSR issues
       const { getUserData } = await import("@/actions/user-data");
@@ -53,7 +51,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
       const userData = await getUserData(userId);
 
       if (userData) {
-        console.log("✅ User data fetched successfully:", userData);
         setUserData(userData);
         setIsLoading(false);
       } else {
@@ -71,7 +68,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   const refreshUserData = async () => {
-    console.log("🔄 Refreshing user data...");
     if (user?.id) {
       await fetchUserData(user.id);
     }
@@ -79,20 +75,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function checkSession() {
-      console.log("🔍 Checking for existing session...");
       setIsLoading(true);
 
       const { data } = await supabase.auth.getSession();
-      console.log(
-        "📋 Session check result:",
-        data.session ? "User logged in" : "No session found"
-      );
 
       const currentUser = data.session?.user ?? null;
       setUser(currentUser);
 
       if (currentUser?.id) {
-        console.log("👤 User found, fetching additional data...");
         await fetchUserData(currentUser.id);
       } else {
         console.log("👤 No user found");
@@ -103,25 +93,16 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
     checkSession();
 
-    console.log("👂 Setting up auth state change listener...");
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log(
-          "🔄 Auth state changed:",
-          event,
-          session?.user?.email || "No user"
-        );
-
         const currentUser = session?.user ?? null;
         setUser(currentUser);
 
         if (currentUser?.id) {
-          console.log("👤 New user logged in, fetching data...");
           await fetchUserData(currentUser.id);
 
           router.push("/dashboard");
         } else {
-          console.log("👤 User logged out, clearing data...");
           router.push("/");
 
           setUserData(null);
@@ -130,7 +111,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     );
 
     return () => {
-      console.log("🧹 Cleaning up auth listener...");
       listener?.subscription.unsubscribe();
     };
   }, [supabase, router]);

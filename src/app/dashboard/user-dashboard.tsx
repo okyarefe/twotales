@@ -1,18 +1,13 @@
-"use client";
-import { useUser } from "@/contexts/user-context";
-import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
+import { UserData } from "@/types";
 
-export default function UserDashboard({ type }: { type: string }) {
-  const { userData, isLoading, refreshUserData } = useUser();
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center p-2">
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-700"></div>
-      </div>
-    );
-  }
+export default function UserDashboard({
+  userData,
+  type,
+}: {
+  userData: UserData;
+  type: string;
+}) {
+  //const { userData, isLoading, refreshUserData } = useUser();
 
   if (!userData) {
     return <span className="text-gray-500">You need to login</span>;
@@ -45,17 +40,5 @@ export default function UserDashboard({ type }: { type: string }) {
       value = <span>Unknown</span>;
   }
 
-  return (
-    <div className="flex items-center gap-2">
-      {value}
-      <Button
-        onClick={refreshUserData}
-        variant="outline"
-        size="sm"
-        className="ml-2"
-      >
-        <RefreshCw className="h-4 w-4" />
-      </Button>
-    </div>
-  );
+  return <div className="flex items-center gap-2">{value}</div>;
 }
