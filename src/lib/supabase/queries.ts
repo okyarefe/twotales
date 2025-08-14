@@ -135,3 +135,16 @@ export async function deductUserCredit(userId: string): Promise<boolean> {
   if (error) throw new Error(error.message);
   return data?.success ?? false;
 }
+
+export async function getUserStoriesCount(userId: string): Promise<number> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("stories")
+    .select("id", { count: "exact" })
+    .eq("user_id", userId);
+
+  if (error) throw new Error("Error fetching user stories count");
+
+  return data?.length ?? 0; // number of stories
+}

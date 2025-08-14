@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Coins } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getUserData } from "@/actions/user-data";
+import { getUserStoriesCount } from "@/lib/supabase/queries";
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -16,7 +17,10 @@ export default async function DashboardPage() {
   }
 
   const userId = user.id;
-  const userData = await getUserData(userId);
+  const [userData, numberOfStories] = await Promise.all([
+    getUserData(userId),
+    getUserStoriesCount(userId),
+  ]);
 
   if (!userData) {
     return <p>User data not found.</p>;
@@ -78,7 +82,11 @@ export default async function DashboardPage() {
                 <BookOpen className="h-4 w-4 text-green-600" />
               </CardHeader>
               <CardContent>
-                <UserDashboard userData={userData} type="storiesCreated" />
+                <UserDashboard
+                  userData={userData}
+                  numberOfStories={numberOfStories}
+                  type="storiesCreated"
+                />
               </CardContent>
             </Card>
           </div>

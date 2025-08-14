@@ -3,9 +3,11 @@ import { UserData } from "@/types";
 export default function UserDashboard({
   userData,
   type,
+  numberOfStories,
 }: {
   userData: UserData;
   type: string;
+  numberOfStories?: number;
 }) {
   //const { userData, isLoading, refreshUserData } = useUser();
 
@@ -32,9 +34,7 @@ export default function UserDashboard({
       value = <div className="text-2xl font-bold">{userData.ttsCredit}</div>;
       break;
     case "storiesCreated":
-      value = (
-        <div className="text-2xl font-bold">{userData.storiesCreated}</div>
-      );
+      value = <div className="text-2xl font-bold">{numberOfStories}</div>;
       break;
     default:
       value = <span>Unknown</span>;
