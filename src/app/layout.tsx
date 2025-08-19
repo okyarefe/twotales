@@ -5,6 +5,7 @@ import Header from "@/components/header";
 import { UserProvider } from "@/contexts/user-context";
 import { createClient } from "@/lib/supabase/server";
 import { getUserData } from "@/actions/user-data";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

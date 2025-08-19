@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { BookOpen, CreditCard, Home } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { useUser } from "@/contexts/user-context";
-import HeaderSkeleton from "./header-skeleton";
 
 export default function HeaderNav() {
   // Helper to normalize paths (remove trailing slashes)
@@ -27,13 +26,11 @@ export default function HeaderNav() {
       icon: <CreditCard className="w-4 h-4" />,
     },
   ];
-  const { user, isLoading } = useUser();
+  const { user } = useUser();
 
   return (
     <div className="flex flex-row items-center gap-2 md:gap-4 lg:gap-6 min-w-0">
-      {isLoading ? (
-        <HeaderSkeleton />
-      ) : user ? (
+      {user &&
         navLinks.map((link) => {
           const isActive =
             normalize(pathname) === normalize(link.href) ||
@@ -54,11 +51,7 @@ export default function HeaderNav() {
               <span className="hidden md:inline">{link.label}</span>
             </Link>
           );
-        })
-      ) : (
-        // Render empty space to preserve layout if needed
-        <div style={{ minWidth: "180px", height: "32px" }} />
-      )}
+        })}
     </div>
   );
 }

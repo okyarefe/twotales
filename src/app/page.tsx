@@ -1,15 +1,22 @@
-export default function HomePage() {
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { getUserData } from "@/actions/user-data";
+
+export default async function HomePage() {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+
+  const userId = data.user?.id;
+  const userFromSupabase = userId ? await getUserData(userId) : null;
+
+  if (userFromSupabase) {
+    redirect("/dashboard"); // 🚀 send logged-in users to dashboard
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 font-sans">
-      <div className="container mx-auto px-4 py-4 max-w-6xl">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">
-          Welcome to TwoTales
-        </h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Your AI-powered storytelling platform. Create amazing stories with the
-          help of artificial intelligence.
-        </p>
-      </div>
+    <div>
+      <h1>Welcome to TwoTales</h1>
+      <p>Please log in to continue.</p>
     </div>
   );
 }

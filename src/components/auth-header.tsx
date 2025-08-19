@@ -23,7 +23,7 @@ export default function HeaderAuth() {
   };
 
   // Show loading spinner while checking session or during sign out
-  if (isLoading || isSigningOut) {
+  if (user && (isLoading || isSigningOut)) {
     return (
       <ClipLoader
         color="purple"
