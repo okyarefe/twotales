@@ -16,15 +16,13 @@ export function generateOpenAIStoryPrompt(
           First, give me the complete English story, then the same story in ${language}. Do not mix any content!
 
           Make sure:
-          - The number of sentences in both translations is exactly the same.
+          - The number of sentences in both stories are exactly the same.
           - Each sentence corresponds directly to the sentence in the other language.
-          - Each story must have around ${numberOfSentences} sentences.
+          - Each story must have ${numberOfSentences} sentences. Ignore if otherwise specified.
           - Do not include any ** or other special formatting characters in the sentences.
 
           Please ensure that both stories match sentence-for-sentence precisely.`;
 }
-
-
 
 export function extractStories(text: string): {
   english: string;

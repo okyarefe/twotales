@@ -18,7 +18,6 @@ interface UserData {
   membershipType: string;
   storyCredit: number;
   ttsCredit: number;
-  // For backward compatibility
   storiesCreated: number;
 }
 
@@ -27,35 +26,50 @@ interface UserContextType {
   userData: UserData | null;
   isLoading: boolean;
   error: string | null;
-
   refreshUserData: () => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export function UserProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<SupabaseUser | null>(null);
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+interface UserProviderProps {
+  children: ReactNode;
+  initialUser?: SupabaseUser | null;
+  initialUserData?: UserData | null;
+}
 
-  const [isLoading, setIsLoading] = useState(true);
+export function UserProvider({
+  children,
+  initialUser = null,
+  initialUserData = null,
+}: UserProviderProps) {
+  const [user, setUser] = useState<SupabaseUser | null>(initialUser);
+  const [userData, setUserData] = useState<UserData | null>(initialUserData);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(!initialUser || !initialUserData);
+
   const supabase = createClient();
   const router = useRouter();
 
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setUserData(null);
+    setIsLoading(false);
+    router.push("/");
+  };
+
   const fetchUserData = async (userId: string) => {
     try {
-      // Import the server action dynamically to avoid SSR issues
       const { getUserData } = await import("@/actions/user-data");
       setIsLoading(true);
-      // Call the server action to safely fetch data
-      const userData = await getUserData(userId);
+      const data = await getUserData(userId);
 
-      if (userData) {
-        setUserData(userData);
+      if (data) {
+        setUserData(data);
         setIsLoading(false);
       } else {
         setIsLoading(false);
-
         setError("No user profile found. Please complete your account setup.");
         setUserData(null);
       }
@@ -74,18 +88,22 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
+    // If initial data is provided, skip client-side session check
+    if (userData && initialUserData) {
+      setIsLoading(false);
+      return;
+    }
+
     async function checkSession() {
       setIsLoading(true);
 
       const { data } = await supabase.auth.getSession();
-
       const currentUser = data.session?.user ?? null;
       setUser(currentUser);
 
       if (currentUser?.id) {
         await fetchUserData(currentUser.id);
       } else {
-        console.log("👤 No user found");
         setUserData(null);
         setIsLoading(false);
       }
@@ -105,7 +123,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
           }
         } else {
           router.push("/");
-
           setUserData(null);
         }
       }
@@ -114,11 +131,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
     return () => {
       listener?.subscription.unsubscribe();
     };
-  }, [supabase, router]);
+  }, [supabase, router, initialUser, initialUserData, userData]);
 
   return (
     <UserContext.Provider
-      value={{ user, userData, isLoading, refreshUserData, error }}
+      value={{ user, userData, isLoading, refreshUserData, error, signOut }}
     >
       {children}
     </UserContext.Provider>

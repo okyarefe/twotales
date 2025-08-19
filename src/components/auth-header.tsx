@@ -5,16 +5,14 @@ import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { ClipLoader } from "react-spinners";
 
-import { createClient } from "@/lib/supabase/client";
 import { useUser } from "@/contexts/user-context";
 import { useState } from "react";
 import type { CSSProperties } from "react";
 import GoogleSignInButton from "./google-signin-button";
 
 export default function HeaderAuth() {
-  const { user, userData, isLoading } = useUser();
-  const [isSigningOut, setIsSigningOut] = useState(false);
-  const supabase = createClient();
+  const { user, userData, isLoading, signOut } = useUser();
+  const [isSigningOut] = useState(false);
 
   const getInitial = (email?: string) => email?.charAt(0).toUpperCase() || "?";
 
@@ -22,18 +20,6 @@ export default function HeaderAuth() {
     display: "block",
     margin: "0 auto",
     borderColor: "purple",
-  };
-
-  const handleSignOut = async () => {
-    setIsSigningOut(true);
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-    } finally {
-      setIsSigningOut(false);
-    }
   };
 
   // Show loading spinner while checking session or during sign out
@@ -93,7 +79,7 @@ export default function HeaderAuth() {
                 </>
               )}
             </div>
-            <Button type="button" className="w-full" onClick={handleSignOut}>
+            <Button type="button" className="w-full" onClick={signOut}>
               Sign Out
             </Button>
           </div>
