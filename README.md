@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TwoTales
 
-## Getting Started
+## Description
 
-First, run the development server:
+TwoTales is an AI-powered storytelling platform designed to help language learners improve their skills through engaging, personalized stories and quizzes. Users can generate stories in English and a target language, track their progress, and test their understanding with quizzes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Why?
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Learning a new language can be challenging, especially when it comes to reading comprehension and vocabulary. TwoTales solves this by providing sentence-aligned stories in multiple languages, tailored to the learner’s level and interests. The platform also generates quizzes to reinforce learning, making language acquisition interactive and fun.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project is built with Next.js, TypeScript, Supabase, OpenAI API, and Drizzle ORM.  
+It uses Supabase for authentication and database, OpenAI for AI-powered story and quiz generation, and Drizzle for ORM.
 
-## Learn More
+## Quick Start
 
-To learn more about Next.js, take a look at the following resources:
+1. **Install dependencies:**
+   ```sh
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Set up environment variables:**
+   Before running the project, create a `.env.local` file in the root directory and add the following variables:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+  - `DATABASE_URL`: Your PostgreSQL connection string (from Supabase).
+  - `OPENAI_API_KEY`: Your OpenAI API key for story and quiz generation.
+  - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL.
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anon public key.
+  - `NEXT_PUBLIC_SITE_URL`: The base URL for your site (e.g., `http://localhost:3000`).
 
-## Deploy on Vercel
+3. **Run the development server:**
+   ```sh
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Usage
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Sign in with Google to create an account.
+- Generate a new story by selecting a language, level, and providing a prompt.
+- Read stories side-by-side in English and your target language.
+- Take quizzes to test your comprehension.
+- Track your credits and progress on the dashboard.
+
+## Contributing
+
+We welcome contributions! To get started:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix.
+3. Make your changes and submit a pull request.
+4. Ensure your code follows the project’s style and passes linting (`npm run lint`).
+
+For questions or suggestions, open an issue or join the discussion.
+
+---
+
+Happy storytelling and language learning!
