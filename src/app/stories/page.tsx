@@ -4,7 +4,7 @@ import { getUserStories } from "@/lib/supabase/queries";
 
 import { StoryCard } from "@/components/stories/story-card";
 import TopicCreateForm from "@/components/stories/story-create-form";
-import { getUser } from "@/utils/auth";
+import { getUser } from "@/utils/supabase/auth-server";
 
 export default async function StoriesPage() {
   const user = await getUser();

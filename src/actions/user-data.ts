@@ -5,7 +5,7 @@ import type { UserData } from "@/types";
 
 export async function getUserData(userId: string): Promise<UserData | null> {
   const supabase = await createClient();
-  console.log("Get User data ran*****************");
+
   try {
     // Get user data from users table
     const { data: userData, error: userError } = await supabase

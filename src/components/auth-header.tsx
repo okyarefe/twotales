@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useUser } from "@/contexts/user-context";
 import { useState } from "react";
 import type { CSSProperties } from "react";
+import GoogleSignInButton from "./google-signin-button";
 
 export default function HeaderAuth() {
   const { user, userData, isLoading } = useUser();
@@ -20,16 +21,7 @@ export default function HeaderAuth() {
   const override: CSSProperties = {
     display: "block",
     margin: "0 auto",
-    borderColor: "red",
-  };
-
-  const handleSignIn = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-      },
-    });
+    borderColor: "purple",
   };
 
   const handleSignOut = async () => {
@@ -112,19 +104,10 @@ export default function HeaderAuth() {
 
   // User is not logged in - show sign in/up buttons
   return (
-    <div className="flex flex-row gap-2 w-full md:w-auto">
-      <Button
-        type="button"
-        className="w-full md:w-auto"
-        variant="outline"
-        onClick={handleSignIn}
-      >
-        Sign In
-      </Button>
+    <div className="flex flex-row gap-2">
+      <GoogleSignInButton variant="signin">Sign In</GoogleSignInButton>
 
-      <Button type="button" className="w-full md:w-auto" onClick={handleSignIn}>
-        Sign Up
-      </Button>
+      <GoogleSignInButton variant="signup">Sign Up</GoogleSignInButton>
     </div>
   );
 }
