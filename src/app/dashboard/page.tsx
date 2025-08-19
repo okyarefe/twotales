@@ -2,24 +2,17 @@ import UserDashboard from "@/app/dashboard/user-dashboard";
 import TopicCreateForm from "@/components/stories/story-create-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Coins } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
+
 import { getUserData } from "@/actions/user-data";
 import { getUserStoriesCount } from "@/lib/supabase/queries";
+import { getUser } from "@/utils/auth";
 
 export default async function DashboardPage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await (await supabase).auth.getUser();
+  const user = await getUser();
 
-  if (!user) {
-    return <p>You need to login</p>;
-  }
-
-  const userId = user.id;
   const [userData, numberOfStories] = await Promise.all([
-    getUserData(userId),
-    getUserStoriesCount(userId),
+    getUserData(user.id),
+    getUserStoriesCount(user.id),
   ]);
 
   if (!userData) {

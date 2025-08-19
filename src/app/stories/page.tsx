@@ -1,16 +1,13 @@
-import { createClient } from "@/lib/supabase/server";
 import { Story } from "@/types";
 import { redirect } from "next/navigation";
 import { getUserStories } from "@/lib/supabase/queries";
 
 import { StoryCard } from "@/components/stories/story-card";
 import TopicCreateForm from "@/components/stories/story-create-form";
+import { getUser } from "@/utils/auth";
 
 export default async function StoriesPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser();
   if (!user) {
     redirect("/login");
   }

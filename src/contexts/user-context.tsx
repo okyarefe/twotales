@@ -55,7 +55,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         setIsLoading(false);
       } else {
         setIsLoading(false);
-        console.log("⚠️ No user profile found");
+
         setError("No user profile found. Please complete your account setup.");
         setUserData(null);
       }
@@ -100,8 +100,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
         if (currentUser?.id) {
           await fetchUserData(currentUser.id);
-
-          router.push("/dashboard");
+          if (event === "SIGNED_IN") {
+            router.push("/dashboard");
+          }
         } else {
           router.push("/");
 
