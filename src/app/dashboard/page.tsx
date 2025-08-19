@@ -5,7 +5,7 @@ import { BookOpen, Coins } from "lucide-react";
 
 import { getUserData } from "@/actions/user-data";
 import { getUserStoriesCount } from "@/lib/supabase/queries";
-import { getUser } from "@/utils/auth";
+import { getUser } from "@/utils/supabase/auth-server";
 
 export default async function DashboardPage() {
   const user = await getUser();
