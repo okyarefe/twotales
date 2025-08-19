@@ -9,8 +9,8 @@ export default function StoryPreview() {
           </h4>
           <div className="space-y-2 text-sm text-gray-800">
             <p>
-              Maya discovered a mysterious glowing door in her grandmother's
-              attic.
+              Maya discovered a mysterious glowing door in her
+              grandmother&apos;s attic.
             </p>
             <p className="bg-purple-100 px-2 py-1 rounded">
               She hesitated for a moment, then bravely turned the ancient golden
