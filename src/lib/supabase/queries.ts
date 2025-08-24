@@ -71,7 +71,6 @@ export async function saveQuizQuestions(
     return null;
   }
 
-  console.log("Quiz created successfully:", data);
   return data;
 }
 
@@ -82,8 +81,6 @@ export async function getQuizQuestionsById(quizId: string) {
     .from("quiz_questions")
     .select("id, question, answer")
     .eq("quiz_id", cleanQuizId);
-
-  console.log("data in db", data);
 
   if (error) {
     console.error("Error fetching quiz questions:", error.message);

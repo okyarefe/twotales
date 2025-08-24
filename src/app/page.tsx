@@ -10,7 +10,7 @@ export default async function HomePage() {
   const userFromSupabase = userId ? await getUserData(userId) : null;
 
   if (userFromSupabase) {
-    redirect("/dashboard"); // 🚀 send logged-in users to dashboard
+    redirect("/dashboard");
   }
 
   return (

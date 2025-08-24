@@ -16,14 +16,16 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
 import { createStory } from "@/actions";
+import { useRouter } from "next/navigation";
 
-import { useActionState, startTransition } from "react";
+import { useActionState, startTransition, useEffect, useRef } from "react";
 import FormButton from "../common/form-button";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { languages, languageLevels } from "@/constants";
 import { language } from "@/types";
 import { Plus } from "lucide-react";
+import { toast } from "sonner";
 
 export default function TopicCreateForm() {
   const [formState, action, isPending] = useActionState(createStory, {
@@ -31,19 +33,65 @@ export default function TopicCreateForm() {
   });
   const [selectedLanguage, setSelectedLanguage] = useState<language>();
   const [selectedLanguageLevel, setSelectedLanguageLevel] = useState("");
+  const [title, setTitle] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const justSubmitted = useRef(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (justSubmitted.current) {
+      setSubmitting(false); // Show errors again after response
+
+      if (formState.success === true) {
+        // Show success toast
+        toast.success("Story created successfully!", {
+          position: "top-center",
+          style: {
+            backgroundColor: "white",
+            color: "purple",
+            borderColor: "purple",
+          },
+        });
+        resetFormInputs();
+        router.push("/stories");
+      } else if (formState.errors._form) {
+        toast.error(formState.errors._form.join(", "), {
+          position: "top-center",
+          style: {
+            backgroundColor: "white",
+            color: "red",
+            borderColor: "red",
+          },
+        });
+      }
+      justSubmitted.current = false;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formState]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    justSubmitted.current = true;
+    setSubmitting(true);
+
     const formData = new FormData(event.currentTarget);
     startTransition(() => {
       action(formData);
     });
   }
 
+  function resetFormInputs() {
+    setTitle("");
+    setPrompt("");
+    setSelectedLanguage(undefined);
+    setSelectedLanguageLevel("");
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className="bg-purple-400">
+        <Button variant="createStory">
           {" "}
           <Plus className="w-4 h-4 mr-2" />
           Create story
@@ -78,7 +126,7 @@ export default function TopicCreateForm() {
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
-                {formState.errors.language && (
+                {!submitting && formState.errors.language && (
                   <p className="mt-1 text-sm text-red-600">
                     {formState.errors.language.join(", ")}
                   </p>
@@ -113,7 +161,7 @@ export default function TopicCreateForm() {
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
-                {formState.errors.languageLevel && (
+                {!submitting && formState.errors.languageLevel && (
                   <p className="mt-1 text-sm text-red-600">
                     {formState.errors.languageLevel.join(", ")}
                   </p>
@@ -126,8 +174,13 @@ export default function TopicCreateForm() {
               </div>
             </div>
 
-            <Input name="title" placeholder="title"></Input>
-            {formState.errors.title && (
+            <Input
+              name="title"
+              placeholder="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            ></Input>
+            {!submitting && formState.errors.title && (
               <p id="title-error" className="mt-1 text-sm text-red-600">
                 {formState.errors.title.join(", ")}
               </p>
@@ -135,13 +188,15 @@ export default function TopicCreateForm() {
             <Textarea
               name="prompt"
               placeholder="Describe your story"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
             ></Textarea>
-            {formState.errors.prompt && (
+            {!submitting && formState.errors.prompt && (
               <p id="description-error" className="mt-1 text-sm text-red-600">
                 {formState.errors.prompt.join(", ")}
               </p>
             )}
-            {formState.errors._form ? (
+            {!submitting && formState.errors._form ? (
               <div className="p-2 bg-red-200 border border-red-400 rounded text-center">
                 {formState.errors._form.join(", ")}
               </div>

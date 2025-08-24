@@ -5,6 +5,7 @@ import Header from "@/components/header";
 import { UserProvider } from "@/contexts/user-context";
 import { createClient } from "@/lib/supabase/server";
 import { getUserData } from "@/actions/user-data";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +36,7 @@ export default async function RootLayout({
           <div className="container mx-auto px-4 max-w-6xl rounded">
             {" "}
             {children}
+            <Toaster />
           </div>
         </UserProvider>
       </body>

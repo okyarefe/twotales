@@ -30,9 +30,8 @@ export async function generateStory(props: GenerateStoryProps) {
     });
 
     const totalTokens = response.usage?.total_tokens;
-    console.log("TOTAL TOKENS", totalTokens);
+
     const story = response.output_text;
-    console.log("STORY", story);
 
     // Check if story is empty or null
     if (!story || story.trim() === "") {

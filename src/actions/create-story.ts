@@ -21,9 +21,11 @@ import { Story, storyLength } from "@/types";
 const createStorySchema = z.object({
   title: z
     .string()
-    .min(3)
+    .min(3, { message: "Title should be at least 3 characters long" })
     .regex(/[a-z-]/),
-  prompt: z.string().min(10),
+  prompt: z
+    .string()
+    .min(10, { message: "Description should be at least 10 characters long" }),
   language: z.enum([...languages] as [string, ...string[]], {
     errorMap: () => ({ message: "Please choose a language" }),
   }),
@@ -42,6 +44,7 @@ interface CreateStoryFormState {
     //form level errors - saving to db, auth etc..
     _form?: string[];
   };
+  success?: boolean;
 }
 
 export async function createStory(
@@ -58,6 +61,7 @@ export async function createStory(
   if (!result.success) {
     return {
       errors: result.error.flatten().fieldErrors,
+      success: false,
     };
   }
   // Auth Check
@@ -82,6 +86,7 @@ export async function createStory(
     }
 
     //API CALL TO openAI to create STORY
+    console.log("--Making a request to OpenAI--");
     const story = await generateStory(result.data);
 
     // Prepare data to save into database
@@ -95,7 +100,7 @@ export async function createStory(
       translate_to: result.data.language,
       title: result.data.title,
     };
-    // TODO: QUERY TO DATABASE.
+    // QUERY TO DATABASE.
     const savedStory: Story = await saveStory(storyData, user.id);
 
     const quiz = await generateQuizFromStory(story);
@@ -103,7 +108,7 @@ export async function createStory(
     saveQuizQuestions(savedStory.id, quiz.questions, story.totalTokens);
 
     // DECREASE THE USER'S CREDIT with supabase stored procedure
-    // TODO: Modify user table to keep track of number of stories created ?
+    // Modify user table to keep track of number of stories created ?
     // and update the procedure ?
     await deductUserCredit(user.id);
   } catch (error: unknown) {
@@ -121,8 +126,12 @@ export async function createStory(
       };
     }
   }
-
   revalidatePath("/stories");
+  return {
+    errors: {},
+    success: true,
+  };
+
   // redirect
   redirect("/stories");
 }
