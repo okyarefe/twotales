@@ -20,7 +20,7 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 font-sans">
+    <div className="bg-gradient-to-br from-slate-50 to-blue-50 font-sans">
       <div className="container mx-auto px-4 py-4 max-w-6xl">
         <div className="space-y-6">
           <div className="flex items-center justify-between">

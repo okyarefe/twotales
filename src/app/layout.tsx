@@ -33,7 +33,7 @@ export default async function RootLayout({
         >
           <Header></Header>
 
-          <div className="container mx-auto px-4 max-w-6xl rounded">
+          <div className="container mx-auto px-4 max-w-6xl rounded bg-purple-100">
             {" "}
             {children}
             <Toaster />

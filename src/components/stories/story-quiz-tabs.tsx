@@ -26,9 +26,9 @@ export const StoryQuizTabs: React.FC<TabsProps> = ({
       <div className="flex gap-4 mb-8 justify-center">
         <Button
           onClick={() => setTab("story")}
-          className={`px-6 py-2 rounded-lg transition-all duration-200 text-base font-semibold tracking-wide focus:outline-none focus:ring-2 focus:ring-purple-300 hover:text-white ${
+          className={`px-6 py-2 rounded-lg transition-all duration-200 text-base font-semibold tracking-wide focus:outline-none focus:ring-2 focus:ring-purple-300 ${
             tab === "story"
-              ? "bg-black text-white border border-black"
+              ? "bg-purple-50 border-2 border-purple-700 text-purple-700"
               : "bg-purple-50 text-purple-700 border border-purple-200"
           }`}
         >
@@ -36,9 +36,9 @@ export const StoryQuizTabs: React.FC<TabsProps> = ({
         </Button>
         <Button
           onClick={() => setTab("quiz")}
-          className={`px-6 py-2 rounded-lg transition-all duration-200 text-base font-semibold tracking-wide focus:outline-none focus:ring-2 focus:ring-purple-300 hover:text-white ${
+          className={`px-6 py-2 rounded-lg transition-all duration-200 text-base font-semibold tracking-wide focus:outline-none focus:ring-2 focus:ring-purple-300 ${
             tab === "quiz"
-              ? "bg-black text-white border border-black"
+              ? "bg-purple-50 border-2 border-purple-700 text-purple-700"
               : "bg-purple-50 text-purple-700 border border-purple-200"
           }`}
         >

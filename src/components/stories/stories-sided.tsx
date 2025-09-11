@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import SentenceList from "./sentence-list";
 
 interface StorySideBySideProps {
   storyA: string;
@@ -14,6 +15,8 @@ function splitSentences(story: string): string[] {
     .map((s) => s + ".");
 }
 
+
+
 export const StorySideBySide: React.FC<StorySideBySideProps> = ({
   storyA,
   storyB,
@@ -25,41 +28,20 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
 
   return (
     <div style={{ display: "flex", gap: "2rem" }}>
-      {/* Story A */}
-      <div style={{ flex: 1 }}>
-        {Array.from({ length: maxLen }).map((_, idx) => (
-          <div
-            key={"A-" + idx}
-            onMouseEnter={() => setHoveredIdx(idx)}
-            onMouseLeave={() => setHoveredIdx(null)}
-            style={{
-              background: hoveredIdx === idx ? "yellow" : "transparent",
-              padding: "4px",
-              borderRadius: "4px",
-              marginBottom: "4px",
-              cursor: "pointer",
-            }}
-          >
-            {sentencesA[idx] || ""}
-          </div>
-        ))}
-      </div>
-      {/* Story B */}
-      <div style={{ flex: 1 }}>
-        {Array.from({ length: maxLen }).map((_, idx) => (
-          <div
-            key={"B-" + idx}
-            style={{
-              background: hoveredIdx === idx ? "yellow" : "transparent",
-              padding: "4px",
-              borderRadius: "4px",
-              marginBottom: "4px",
-            }}
-          >
-            {sentencesB[idx] || ""}
-          </div>
-        ))}
-      </div>
+      <SentenceList
+        sentences={sentencesA}
+        maxLen={maxLen}
+        hoveredIdx={hoveredIdx}
+        setHoveredIdx={setHoveredIdx}
+        side="A"
+        hoverable
+      />
+      <SentenceList
+        sentences={sentencesB}
+        maxLen={maxLen}
+        hoveredIdx={hoveredIdx}
+        side="B"
+      />
     </div>
   );
 };

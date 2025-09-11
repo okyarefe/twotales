@@ -8,7 +8,6 @@ interface PageProps {
 }
 
 export default async function StoryShowPage({ params }: PageProps) {
-  console.log("Getting a story");
   try {
     const id = (await params).id;
     const [story, quizId] = await Promise.all([
