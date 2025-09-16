@@ -8,11 +8,12 @@ import { CharacterDisplay } from "@/app/dashboard/components/character-display";
 
 import { User, ShoppingBag } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { EquipmentItem } from "@/types";
 
 export default function ProfileCharacterTabs() {
-  const { character, progress, equipItem, upgradeItem } = useGameState();
+  const { character, equipItem } = useGameState();
 
-  const handleEquipItem = (item: any, slotType: string) => {
+  const handleEquipItem = (item: EquipmentItem) => {
     equipItem(item);
   };
 

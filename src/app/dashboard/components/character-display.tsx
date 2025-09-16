@@ -19,9 +19,6 @@ export function CharacterDisplay({
 }: CharacterDisplayProps) {
   const [selectedItem, setSelectedItem] = useState<EquipmentItem | null>(null);
 
-  const experiencePercentage =
-    (character.experience / character.experienceToNext) * 100;
-
   const getEquipmentIcon = (type: string) => {
     switch (type) {
       case "head":
@@ -61,7 +58,7 @@ export function CharacterDisplay({
     item,
   }: {
     slotType: string;
-    item?: any;
+    item?: EquipmentItem;
   }) => {
     const canEquip = selectedItem && selectedItem.type === slotType;
 

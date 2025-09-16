@@ -116,7 +116,7 @@ export function useGameState() {
           character: updatedCharacter,
         }));
 
-        return true;
+        return updatedCharacter;
       });
     }
     return false;

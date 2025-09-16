@@ -45,3 +45,49 @@ export type languageLevel =
   | "technical";
 
 export type storyLength = "short" | "medium" | "long";
+
+export interface Character {
+  id: string;
+  name: string;
+  level: number;
+  experience: number;
+  experienceToNext: number;
+  equipment: Equipment;
+  stats: CharacterStats;
+  inventory: EquipmentItem[]; // added inventory to store unequipped items
+}
+
+export interface Equipment {
+  head?: EquipmentItem;
+  top?: EquipmentItem;
+  pants?: EquipmentItem;
+  feet?: EquipmentItem;
+  leftHand?: EquipmentItem;
+  rightHand?: EquipmentItem;
+}
+
+export interface EquipmentItem extends Item {
+  type: "head" | "top" | "pants" | "feet" | "leftHand" | "rightHand";
+  stats: Partial<CharacterStats>;
+  price: number;
+  upgradeFrom?: string;
+  upgradeCost?: number;
+}
+
+export interface Item {
+  id: string;
+  name: string;
+  type: "equipment" | "consumable" | "material"; // extend as needed
+  rarity: "common" | "rare" | "epic" | "legendary";
+  icon: string;
+  description: string;
+}
+
+export interface UserProgress {
+  points: number;
+  totalPoints: number;
+  streak: number;
+  lessonsCompleted: number;
+  achievements: Achievement[];
+  character?: Character;
+}
