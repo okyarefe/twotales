@@ -79,7 +79,11 @@ export default function HeaderAuth() {
                 </>
               )}
             </div>
-            <Button type="button" className="w-full" onClick={signOut}>
+            <Button
+              type="button"
+              className="w-full text-purple border-2 border-purple-700 bg-white hover:opacity-60"
+              onClick={signOut}
+            >
               Sign Out
             </Button>
           </div>
