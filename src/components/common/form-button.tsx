@@ -7,9 +7,16 @@ interface FormButtonProps {
 
 export default function FormButton({ children, isLoading }: FormButtonProps) {
   return (
-    <Button type="submit" disabled={isLoading}>
+    <Button type="submit" disabled={isLoading} variant="createStory">
       {isLoading ? (
-        <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            color: "white",
+          }}
+        >
           <svg
             width="20"
             height="20"
