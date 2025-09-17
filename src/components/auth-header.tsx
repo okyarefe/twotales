@@ -70,12 +70,12 @@ export default function HeaderAuth() {
                       {userData.membershipType}
                     </span>
                   </p>
-                  <p>
+                  {/* <p>
                     <strong>Story Credits:</strong> {userData.storyCredit}
                   </p>
                   <p>
                     <strong>TTS Credits:</strong> {userData.ttsCredit}
-                  </p>
+                  </p> */}
                 </>
               )}
             </div>

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+
 import type { Story, StoryInsert } from "@/types";
 
 export async function saveStory(storyData: StoryInsert, userId: string) {
@@ -144,4 +145,19 @@ export async function getUserStoriesCount(userId: string): Promise<number> {
   if (error) throw new Error("Error fetching user stories count");
 
   return data?.length ?? 0; // number of stories
+}
+
+export async function deleteStoryById(storyId: string): Promise<boolean> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("stories")
+    .delete()
+    .eq("id", storyId);
+  console.log("Delete story data:", data);
+  if (error) {
+    console.error("Error deleting story:", error.message);
+    return false;
+  }
+
+  return true;
 }

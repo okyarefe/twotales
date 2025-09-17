@@ -3,11 +3,23 @@ import { Button } from "../ui/button";
 interface FormButtonProps {
   children: React.ReactNode;
   isLoading: boolean;
+  loadingText?: string;
+  onClick?: () => void;
 }
 
-export default function FormButton({ children, isLoading }: FormButtonProps) {
+export default function FormButton({
+  children,
+  isLoading,
+  loadingText = "Generating...",
+  onClick,
+}: FormButtonProps) {
   return (
-    <Button type="submit" disabled={isLoading} variant="createStory">
+    <Button
+      type="submit"
+      disabled={isLoading}
+      variant="createStory"
+      onClick={onClick}
+    >
       {isLoading ? (
         <span
           style={{
@@ -41,7 +53,7 @@ export default function FormButton({ children, isLoading }: FormButtonProps) {
               `}
             </style>
           </svg>
-          Generating...
+          {loadingText}
         </span>
       ) : (
         children

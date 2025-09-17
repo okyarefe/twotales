@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
-import { BookOpen, Brain, Calendar } from "lucide-react";
+import { BookOpen, Calendar } from "lucide-react";
+import StoryActionButtons from "./action-buttons";
 import type { Story } from "@/types";
 import {
   formatDate,
@@ -9,7 +9,6 @@ import {
   getLevelColor,
   getStoryLengthColors,
 } from "@/utils/utils";
-import Link from "next/link";
 
 interface StoryCardProps {
   story: Story;
@@ -66,23 +65,7 @@ export function StoryCard({ story }: StoryCardProps) {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-2 pt-2 justify-between">
-          <Link
-            href={`/stories/${story.id}`}
-            className="flex items-center p-2 rounded justify-center hover:bg-purple-200 text-xs font-medium hover:border-rounded border-1 border-black"
-          >
-            {" "}
-            <BookOpen className="w-5 h-5 mr-1"></BookOpen>Read Story
-          </Link>
-
-          <Link
-            href={`/stories/${story.id}`}
-            className="flex items-center p-2 rounded justify-center hover:bg-purple-200 text-xs font-medium hover:border-rounded border-1 border-black"
-          >
-            <Brain className="w-5 h-5" />
-            Take Quiz
-          </Link>
-        </div>
+        <StoryActionButtons storyId={story.id} />
       </CardContent>
     </Card>
   );

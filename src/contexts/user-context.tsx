@@ -11,6 +11,8 @@ import { User as SupabaseUser } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
+// UPDATE THE CONTEXT WHEN MUTATION HAPPENS (E.G. CREDIT USAGE, MEMBERSHIP CHANGE)
+
 interface UserData {
   id: string;
   email: string;
