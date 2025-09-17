@@ -13,6 +13,15 @@ export async function saveStory(storyData: StoryInsert, userId: string) {
     throw new Error("Error saving story to database");
   }
 
+  // Increment the user's num_stories count using a stored procedure
+  const { error: incrementError } = await (
+    await createClient()
+  ).rpc("increment_num_stories", { user_id: userId });
+
+  if (incrementError) {
+    throw new Error("Error updating user's story count");
+  }
+
   return data[0];
 }
 
@@ -134,6 +143,8 @@ export async function deductUserCredit(userId: string): Promise<boolean> {
   return data?.success ?? false;
 }
 
+// Implemented num_stories field to the users table instead of
+// using this function
 export async function getUserStoriesCount(userId: string): Promise<number> {
   const supabase = await createClient();
 

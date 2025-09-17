@@ -10,7 +10,9 @@ export async function getUserData(userId: string): Promise<UserData | null> {
     // Get user data from users table
     const { data: userData, error: userError } = await supabase
       .from("users")
-      .select("email, role, membership_type, story_credit, tts_credit")
+      .select(
+        "email, role, membership_type, story_credit, tts_credit,num_stories"
+      )
       .eq("id", userId)
       .single();
 
@@ -29,7 +31,7 @@ export async function getUserData(userId: string): Promise<UserData | null> {
       ttsCredit: userData.tts_credit || 0,
       // For backward compatibility, keep storiesCreated as 0 for now
       // You can add a stories table later if needed
-      storiesCreated: 0,
+      storiesCreated: userData.num_stories || 0,
     };
   } catch (error) {
     console.error("Error in getUserData:", error);
