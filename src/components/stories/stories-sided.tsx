@@ -15,8 +15,6 @@ function splitSentences(story: string): string[] {
     .map((s) => s + ".");
 }
 
-
-
 export const StorySideBySide: React.FC<StorySideBySideProps> = ({
   storyA,
   storyB,
@@ -27,7 +25,7 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
-    <div style={{ display: "flex", gap: "2rem" }}>
+    <div className="flex gap-2rem text-xs">
       <SentenceList
         sentences={sentencesA}
         maxLen={maxLen}
@@ -40,7 +38,9 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
         sentences={sentencesB}
         maxLen={maxLen}
         hoveredIdx={hoveredIdx}
+        setHoveredIdx={setHoveredIdx}
         side="B"
+        hoverable
       />
     </div>
   );

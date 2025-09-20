@@ -17,7 +17,7 @@ const SentenceList: React.FC<SentenceListProps> = ({
   side,
   hoverable = false,
 }) => (
-  <div className="flex-1">
+  <div className="flex-1 sm:text-xm md:text-base">
     {Array.from({ length: maxLen }).map((_, idx) => (
       <div
         key={`${side}-${idx}`}
