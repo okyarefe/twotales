@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "TwoTales",
-  description: "AI-powered storytelling platform",
+  description: "AI-powered language learning platform",
 };
 
 export default async function RootLayout({
