@@ -15,7 +15,7 @@ import {
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
-import { createStory } from "@/actions";
+import { createStory } from "@/actions/stories";
 import { useRouter } from "next/navigation";
 
 import { useActionState, startTransition, useEffect, useRef } from "react";

@@ -17,7 +17,7 @@ import {
 } from "@/services/openai/generateStory";
 import { createClient } from "@/lib/supabase/server";
 import { Story, storyLength } from "@/types";
-
+import { deleteStoryById } from "@/lib/supabase/queries";
 const createStorySchema = z.object({
   title: z
     .string()
@@ -134,4 +134,9 @@ export async function createStory(
 
   // redirect
   redirect("/stories");
+}
+
+export async function deleteStoryServerAction(storyId: string) {
+  await deleteStoryById(storyId);
+  revalidatePath("/dashboard"); // or the path you want to refresh after deletion
 }

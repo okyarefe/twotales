@@ -2,7 +2,7 @@
 "use client";
 import FormButton from "../common/form-button";
 import { BookOpen, Trash } from "lucide-react";
-import { deleteStoryServerAction } from "@/actions/story-db";
+import { deleteStoryServerAction } from "@/actions/stories";
 import { useState } from "react";
 import ConfirmationWindow from "../common/confirmation-window";
 
