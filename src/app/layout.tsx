@@ -31,13 +31,14 @@ export default async function RootLayout({
           initialUser={user?.data.user}
           initialUserData={userFromSupabase}
         >
-          <Header></Header>
-
-          <div className="container mx-auto px-4 max-w-6xl rounded bg-purple-100">
-            {" "}
-            {children}
-            <Toaster />
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="container mx-auto px-4 max-w-6xl rounded bg-purple-100 flex-1">
+              {children}
+              <Toaster />
+            </main>
           </div>
+
         </UserProvider>
       </body>
     </html>

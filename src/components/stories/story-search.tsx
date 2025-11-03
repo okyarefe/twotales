@@ -60,10 +60,13 @@ export default function StorySearch({ initial = "" }: StorySearchProps) {
         placeholder="Search by title..."
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="px-3 py-2 border rounded-md text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        className="px-3 py-2 border rounded-md text-sm w-64 focus:outline-none focus:ring-2 focus:ring-purple-300"
       />
       {isPending ? (
-        <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" aria-hidden="true" />
+        <div
+          className="w-5 h-5 border-2 border-purple-300 border-t-transparent rounded-full animate-spin"
+          aria-hidden="true"
+        />
       ) : value ? (
         <button
           onClick={onClear}

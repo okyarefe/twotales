@@ -7,21 +7,20 @@ import TopicCreateForm from "@/components/stories/story-create-form";
 import { getUser } from "@/utils/supabase/auth-server";
 import StorySearch from "@/components/stories/story-search";
 
-type Props = {
-  searchParams?: { q?: string };
+type SearchParams = {
+  q?: string | string[] | undefined;
 };
 
-export default async function StoriesPage({ searchParams }: Props) {
+
+export default async function StoriesPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const user = await getUser();
   if (!user) {
     redirect("/login");
   }
 
-  // `searchParams` in the App Router may be a thenable — await it before
-  // accessing properties to avoid Next.js sync-dynamic-apis error.
-  const _searchParams = await (searchParams as unknown as Promise<{ q?: string } | undefined>);
-  const q = _searchParams?.q ?? "";
-
+  const params = await searchParams;
+  const query =  params.q ?? "";
+  const q = Array.isArray(query) ? query[0] ?? "" : query ?? "";
   const stories: Story[] = q
     ? await searchUserStories(user.id, q, 50)
     : await getUserStories(user.id, 6);

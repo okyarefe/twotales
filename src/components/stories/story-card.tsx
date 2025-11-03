@@ -16,7 +16,7 @@ interface StoryCardProps {
 
 export function StoryCard({ story }: StoryCardProps) {
   return (
-    <Card className="hover:shadow-lg transition-all duration-200 border-slate-200">
+  <Card className="shadow-sm transform transition-all duration-200 motion-reduce:transition-none hover:shadow-lg hover:scale-105 hover:-translate-y-1 border-slate-200">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <CardTitle className="text-base font-semibold text-slate-800 tracking-tight leading-tight">
