@@ -45,6 +45,40 @@ export async function getUserStories(userId: string, limit?: number) {
   return data;
 }
 
+export async function searchUserStories(
+  userId: string,
+  titleQuery: string,
+  limit?: number
+) {
+  const supabase = await createClient();
+
+  const cleanQuery = titleQuery?.trim();
+
+  // If empty search, fallback to getUserStories
+  if (!cleanQuery) {
+    return getUserStories(userId, limit);
+  }
+
+  const ilikePattern = `%${cleanQuery.replace(/%/g, "\\%").replace(/_/g, "\\_")}%`;
+
+  const query = supabase
+    .from("stories")
+    .select("*")
+    .eq("user_id", userId)
+    .ilike("title", ilikePattern)
+    .order("created_at", { ascending: false });
+
+  if (limit) query.limit(limit);
+
+  const { data, error } = await query;
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
 export async function getStoryById(storyId: string): Promise<Story | null> {
   const { data, error } = await (await createClient())
     .from("stories")

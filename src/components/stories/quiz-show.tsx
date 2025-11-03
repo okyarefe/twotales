@@ -22,7 +22,7 @@ export const QuizShowPage: React.FC<QuizShowPageProps> = ({ questions }) => {
           <li key={q.id} className="mb-2">
             <Button
               variant="outline"
-              className={`w-full text-left sm:text-xs whitespace-normal break-words !normal-case !h-auto !shrink items-start !flex-wrap px-6 py-4 leading-relaxed rounded-lg ${
+              className={`w-full text-left sm:text-xs md:text-lg whitespace-normal break-words !normal-case !h-auto !shrink items-start !flex-wrap px-6 py-4 leading-relaxed rounded-lg ${
                 openIdx === idx ? "font-bold" : ""
               }`}
               onClick={() => setOpenIdx(openIdx === idx ? null : idx)}
