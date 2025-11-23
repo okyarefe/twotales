@@ -14,9 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { createStory } from "@/actions/stories";
 import { useRouter } from "next/navigation";
-import { useActionState, startTransition, useEffect, useRef } from "react";
+// react hooks
 import FormButton from "../common/form-button";
 import { Button } from "../ui/button";
 import { useState } from "react";
@@ -26,23 +25,34 @@ import { Plus } from "lucide-react";
 import { toast } from "sonner";
 
 export default function TopicCreateForm() {
-  const [formState, action, isPending] = useActionState(createStory, {
-    errors: {},
-  });
+  const [isPending, setIsPending] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<language>();
   const [selectedLanguageLevel, setSelectedLanguageLevel] = useState("");
   const [title, setTitle] = useState("");
   const [prompt, setPrompt] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const justSubmitted = useRef(false);
   const router = useRouter();
+  const [formState, setFormState] = useState<{
+    errors: Record<string, string[]>;
+    success?: boolean;
+  }>({ errors: {} });
 
-  useEffect(() => {
-    if (justSubmitted.current) {
-      setSubmitting(false); // Show errors again after response
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSubmitting(true);
 
-      if (formState.success === true) {
-        // Show success toast
+    const formData = new FormData(event.currentTarget);
+
+    try {
+      setIsPending(true);
+      const res = await fetch("/api/stories", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      setFormState(data);
+
+      if (data.success === true) {
         toast.success("Story created successfully!", {
           position: "top-center",
           style: {
@@ -53,30 +63,23 @@ export default function TopicCreateForm() {
         });
         resetFormInputs();
         router.push("/stories");
-      } else if (formState.errors._form) {
-        toast.error(formState.errors._form.join(", "), {
+      } else if (data.errors && data.errors._form) {
+        toast.error(data.errors._form.join(", "), {
           position: "top-center",
-          style: {
-            backgroundColor: "white",
-            color: "red",
-            borderColor: "red",
-          },
+          style: { backgroundColor: "white", color: "red", borderColor: "red" },
         });
       }
-      justSubmitted.current = false;
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Something went wrong";
+      toast.error(message, {
+        position: "top-center",
+        style: { backgroundColor: "white", color: "red", borderColor: "red" },
+      });
+    } finally {
+      setSubmitting(false);
+      setIsPending(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formState]);
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    justSubmitted.current = true;
-    setSubmitting(true);
-
-    const formData = new FormData(event.currentTarget);
-    startTransition(() => {
-      action(formData);
-    });
   }
 
   function resetFormInputs() {
