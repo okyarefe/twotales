@@ -1,12 +1,16 @@
 // components/story/StoryActions.tsx
 "use client";
 import FormButton from "../common/form-button";
-import { BookOpen, Trash } from "lucide-react";
+import { BookOpen, Trash, Moon } from "lucide-react";
 import { deleteStoryServerAction } from "@/actions/stories";
+import { openDreamJournal } from "@/actions/user-data";
 import { useState } from "react";
 import ConfirmationWindow from "../common/confirmation-window";
 
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface StoryActionsProps {
   storyId: string;
@@ -15,6 +19,7 @@ interface StoryActionsProps {
 export default function StoryActionButtons({ storyId }: StoryActionsProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const router = useRouter();
 
   async function handleDelete() {
     setShowConfirm(true);
@@ -33,23 +38,52 @@ export default function StoryActionButtons({ storyId }: StoryActionsProps) {
     }
   }
 
-  return (
-    <div className="flex gap-2 pt-2 justify-between">
-      <Link
-        href={`/stories/${storyId}`}
-        className="flex items-center p-2 rounded justify-center hover:bg-purple-200 text-xs font-medium hover:border-rounded border-1 border-black"
-      >
-        <BookOpen className="w-5 h-5 mr-1" /> Read Story
-      </Link>
+  async function handleDreamJournal() {
+    try {
+      await openDreamJournal();
+      // If successful, navigate to dream journal page
+      router.push("/dream-journal");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message, {
+          position: "top-center",
+          style: {
+            backgroundColor: "white",
+            color: "red",
+            borderColor: "red",
+          },
+        });
+      } else {
+        alert("Unable to access Dream Journal. Please try again.");
+      }
+    }
+  }
 
-      <FormButton
+  return (
+    <div className="flex gap-2 pt-2 justify-between items-center">
+      <div className="flex items-center gap-1">
+        <Button asChild variant="outline" size="sm">
+          <Link href={`/stories/${storyId}`} className="flex items-center">
+            <BookOpen className="w-4 h-4 mr-1" /> Read Story
+          </Link>
+        </Button>
+
+        <Button onClick={handleDreamJournal} variant="outline" size="sm">
+          <Moon className="w-4 h-4 mr-1" /> Dream Journal
+        </Button>
+        <FormButton
         onClick={handleDelete}
         isLoading={isDeleting}
         loadingText="Deleting..."
+        
+        size="sm"
       >
-        <Trash className="mr-2 h-4 w-4" />
-        Delete
+        <Trash className="w-1" />
+        
       </FormButton>
+      </div>
+
+      
 
       <ConfirmationWindow
         open={showConfirm}

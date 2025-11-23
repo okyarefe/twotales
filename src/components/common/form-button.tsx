@@ -5,6 +5,7 @@ interface FormButtonProps {
   isLoading: boolean;
   loadingText?: string;
   onClick?: () => void;
+  size?: "sm" | "lg" | "default"
 }
 
 export default function FormButton({
@@ -12,6 +13,7 @@ export default function FormButton({
   isLoading,
   loadingText = "Generating...",
   onClick,
+  size,
 }: FormButtonProps) {
   return (
     <Button
@@ -19,6 +21,7 @@ export default function FormButton({
       disabled={isLoading}
       variant="createStory"
       onClick={onClick}
+      size={size}
     >
       {isLoading ? (
         <span
