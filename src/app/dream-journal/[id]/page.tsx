@@ -6,7 +6,7 @@ import { DreamJournalForm } from "./dream-journal-form";
 export const dynamic = "force-dynamic";
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function DreamJournalDetailPage({ params }: Props) {
@@ -16,7 +16,7 @@ export default async function DreamJournalDetailPage({ params }: Props) {
   let story: Story | null = null;
   try {
     story = await getStoryById(storyId);
-  } catch (e) {
+  } catch {
     return (
       <div className="container mx-auto max-w-3xl py-8">
         <h1 className="text-2xl font-semibold mb-4">Dream Journal</h1>
@@ -65,7 +65,7 @@ export default async function DreamJournalDetailPage({ params }: Props) {
         <h2 className="text-xl font-semibold">Your Turn</h2>
         <p className="text-sm text-muted-foreground">
           After reading or listening to the story, write it in{" "}
-          {story.translate_to}. You'll receive feedback on your writing.
+          {story.translate_to}. You will receive feedback on your writing.
         </p>
         <DreamJournalForm
           targetLanguage={story.translate_to}

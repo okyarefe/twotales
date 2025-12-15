@@ -63,14 +63,17 @@ Focus on the most important areas for improvement.
 
     // Validate with zod schema
     const validated = feedbackSchema.parse(parsed);
+    console.log("Validated feedback:", validated);
 
     return {
       success: true,
       feedback: validated,
     };
   } catch (error) {
+    // Log full error details on server
     console.error("Error generating feedback:", error);
 
+    // Return user-friendly error message
     if (error instanceof Error) {
       return {
         success: false,
