@@ -11,9 +11,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Story } from "@/types";
 
 interface StoryActionsProps {
   storyId: string;
+ 
 }
 
 export default function StoryActionButtons({ storyId }: StoryActionsProps) {
@@ -42,7 +44,7 @@ export default function StoryActionButtons({ storyId }: StoryActionsProps) {
     try {
       await openDreamJournal();
       // If successful, navigate to dream journal page
-      router.push("/dream-journal");
+      router.push(`/dream-journal/${storyId}`);
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message, {

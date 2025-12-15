@@ -10,10 +10,11 @@ export async function POST(req: Request) {
       { errors: {} },
       formData as unknown as FormData
     );
-
+    
     return NextResponse.json(result);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
+    console.log("hhere")
     return NextResponse.json(
       { errors: { _form: [message] }, success: false },
       { status: 500 }

@@ -87,7 +87,7 @@ export async function openDreamJournal() {
 
   // If membership is 'member', throw an error as requested
   if (userData?.membership_type != "premium") {
-    throw new Error("Dream Journal is not available for members.");
+    throw new Error("Dream Journal is available only for premium members");
   }
 
   // Otherwise allow access

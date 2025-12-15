@@ -18,6 +18,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { Story, storyLength } from "@/types";
 import { deleteStoryById } from "@/lib/supabase/queries";
+
 const createStorySchema = z.object({
   title: z
     .string()
