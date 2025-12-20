@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 import FormButton from "../common/form-button";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { languages, languageLevels } from "@/constants";
+import { languages, languageLevels, grammarTopics } from "@/constants";
 import { language } from "@/types";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -28,6 +28,7 @@ export default function TopicCreateForm() {
   const [isPending, setIsPending] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<language>();
   const [selectedLanguageLevel, setSelectedLanguageLevel] = useState("");
+  const [selectedTopic, setSelectedTopic] = useState("");
   const [title, setTitle] = useState("");
   const [prompt, setPrompt] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -87,6 +88,7 @@ export default function TopicCreateForm() {
     setPrompt("");
     setSelectedLanguage(undefined);
     setSelectedLanguageLevel("");
+    setSelectedTopic("");
   }
 
   return (
@@ -102,7 +104,7 @@ export default function TopicCreateForm() {
         <form onSubmit={handleSubmit} noValidate>
           <div className="flex flex-col gap-4 p-4">
             <h3>Create a Topic</h3>
-            <div className="flex flex-col sm:flex-row gap-4 w-full">
+            <div className="flex flex-col gap-4 w-full">
               <div className="w-full">
                 <DropdownMenu>
                   <DropdownMenuTrigger
@@ -172,6 +174,37 @@ export default function TopicCreateForm() {
                   name="languageLevel"
                   value={selectedLanguageLevel || ""}
                 />
+              </div>
+              <div className="w-full">
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    className={`w-full p-2 border rounded-md text-left ${
+                      formState.errors.topic
+                        ? "border-red-500 bg-red-50"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    {selectedTopic || "Select a topic"}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Topics</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {grammarTopics.map((topic) => (
+                      <DropdownMenuItem
+                        key={topic}
+                        onSelect={() => setSelectedTopic(topic)}
+                      >
+                        {topic}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                {!submitting && formState.errors.topic && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {formState.errors.topic.join(", ")}
+                  </p>
+                )}
+                <input type="hidden" name="topic" value={selectedTopic || ""} />
               </div>
             </div>
 

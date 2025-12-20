@@ -15,8 +15,8 @@ interface QuizShowPageProps {
 export const QuizShowPage: React.FC<QuizShowPageProps> = ({ questions }) => {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   return (
-    <div className="max-w-xl mx-auto px-2">
-      <h2 className="text-center text-lg font-semibold mb-4">Quiz Questions</h2>
+    <div className="w-full px-2">
+      <h2 className="text-left text-lg font-semibold mb-4">Quiz Questions</h2>
       <ul className="list-none p-0">
         {questions.map((q, idx) => (
           <li key={q.id} className="mb-2">

@@ -11,6 +11,7 @@ interface GenerateStoryProps {
   prompt: string;
   language: string;
   languageLevel: string;
+  topic?: string;
 }
 
 export async function generateStory(props: GenerateStoryProps) {
@@ -19,7 +20,8 @@ export async function generateStory(props: GenerateStoryProps) {
       props.prompt,
       props.language,
       props.languageLevel as languageLevel,
-      "medium"
+      "medium",
+      props.topic
     );
 
     const response = await openAiClient.responses.create({

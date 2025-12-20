@@ -6,6 +6,19 @@ export const languages = [
   "German",
 ] as const;
 
+export const grammarTopics = [
+  "Present Simple Tense",
+  "Present Continuous Tense",
+  "Future Forms",
+  "Adjectives",
+  "Comparatives",
+  "Conditionals",
+  "Modal Verbs",
+  "Passive Voice",
+  "Relative Clauses",
+  "Prepositions",
+] as const;
+
 export const WRITERS = [
   "William Shakespeare",
   "Jane Austen",
@@ -22,4 +35,3 @@ export const languageLevels = [
   "casual",
   "technical",
 ] as const;
-

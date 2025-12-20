@@ -33,12 +33,11 @@ export default async function RootLayout({
         >
           <div className="min-h-screen flex flex-col">
             <Header />
-            <main className="container mx-auto px-4 max-w-6xl rounded bg-purple-100 flex-1">
+            <main className="container mx-auto px-4 max-w-8xl rounded bg-purple-100 flex-1">
               {children}
               <Toaster />
             </main>
           </div>
-
         </UserProvider>
       </body>
     </html>

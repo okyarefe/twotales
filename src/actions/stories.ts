@@ -4,7 +4,7 @@ import { z } from "zod";
 import { redirect } from "next/navigation";
 
 import { revalidatePath } from "next/cache";
-import { languages, languageLevels } from "@/constants";
+import { languages, languageLevels, grammarTopics } from "@/constants";
 import {
   deductUserCredit,
   getUserCredits,
@@ -33,6 +33,9 @@ const createStorySchema = z.object({
   languageLevel: z.enum(languageLevels, {
     errorMap: () => ({ message: "Choose a level" }),
   }),
+  topic: z.enum(grammarTopics, {
+    errorMap: () => ({ message: "Choose a topic to study" }),
+  }),
 });
 
 interface CreateStoryFormState {
@@ -40,6 +43,7 @@ interface CreateStoryFormState {
     //validation
     languageLevel?: string[];
     language?: string[];
+    topic?: string[];
     title?: string[];
     prompt?: string[];
     //form level errors - saving to db, auth etc..
@@ -57,9 +61,11 @@ export async function createStory(
     prompt: formData.get("prompt"),
     language: formData.get("language"),
     languageLevel: formData.get("languageLevel"),
+    topic: formData.get("topic"),
   });
 
   if (!result.success) {
+    console.log("Validation errors:", result.error.flatten().fieldErrors);
     return {
       errors: result.error.flatten().fieldErrors,
       success: false,
