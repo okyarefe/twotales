@@ -3,37 +3,42 @@
 import { openAiClient } from "@/services/openai/client";
 import { openAIConfig } from "@/services/openai/config";
 import { feedbackSchema } from "@/services/openai/structured-outputs-schema/feedbackSchema";
+import { generateFeedbackPrompt } from "@/services/openai/prompts";
 import { zodTextFormat } from "openai/helpers/zod";
 
 interface GetStoryFeedbackProps {
   userAnswer: string;
   storyCheckReference: string;
   targetLanguage: string;
+  requestedTopics?: string[];
 }
 
 export async function getStoryFeedback({
   userAnswer,
   storyCheckReference,
   targetLanguage,
+  requestedTopics,
 }: GetStoryFeedbackProps) {
   try {
     console.log("Generating feedback for user's story...");
-    const promptForAI = `
-You are a language learning assistant. A student has read a story in English and attempted to rewrite it in ${targetLanguage}.
+    const topics =
+      requestedTopics && requestedTopics.length > 0
+        ? requestedTopics
+        : [
+            "Verb conjugation",
+            "Tense",
+            "Prepositions",
+            "Word order",
+            "Vocabulary",
+          ];
 
-Original Story (English):
-${storyCheckReference}
+    const combinedText = `Original Story (English):\n${storyCheckReference}\n\nStudent's Answer (${targetLanguage}):\n${userAnswer}`;
 
-Student's Answer (${targetLanguage}):
-${userAnswer}
-
-Analyze the student's answer and provide:
-1. A list of specific grammar/language topics they should review based on their mistakes (e.g., "past tense", "verb conjugation", "word order", "vocabulary")
-2. A brief encouraging message about their performance
-3. An approximate count of significant mistakes
-
-Focus on the most important areas for improvement.
-`;
+    const promptForAI = generateFeedbackPrompt(
+      combinedText,
+      targetLanguage,
+      topics
+    );
 
     const response = await openAiClient.responses.create({
       model: openAIConfig.models.STORY_GENERATION_MODEL,
@@ -43,6 +48,10 @@ Focus on the most important areas for improvement.
       text: { format: zodTextFormat(feedbackSchema, "feedback_generator") },
     });
 
+    console.log(
+      "Feedback generation total usage tokens:",
+      response.usage?.total_tokens
+    );
     const feedbackText = response.output_text;
 
     if (!feedbackText || feedbackText.trim() === "") {

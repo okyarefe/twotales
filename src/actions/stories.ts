@@ -138,9 +138,6 @@ export async function createStory(
     errors: {},
     success: true,
   };
-
-  // redirect
-  redirect("/stories");
 }
 
 export async function deleteStoryServerAction(storyId: string) {

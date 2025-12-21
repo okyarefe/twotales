@@ -32,6 +32,7 @@ export async function generateStory(props: GenerateStoryProps) {
     });
 
     const totalTokens = response.usage?.total_tokens;
+    console.log("OpenAI response total tokens used:", totalTokens);
 
     const story = response.output_text;
 
@@ -102,6 +103,11 @@ export async function generateQuizFromStory(story: {
         format: zodTextFormat(quizSchema, "quiz_questions_generator"),
       },
     });
+
+    console.log(
+      "Quiz generation total usage tokens:",
+      response.usage?.total_tokens
+    );
 
     if (response.output_parsed) {
       const quizReturn = {

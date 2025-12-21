@@ -53,3 +53,38 @@ export function getTranslatedStory(
 
   return null;
 }
+
+export function generateFeedbackPrompt(
+  userText: string,
+  language: string,
+  requestedTopics: string[]
+): string {
+  const topicsList = requestedTopics.map((t) => `- ${t}`).join("\n");
+
+  return `You are a helpful language tutor. Analyze the following learner text (in ${language}) and produce a strict JSON-only response that matches this structure:
+
+{
+  "topics_to_review": [
+    {"topic":"<topic name>", "short_explanation":"<one-line reason>", "example": {"incorrect":"<user's incorrect text>", "corrected":"<correct version>", "explanation":"<why this is correct>"}, "occurrences": <number>}
+  ],
+  "brief_feedback": "<one-sentence encouraging summary>",
+  "mistakes_count": <integer>
+}
+
+Rules:
+- Only include topics listed below. For each topic, provide exactly one representative example (the user's original incorrect fragment, the corrected version, and a 1-2 sentence explanation).
+- If no mistake is found for a topic, set 'incorrect' and 'corrected' to empty strings and put a short 'explanation': "No significant mistake found." and set 'occurrences' to 0.
+-- Keep 'short_explanation' concise (<= 12 words).
+-- Keep 'brief_feedback' encouraging and concise (<= 20 words).
+- Return valid JSON only — do NOT include any extra commentary, markdown, or surrounding text.
+
+Learner text:
+"""
+${userText}
+"""
+
+Topics to check:
+${topicsList}
+
+Produce the JSON now.`;
+}

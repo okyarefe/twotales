@@ -97,8 +97,22 @@ export function DreamJournalForm({
               </h3>
               <ul className="list-disc list-inside space-y-1">
                 {feedback.topics_to_review.map((topic, index) => (
-                  <li key={index} className="text-sm text-blue-800">
-                    {topic}
+                  <li key={index} className="text-sm text-blue-800 space-y-1">
+                    <div className="font-medium">{topic.topic}</div>
+                    <div className="text-xs text-blue-700">
+                      {topic.short_explanation}
+                    </div>
+                    <div className="mt-1 text-xs">
+                      <div className="text-red-700">
+                        Incorrect: {topic.example.incorrect || "—"}
+                      </div>
+                      <div className="text-green-700">
+                        Correct: {topic.example.corrected || "—"}
+                      </div>
+                      <div className="text-muted text-xs">
+                        {topic.example.explanation}
+                      </div>
+                    </div>
                   </li>
                 ))}
               </ul>
