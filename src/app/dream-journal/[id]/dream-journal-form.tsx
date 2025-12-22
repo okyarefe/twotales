@@ -79,7 +79,7 @@ export function DreamJournalForm({
           value={userAnswer}
           onChange={(e) => setuserAnswer(e.target.value)}
           placeholder={`Write your version of the story in ${targetLanguage}...`}
-          className="min-h-[300px] resize-y text-sm sm:text-base"
+          className="min-h-[300px] resize-y text-sm sm:text-base bg-white"
           disabled={feedbackGenerated}
         />
       </div>

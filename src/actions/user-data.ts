@@ -74,21 +74,21 @@ export async function openDreamJournal() {
   }
 
   // Fetch membership_type from users table
-  const { data: userData, error } = await supabase
-    .from("users")
-    .select("membership_type")
-    .eq("id", user.id)
-    .single();
+  // const { data: userData, error } = await supabase
+  //   .from("users")
+  //   .select("membership_type")
+  //   .eq("id", user.id)
+  //   .single();
 
-  if (error) {
-    console.error("Error fetching membership_type:", error);
-    throw new Error("Unable to verify membership. Please try again.");
-  }
+  // if (error) {
+  //   console.error("Error fetching membership_type:", error);
+  //   throw new Error("Unable to verify membership. Please try again.");
+  // }
 
-  // If membership is 'member', throw an error as requested
-  if (userData?.membership_type != "premium") {
-    throw new Error("Dream Journal is available only for premium members");
-  }
+  // // If membership is 'member', throw an error as requested
+  // if (userData?.membership_type != "premium") {
+  //   throw new Error("Dream Journal is available only for premium members");
+  // }
 
   // Otherwise allow access
   return { ok: true };

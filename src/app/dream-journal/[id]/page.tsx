@@ -27,7 +27,7 @@ export default async function DreamJournalDetailPage({ params }: Props) {
   } catch {
     return (
       <div className="container mx-auto max-w-3xl py-8">
-        <h1 className="text-2xl font-semibold mb-4">Dream Journal</h1>
+        <h1 className="text-2xl font-semibold mb-4">Test your knowledge!</h1>
         <p className="text-sm text-red-600">Failed to load story.</p>
         <Button variant="outline" size="sm" asChild>
           <Link href="/dream-journal">Back</Link>
@@ -39,7 +39,7 @@ export default async function DreamJournalDetailPage({ params }: Props) {
   if (!story) {
     return (
       <div className="container mx-auto max-w-3xl py-8">
-        <h1 className="text-2xl font-semibold mb-4">Dream Journal</h1>
+        <h1 className="text-2xl font-semibold mb-4">Test your knowledge!</h1>
         <p className="text-sm">Story not found.</p>
         <Button variant="outline" size="sm" asChild>
           <Link href="/stories">Back</Link>
@@ -51,7 +51,7 @@ export default async function DreamJournalDetailPage({ params }: Props) {
   return (
     <div className="container mx-auto max-w-3xl py-8 space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Dream Journal</h1>
+        <h1 className="text-2xl font-semibold">Test Your Knowledge!</h1>
         <Button variant="outline" size="sm" asChild>
           <Link href="/stories">Back</Link>
         </Button>
@@ -63,7 +63,7 @@ export default async function DreamJournalDetailPage({ params }: Props) {
         <div className="text-xs text-muted-foreground">
           Created {new Date(story.created_at).toLocaleDateString()}
         </div>
-        <article className="prose max-w-none whitespace-pre-wrap bg-muted/30 p-6 rounded-lg border text-sm sm:text-base">
+        <article className="prose max-w-none whitespace-pre-wrap bg-white p-6 rounded-lg border text-sm sm:text-base">
           {story.english_version}
         </article>
       </section>
