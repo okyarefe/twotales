@@ -1,4 +1,4 @@
-import { getStoryById } from "@/lib/supabase/queries";
+import { getStoryById, getFeedbackByStoryId } from "@/lib/supabase/queries";
 import Link from "next/link";
 import type { Story } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,16 @@ export default async function DreamJournalDetailPage({ params }: Props) {
   const storyId = props.id;
 
   let story: Story | null = null;
+  let existingFeedback = null;
+  
+  
   try {
     story = await getStoryById(storyId);
+    
+    // Fetch existing feedback if story has feedback_generated = true
+    if (story?.feedback_generated) {
+      existingFeedback = await getFeedbackByStoryId(storyId);
+    }
   } catch {
     return (
       <div className="container mx-auto max-w-3xl py-8">
@@ -68,8 +76,11 @@ export default async function DreamJournalDetailPage({ params }: Props) {
           {story.translate_to}. You will receive feedback on your writing.
         </p>
         <DreamJournalForm
+          storyId={story.id}
           targetLanguage={story.translate_to}
           storyCheckReference={story.translated_version}
+          feedbackGenerated={story.feedback_generated ?? false}
+          existingFeedback={existingFeedback}
         />
       </section>
     </div>

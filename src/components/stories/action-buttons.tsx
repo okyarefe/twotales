@@ -1,7 +1,7 @@
 // components/story/StoryActions.tsx
 "use client";
 import FormButton from "../common/form-button";
-import { BookOpen, Trash, Moon } from "lucide-react";
+import { BookOpen, Trash,MessagesSquare  } from "lucide-react";
 import { deleteStoryServerAction } from "@/actions/stories";
 import { openDreamJournal } from "@/actions/user-data";
 import { useState } from "react";
@@ -69,7 +69,7 @@ export default function StoryActionButtons({ storyId }: StoryActionsProps) {
         </Button>
 
         <Button onClick={handleDreamJournal} variant="outline" size="sm">
-          <Moon className="w-4 h-4 mr-1" /> Dream Journal
+          <MessagesSquare  className="w-4 h-4 mr-1" /> Test yourself
         </Button>
         <FormButton
           onClick={handleDelete}

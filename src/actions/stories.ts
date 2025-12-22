@@ -10,6 +10,8 @@ import {
   getUserCredits,
   saveQuizQuestions,
   saveStory,
+  markStoryFeedbackGenerated,
+  checkStoryHasFeedback,
 } from "@/lib/supabase/queries";
 import {
   generateQuizFromStory,
@@ -141,4 +143,31 @@ export async function createStory(
 export async function deleteStoryServerAction(storyId: string) {
   await deleteStoryById(storyId);
   revalidatePath("/dashboard"); // or the path you want to refresh after deletion
+}
+
+export async function markStoryFeedbackGeneratedAction(storyId: string) {
+  try {
+    await markStoryFeedbackGenerated(storyId);
+    revalidatePath("/dream-journal/[id]");
+    return { success: true };
+  } catch (error) {
+    console.error("Error marking story feedback:", error);
+    return {
+      success: false,
+      error: "Failed to update story feedback status",
+    };
+  }
+}
+
+export async function checkStoryHasFeedbackAction(storyId: string) {
+  try {
+    const hasFeedback = await checkStoryHasFeedback(storyId);
+    return { success: true, hasFeedback };
+  } catch (error) {
+    console.error("Error checking story feedback:", error);
+    return {
+      success: false,
+      hasFeedback: false,
+    };
+  }
 }

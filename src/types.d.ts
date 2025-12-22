@@ -11,6 +11,7 @@ export interface Story {
   user_id: string;
   translate_to: string;
   title: string;
+  feedback_generated?: boolean;
 }
 
 export interface UserData {

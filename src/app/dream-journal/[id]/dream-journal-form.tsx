@@ -7,17 +7,26 @@ import { getStoryFeedback } from "@/actions/feedback";
 import type { FeedbackResponse } from "@/services/openai/structured-outputs-schema/feedbackSchema";
 
 type DreamJournalFormProps = {
+  storyId: string;
   targetLanguage: string;
   storyCheckReference?: string;
+  feedbackGenerated: boolean;
+  existingFeedback?: any;
 };
 
 export function DreamJournalForm({
+  storyId,
   targetLanguage,
   storyCheckReference,
+  feedbackGenerated,
+  existingFeedback,
 }: DreamJournalFormProps) {
-  const [userAnswer, setuserAnswer] = useState("");
+  const [userAnswer, setuserAnswer] = useState(existingFeedback?.user_answer || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [feedback, setFeedback] = useState<FeedbackResponse | null>(null);
+  const [feedback, setFeedback] = useState<FeedbackResponse | null>(
+    existingFeedback?.feedback_data || null
+  );
+  
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
@@ -29,6 +38,7 @@ export function DreamJournalForm({
 
     try {
       const result = await getStoryFeedback({
+        storyId,
         userAnswer,
         storyCheckReference,
         targetLanguage,
@@ -59,17 +69,24 @@ export function DreamJournalForm({
           onChange={(e) => setuserAnswer(e.target.value)}
           placeholder={`Write your version of the story in ${targetLanguage}...`}
           className="min-h-[300px] resize-y text-sm sm:text-base"
+          disabled={feedbackGenerated}
         />
       </div>
       <div className="flex justify-end">
         <Button
           onClick={handleSubmit}
-          disabled={!userAnswer.trim() || isSubmitting || !storyCheckReference}
+          disabled={!userAnswer.trim() || isSubmitting || !storyCheckReference || feedbackGenerated}
           variant="secondary"
         >
-          {isSubmitting ? "Submitting..." : "Submit for Feedback"}
+          {feedbackGenerated ? "Feedback Already Generated" : isSubmitting ? "Submitting..." : "Submit for Feedback"}
         </Button>
       </div>
+
+      {feedbackGenerated && !feedback && (
+        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-800 text-sm">
+          Loading your previous feedback...
+        </div>
+      )}
 
       {/* Error Display */}
       {error && (

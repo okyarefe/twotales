@@ -5,8 +5,11 @@ import { openAIConfig } from "@/services/openai/config";
 import { feedbackSchema } from "@/services/openai/structured-outputs-schema/feedbackSchema";
 import { generateFeedbackPrompt } from "@/services/openai/prompts";
 import { zodTextFormat } from "openai/helpers/zod";
+import { saveFeedback, checkStoryHasFeedback, markStoryFeedbackGenerated } from "@/lib/supabase/queries";
+import { createClient } from "@/lib/supabase/server";
 
 interface GetStoryFeedbackProps {
+  storyId: string;
   userAnswer: string;
   storyCheckReference: string;
   targetLanguage: string;
@@ -14,12 +17,24 @@ interface GetStoryFeedbackProps {
 }
 
 export async function getStoryFeedback({
+  storyId,
   userAnswer,
   storyCheckReference,
   targetLanguage,
   requestedTopics,
 }: GetStoryFeedbackProps) {
   try {
+    // Validate required parameters
+    if (!storyId || storyId.trim() === "") {
+      throw new Error("storyId is required to save feedback");
+    }
+
+    // Check if feedback already generated for this story
+    const hasFeedback = await checkStoryHasFeedback(storyId);
+    if (hasFeedback) {
+      throw new Error("Feedback has already been generated for this story");
+    }
+    
     console.log("Generating feedback for user's story...");
     const topics =
       requestedTopics && requestedTopics.length > 0
@@ -53,7 +68,6 @@ export async function getStoryFeedback({
     //   response.usage?.total_tokens
     // );
     const feedbackText = response.output_text;
-    console.log("Raw feedback text from OpenAI:", feedbackText);
 
     if (!feedbackText || feedbackText.trim() === "") {
       console.error("OpenAI returned empty feedback");
@@ -73,11 +87,22 @@ export async function getStoryFeedback({
 
     // Validate with zod schema
     const validated = feedbackSchema.parse(parsed);
-    console.log("Validated feedback:", validated);
+
+    // Save feedback to database
+    const savedFeedback = await saveFeedback(
+      storyId,
+      validated,
+      userAnswer,
+      targetLanguage
+    );
+
+    // Mark story as feedback generated
+    await markStoryFeedbackGenerated(storyId);
 
     return {
       success: true,
       feedback: validated,
+      feedbackId: savedFeedback.id,
     };
   } catch (error) {
     // Log full error details on server
