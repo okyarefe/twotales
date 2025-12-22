@@ -19,7 +19,7 @@ export function MyStoriesView({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-slate-800 tracking-tight">
+          <h2 className="text-sm sm:text-lg md:text-2xl font-semibold text-slate-800 tracking-tight">
             My Stories
           </h2>
           <p className="text-sm text-slate-600 font-sans mt-1">
@@ -35,7 +35,7 @@ export function MyStoriesView({
         </Button>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {savedStories.map((story) => (
           <StoryCard key={story.id} story={story} />
         ))}

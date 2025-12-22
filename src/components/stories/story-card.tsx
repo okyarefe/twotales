@@ -16,14 +16,14 @@ interface StoryCardProps {
 
 export function StoryCard({ story }: StoryCardProps) {
   return (
-  <Card className="shadow-sm transform transition-all duration-200 motion-reduce:transition-none hover:shadow-lg hover:scale-105 hover:-translate-y-1 border-slate-200">
+  <Card className="shadow-sm transform transition-all duration-200 motion-reduce:transition-none hover:shadow-lg hover:scale-100 sm:hover:scale-105 hover:-translate-y-1 border-slate-200 overflow-hidden min-w-0">
       <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <CardTitle className="text-base font-semibold text-slate-800 tracking-tight leading-tight">
+        <div className="flex flex-col sm:flex-row items-start justify-between gap-2 sm:gap-0">
+          <CardTitle className="text-base font-semibold text-slate-800 tracking-tight leading-tight break-words flex-1">
             {story.title}
           </CardTitle>
           <Badge
-            className={`text-xs font-medium ${getLevelColor(story.level)}`}
+            className={`text-xs font-medium shrink-0 ${getLevelColor(story.level)}`}
           >
             {story.level}
           </Badge>
@@ -31,7 +31,7 @@ export function StoryCard({ story }: StoryCardProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Language Badges */}
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Badge
             className={`text-xs font-medium ${getLanguageColors("English")}`}
           >
@@ -47,13 +47,13 @@ export function StoryCard({ story }: StoryCardProps) {
         </div>
 
         {/* Story Stats */}
-        <div className="flex items-center gap-4 text-xs text-slate-600 font-sans">
-          <div className="flex items-center gap-1">
-            <Calendar className="w-3 h-3" />
-            {formatDate(story.created_at)}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs text-slate-600 font-sans">
+          <div className="flex items-center gap-1 min-w-0">
+            <Calendar className="w-3 h-3 shrink-0" />
+            <span className="truncate">{formatDate(story.created_at)}</span>
           </div>
           <div className="flex items-center gap-1">
-            <BookOpen className="w-3 h-3" />
+            <BookOpen className="w-3 h-3 shrink-0" />
             <Badge
               className={`text-xs font-medium ${getStoryLengthColors(
                 story.length

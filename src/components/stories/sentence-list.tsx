@@ -22,7 +22,7 @@ const SentenceList: React.FC<SentenceListProps> = ({
   hiddenMask,
   onToggle,
 }) => (
-  <div className="flex-1 sm:text-xm md:text-base">
+  <div className="flex-1">
     {Array.from({ length: maxLen }).map((_, idx) => (
       <div
         key={`${side}-${idx}`}
@@ -32,13 +32,13 @@ const SentenceList: React.FC<SentenceListProps> = ({
         onMouseLeave={
           hoverable && setHoveredIdx ? () => setHoveredIdx(null) : undefined
         }
-        className={`px-1 py-2 rounded transition-colors duration-150 flex items-center justify-between gap-2 min-h-[36px] ${
-          hoveredIdx === idx ? "bg-purple-200" : ""
+        className={`px-2 sm:px-3 py-2 sm:py-3 rounded transition-colors duration-150 flex items-start sm:items-center justify-between gap-2 min-h-[48px] sm:min-h-[56px] ${
+          hoveredIdx === idx ? "bg-purple-100" : ""
         } ${hoverable ? "cursor-pointer" : ""}`}
       >
         <span
           aria-hidden={hiddenMask ? !!hiddenMask[idx] : false}
-          className={`${hiddenMask && hiddenMask[idx] ? "opacity-0 select-none" : ""}`}
+          className={`text-sm sm:text-base leading-relaxed flex-1 ${hiddenMask && hiddenMask[idx] ? "opacity-0 select-none" : ""}`}
         >
           {sentences[idx] || ""}
         </span>
@@ -50,12 +50,12 @@ const SentenceList: React.FC<SentenceListProps> = ({
             aria-label={
               hiddenMask && hiddenMask[idx] ? "Show sentence" : "Hide sentence"
             }
-            className="text-purple-700"
+            className="text-purple-700 hover:bg-purple-100 text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-1.5 shrink-0 font-medium"
           >
             {hiddenMask && hiddenMask[idx] ? "Show" : "Hide"}
           </Button>
         ) : (
-          <span className="inline-block h-8 w-[64px]" aria-hidden="true" />
+          <span className="inline-block h-8 w-[48px] sm:w-[64px] shrink-0" aria-hidden="true" />
         )}
       </div>
     ))}

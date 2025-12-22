@@ -53,12 +53,12 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
   };
 
   return (
-    <div className="flex flex-col text-xs">
-      <div className="flex justify-end gap-2 mb-2">
+    <div className="flex flex-col">
+      <div className="flex flex-wrap justify-center sm:justify-end gap-2 mb-3 sm:mb-4">
         <Button
           variant="outline"
           size="sm"
-          className="text-purple-700 border-purple-300 hover:bg-purple-50"
+          className="text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2 text-purple-700 border-purple-300 hover:bg-purple-50 font-medium"
           onClick={hideAllB}
         >
           Hide all
@@ -66,13 +66,13 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
         <Button
           variant="outline"
           size="sm"
-          className="text-purple-700 border-purple-300 hover:bg-purple-50"
+          className="text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2 text-purple-700 border-purple-300 hover:bg-purple-50 font-medium"
           onClick={showAllB}
         >
           Show all
         </Button>
       </div>
-      <div className="flex gap-2rem">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6">
         <SentenceList
           sentences={sentencesA}
           maxLen={maxLen}

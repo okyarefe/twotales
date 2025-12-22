@@ -30,14 +30,13 @@ export default async function StoriesPage({ searchParams }: { searchParams: Prom
       <div className="container mx-auto px-4 py-4 max-w-6xl">
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            
             <TopicCreateForm />
           </div>
           <p className="text-sm text-slate-600 font-sans mt-1">
             Your personalized language learning journey
           </p>
           <div className="flex items-center gap-4">
-              <h2 className="text-2xl font-semibold text-slate-800 tracking-tight">
+              <h2 className="text-md sm:text-lg md:text-2xl font-semibold text-slate-800 tracking-tight">
                 My Stories
               </h2>
               <StorySearch initial={q} />

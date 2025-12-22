@@ -60,11 +60,11 @@ export default function StoryActionButtons({ storyId }: StoryActionsProps) {
   }
 
   return (
-    <div className="flex gap-2 pt-2 justify-between items-center">
+    <div className="flex gap-1 pt-2 justify-between items-center">
       <div className="flex items-center gap-1">
         <Button asChild variant="outline" size="sm">
           <Link href={`/stories/${storyId}`} className="flex items-center">
-            <BookOpen className="w-4 h-4 mr-1" /> Read Story
+            <BookOpen className="w-4 h-4 mr-1" /> Read
           </Link>
         </Button>
 
