@@ -48,11 +48,12 @@ export async function getStoryFeedback({
       text: { format: zodTextFormat(feedbackSchema, "feedback_generator") },
     });
 
-    console.log(
-      "Feedback generation total usage tokens:",
-      response.usage?.total_tokens
-    );
+    // console.log(
+    //   "Feedback generation total usage tokens:",
+    //   response.usage?.total_tokens
+    // );
     const feedbackText = response.output_text;
+    console.log("Raw feedback text from OpenAI:", feedbackText);
 
     if (!feedbackText || feedbackText.trim() === "") {
       console.error("OpenAI returned empty feedback");
