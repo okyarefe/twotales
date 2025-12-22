@@ -194,7 +194,7 @@ export async function getUserStoriesCount(userId: string): Promise<number> {
 
 export async function deleteStoryById(storyId: string): Promise<boolean> {
   const supabase = await createClient();
-  const { data, error } = await supabase
+  const {  error } = await supabase
     .from("stories")
     .delete()
     .eq("id", storyId);

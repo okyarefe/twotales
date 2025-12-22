@@ -6,7 +6,7 @@ import { feedbackSchema } from "@/services/openai/structured-outputs-schema/feed
 import { generateFeedbackPrompt } from "@/services/openai/prompts";
 import { zodTextFormat } from "openai/helpers/zod";
 import { saveFeedback, checkStoryHasFeedback, markStoryFeedbackGenerated } from "@/lib/supabase/queries";
-import { createClient } from "@/lib/supabase/server";
+
 
 interface GetStoryFeedbackProps {
   storyId: string;

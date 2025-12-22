@@ -6,12 +6,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { getStoryFeedback } from "@/actions/feedback";
 import type { FeedbackResponse } from "@/services/openai/structured-outputs-schema/feedbackSchema";
 
+type StoreFeedbackRecord = {
+  id: string;
+  user_id: string;
+  story_id: string;
+  feedback_data: FeedbackResponse;
+  user_answer: string;
+  target_language: string;
+  created_at: string;
+  updated_at?: string;
+};
+
 type DreamJournalFormProps = {
   storyId: string;
   targetLanguage: string;
   storyCheckReference?: string;
   feedbackGenerated: boolean;
-  existingFeedback?: any;
+  existingFeedback?: StoreFeedbackRecord | null;
 };
 
 export function DreamJournalForm({
