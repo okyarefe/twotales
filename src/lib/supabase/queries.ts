@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 
 import type { Story, StoryInsert } from "@/types";
+import type { FeedbackResponse } from "@/services/openai/structured-outputs-schema/feedbackSchema";
 
 export async function saveStory(storyData: StoryInsert, userId: string) {
   const finalObject = { ...storyData, user_id: userId };
@@ -205,4 +206,60 @@ export async function deleteStoryById(storyId: string): Promise<boolean> {
   }
 
   return true;
+}
+
+interface SaveFeedbackParams {
+  userId: string;
+  entryType: string;
+  entryId: string;
+  targetLanguage: string;
+  topics: string[];
+  feedback: FeedbackResponse;
+  model?: string;
+  tokenCost?: number;
+}
+
+export async function saveFeedback(params: SaveFeedbackParams) {
+  const supabase = await createClient();
+  
+  const {
+    userId,
+    entryType,
+    entryId,
+    targetLanguage,
+    topics,
+    feedback,
+    model,
+    tokenCost,
+  } = params;
+
+  const { data, error } = await supabase
+    .from("story_feedback")
+    .upsert(
+      {
+        user_id: userId,
+        entry_type: entryType,
+        entry_id: entryId,
+        target_language: targetLanguage,
+        topics,
+        feedback,
+        brief_feedback: feedback.brief_feedback,
+        mistakes_count: feedback.mistakes_count,
+        model,
+        token_cost: tokenCost,
+        updated_at: new Date().toISOString(),
+      },
+      {
+        onConflict: "user_id,entry_type,entry_id",
+      }
+    )
+    .select("*")
+    .single();
+
+  if (error) {
+    console.error("Error saving feedback:", error.message);
+    throw new Error("Failed to save feedback to database");
+  }
+
+  return data;
 }

@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { redirect } from "next/navigation";
+
 
 import { revalidatePath } from "next/cache";
 import { languages, languageLevels, grammarTopics } from "@/constants";
@@ -65,7 +65,6 @@ export async function createStory(
   });
 
   if (!result.success) {
-    console.log("Validation errors:", result.error.flatten().fieldErrors);
     return {
       errors: result.error.flatten().fieldErrors,
       success: false,
@@ -93,7 +92,6 @@ export async function createStory(
     }
 
     //API CALL TO openAI to create STORY
-    console.log("--Making a request to OpenAI--");
     const story = await generateStory(result.data);
 
     // Prepare data to save into database
