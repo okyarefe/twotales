@@ -1,5 +1,5 @@
 import FeatureCard from "@/app/login/feature-card";
-import { PenTool, Target, BookOpen } from "lucide-react";
+import { PenTool, Target, MessageSquare } from "lucide-react";
 
 export default function FeaturesSection() {
   return (
@@ -20,19 +20,19 @@ export default function FeaturesSection() {
             icon={<PenTool className="h-6 w-6 text-purple-600" />}
             bgColor="bg-purple-100"
             title="AI Story Creation"
-            description="Generate personalized stories in your target language based on your interests and level."
+            description="Create stories about any topic you choose, target specific grammar points, and get your personalized bilingual story in seconds."
           />
           <FeatureCard
             icon={<Target className="h-6 w-6 text-pink-600" />}
             bgColor="bg-pink-100"
-            title="Smart Quizzes"
-            description="Test your comprehension with AI-generated quizzes that adapt to focus on areas you need practice."
+            title="Quizzes"
+            description="Test your comprehension with quizes generated for each story."
           />
           <FeatureCard
-            icon={<BookOpen className="h-6 w-6 text-purple-600" />}
-            bgColor="bg-purple-100"
-            title="Story Library"
-            description="Access a growing library of stories and share your creations with learners worldwide."
+            icon={<MessageSquare className="h-6 w-6 text-blue-600" />}
+            bgColor="bg-blue-100"
+            title="AI Feedback on Your Writing"
+            description="Translate any story into your target language and get instant AI-powered feedback to improve your skills."
           />
         </div>
       </div>

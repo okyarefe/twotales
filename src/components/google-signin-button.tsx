@@ -23,15 +23,15 @@ export default function GoogleSignInButton({
     typeof children === "string"
       ? children
       : variant === "signin"
-      ? "Sign in with Google"
-      : variant === "signup"
-      ? "Sign up with Google"
-      : "Start learning";
+        ? "Sign in with Google"
+        : variant === "signup"
+          ? "Sign up with Google"
+          : "Start learning";
 
   return (
     <Button
       size="sm"
-      className={`${variantStyles[variant]} inline-flex items-center gap-2 rounded-md text-sm md:text-base h-8 md:h-10 px-2 sm:px-3 md:px-6`}
+      className={`${variantStyles[variant]} inline-flex items-center gap-2 rounded-md text-sm md:text-base h-8 px-2 sm:px-3 md:px-6`}
       onClick={signInWithGoogle}
       aria-label={label}
       title={label}

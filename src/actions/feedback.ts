@@ -5,8 +5,12 @@ import { openAIConfig } from "@/services/openai/config";
 import { feedbackSchema } from "@/services/openai/structured-outputs-schema/feedbackSchema";
 import { generateFeedbackPrompt } from "@/services/openai/prompts";
 import { zodTextFormat } from "openai/helpers/zod";
-import { saveFeedback, checkStoryHasFeedback, markStoryFeedbackGenerated } from "@/lib/supabase/queries";
-
+import {
+  saveFeedback,
+  checkStoryHasFeedback,
+  markStoryFeedbackGenerated,
+} from "@/lib/supabase/queries";
+import { createClient } from "@/lib/supabase/server";
 
 interface GetStoryFeedbackProps {
   storyId: string;
@@ -24,6 +28,15 @@ export async function getStoryFeedback({
   requestedTopics,
 }: GetStoryFeedbackProps) {
   try {
+    // Auth Check
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      throw new Error("You must be signed in to generate feedback");
+    }
+
     // Validate required parameters
     if (!storyId || storyId.trim() === "") {
       throw new Error("storyId is required to save feedback");
@@ -34,7 +47,7 @@ export async function getStoryFeedback({
     if (hasFeedback) {
       throw new Error("Feedback has already been generated for this story");
     }
-    
+
     console.log("Generating feedback for user's story...");
     const topics =
       requestedTopics && requestedTopics.length > 0

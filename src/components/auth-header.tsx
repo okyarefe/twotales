@@ -95,13 +95,11 @@ export default function HeaderAuth() {
   // User is not logged in - show sign in/up buttons
   return (
     <div className="flex flex-row gap-2">
-      <GoogleSignInButton variant="signin" showTextOnXs>
-        Sign In
-      </GoogleSignInButton>
+      <div className="hidden sm:block">
+        <GoogleSignInButton variant="signin">Sign In</GoogleSignInButton>
+      </div>
 
-      <GoogleSignInButton variant="signup" showTextOnXs>
-        Sign Up
-      </GoogleSignInButton>
+      <GoogleSignInButton variant="signup">Sign Up</GoogleSignInButton>
     </div>
   );
 }
