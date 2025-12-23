@@ -21,8 +21,8 @@ export default function HeroSection() {
               instantly.
             </h1>
             <p className="text-base sm:text-lg lg:text-base text-gray-600 leading-relaxed">
-              Whether it's a sci-fi thriller or a recipe for pasta, turn any
-              prompt into a{" "}
+              Whether it&apos;s a sci-fi thriller or a recipe for pasta, turn
+              any prompt into a{" "}
               <span className="font-semibold text-gray-900 underline decoration-wavy decoration-purple-400 underline-offset-4">
                 bilingual learning experience
               </span>{" "}
