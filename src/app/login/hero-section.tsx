@@ -31,7 +31,7 @@ export default function HeroSection() {
             <div className="space-y-3">
               <div className="flex items-start gap-2 text-gray-700">
                 <svg
-                  className="w-6 h-6 text-purple-500 flex-shrink-0 mt-0.5"
+                  className="w-6 h-6 text-purple-500 shrink-0 mt-0.5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -53,7 +53,7 @@ export default function HeroSection() {
               </div>
               <div className="flex items-start gap-2 text-gray-700">
                 <svg
-                  className="w-6 h-6 text-purple-500 flex-shrink-0 mt-0.5"
+                  className="w-6 h-6 text-purple-500 shrink-0 mt-0.5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -74,7 +74,7 @@ export default function HeroSection() {
               </div>
               <div className="flex items-start gap-2 text-gray-700">
                 <svg
-                  className="w-6 h-6 text-purple-500 flex-shrink-0 mt-0.5"
+                  className="w-6 h-6 text-purple-500 shrink-0 mt-0.5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -96,7 +96,7 @@ export default function HeroSection() {
               </div>
               <div className="flex items-start gap-2 text-gray-700">
                 <svg
-                  className="w-6 h-6 text-purple-500 flex-shrink-0 mt-0.5"
+                  className="w-6 h-6 text-purple-500 shrink-0 mt-0.5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -113,10 +113,42 @@ export default function HeroSection() {
                 </span>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <GoogleSignInButton variant="learn">
-                Start Learning for FREE
-              </GoogleSignInButton>
+            <div className="pt-4">
+              <div className="relative max-w-xl">
+                <div
+                  className="absolute -inset-x-8 -inset-y-4 bg-linear-to-r from-purple-200 via-pink-200 to-amber-200 opacity-60 blur-3xl"
+                  aria-hidden
+                />
+                <div className="relative flex items-center gap-3 md:gap-6 rounded-3xl border border-purple-100 bg-white/95 shadow-[0_24px_60px_-28px_rgba(109,40,217,0.55)] px-4 md:px-5 py-3 md:py-4">
+                  <GoogleSignInButton
+                    variant="learn"
+                    showTextOnXs
+                    className="h-12 px-6 md:px-7 text-sm md:text-base font-semibold rounded-2xl shadow-md shadow-purple-200 bg-black text-white hover:bg-gray-900"
+                  >
+                    Start learning for free
+                  </GoogleSignInButton>
+                  <div className="flex items-center gap-2 text-sm md:text-base font-semibold text-gray-900">
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-purple-50 text-purple-600 shadow-inner shadow-purple-100">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </span>
+                    <span>No credit card required</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

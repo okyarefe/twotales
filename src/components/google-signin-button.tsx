@@ -18,7 +18,12 @@ export default function GoogleSignInButton({
   children,
   variant = "signin",
   showTextOnXs = false,
-}: React.PropsWithChildren<{ variant?: Variant; showTextOnXs?: boolean }>) {
+  className = "",
+}: React.PropsWithChildren<{
+  variant?: Variant;
+  showTextOnXs?: boolean;
+  className?: string;
+}>) {
   const label =
     typeof children === "string"
       ? children
@@ -31,7 +36,7 @@ export default function GoogleSignInButton({
   return (
     <Button
       size="sm"
-      className={`${variantStyles[variant]} inline-flex items-center gap-2 rounded-md text-xs md:text-sm h-8 px-2 sm:px-3 md:px-6`}
+      className={`${variantStyles[variant]} inline-flex items-center gap-2 rounded-md text-xs md:text-sm h-8 px-2 sm:px-3 md:px-6 ${className}`.trim()}
       onClick={signInWithGoogle}
       aria-label={label}
       title={label}

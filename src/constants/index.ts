@@ -7,16 +7,21 @@ export const languages = [
 ] as const;
 
 export const grammarTopics = [
-  "Present Simple Tense",
-  "Present Continuous Tense",
-  "Future Forms",
+  "Prepositions",
+  "Phrasal Verbs",
+  "Articles (a, an, the)",
   "Adjectives",
-  "Comparatives",
+  "Adverbs",
+  "Comparatives & Superlatives",
   "Conditionals",
   "Modal Verbs",
   "Passive Voice",
   "Relative Clauses",
-  "Prepositions",
+  "Question Formation",
+  "Pronouns",
+  "Conjunctions",
+  "Word Order",
+  "Reported Speech",
 ] as const;
 
 export const WRITERS = [
@@ -28,10 +33,13 @@ export const WRITERS = [
   "Gabriel Garcia Marquez",
 ];
 
-export const languageLevels = [
-  "daily",
-  "academic",
-  "formal",
-  "casual",
-  "technical",
-] as const;
+export const languageLevels = ["A1", "A2", "B1", "B2", "C1/C2"] as const;
+
+export const languageLevelDescriptions: Record<string, string> = {
+  A1: "Beginner - Use only present simple tense. Use short sentences (max 8 words). Use high-frequency vocabulary (top 500 words). No metaphors or idioms.",
+  A2: "Elementary - Allow simple past and future tense. Sentences can be joined with 'and' or 'but'. Focus on daily routines and personal information.",
+  B1: "Intermediate - Introduce present perfect tense and conditionals (if...). Vocabulary can include opinions, dreams, and standard travel/work situations.",
+  B2: "Upper Intermediate - Use complex sentences with relative clauses. Allow abstract topics and technical discussions. Idioms are allowed but should be common.",
+  "C1/C2":
+    "Advanced - Use nuanced vocabulary, idiomatic expressions, and complex grammatical structures. Focus on implicit meaning, irony, or professional topics.",
+};

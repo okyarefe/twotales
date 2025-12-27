@@ -42,7 +42,7 @@ export default function HeaderNav() {
               className={cn(
                 "relative px-3 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center gap-1 truncate",
                 isActive
-                  ? "bg-purple-50 text-purple-700 shadow-sm border-b-2 border-purple-600"
+                  ? "bg-purple-200 text-purple-700 border-purple-600"
                   : "text-slate-700 hover:bg-slate-50 hover:text-purple-700"
               )}
               aria-current={isActive ? "page" : undefined}

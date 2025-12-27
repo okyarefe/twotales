@@ -38,12 +38,7 @@ type Language = (typeof languages)[number];
 
 export type language = "Turkish" | "Finnish" | "Spanish" | "French" | "German";
 
-export type languageLevel =
-  | "daily"
-  | "academic"
-  | "formal"
-  | "casual"
-  | "technical";
+export type languageLevel = "A1" | "A2" | "B1" | "B2" | "C1/C2";
 
 export type storyLength = "short" | "medium" | "long";
 

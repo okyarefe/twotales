@@ -152,14 +152,23 @@ export default function TopicCreateForm() {
                     {selectedLanguageLevel || "Select a Level"}
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuLabel>Language Levels</DropdownMenuLabel>
+                    <DropdownMenuLabel>
+                      Language Levels (CEFR)
+                    </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     {languageLevels.map((langLevel) => (
                       <DropdownMenuItem
                         key={langLevel}
                         onSelect={() => setSelectedLanguageLevel(langLevel)}
                       >
-                        {langLevel}
+                        <span className="font-semibold">{langLevel}</span>
+                        <span className="text-xs text-gray-500 ml-2">
+                          {langLevel === "A1" && "(Beginner)"}
+                          {langLevel === "A2" && "(Elementary)"}
+                          {langLevel === "B1" && "(Intermediate)"}
+                          {langLevel === "B2" && "(Upper Int.)"}
+                          {langLevel === "C1/C2" && "(Advanced)"}
+                        </span>
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>

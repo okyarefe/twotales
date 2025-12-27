@@ -1,4 +1,5 @@
 import { languageLevel, storyLength } from "@/types";
+import { languageLevelDescriptions } from "@/constants";
 
 export function generateOpenAIStoryPrompt(
   prompt: string,
@@ -11,10 +12,15 @@ export function generateOpenAIStoryPrompt(
     length === "short" ? 15 : length === "medium" ? 25 : 40;
 
   const topicLine = topic ? `Focus on practicing ${topic}.` : "";
+  const levelGuideline = languageLevelDescriptions[level] || "";
 
   return `${prompt} ${topicLine}
-          I want to hear the same story in English and ${language} using ${level} vocabulary. 
+          I want to hear the same story in English and ${language}.
           
+          LANGUAGE LEVEL REQUIREMENT (${level}):
+          ${levelGuideline}
+          
+          Apply these guidelines strictly to BOTH the English and ${language} versions.
 
           First, give me the complete English story, then the same story in ${language}. Do not mix any content!
 
@@ -23,6 +29,7 @@ export function generateOpenAIStoryPrompt(
           - Each sentence corresponds directly to the sentence in the other language.
           - Each story must have ${numberOfSentences} sentences. Ignore if otherwise specified.
           - Do not include any ** or other special formatting characters in the sentences.
+          - Follow the ${level} level guidelines strictly.
 
           Please ensure that both stories match sentence-for-sentence precisely.`;
 }
