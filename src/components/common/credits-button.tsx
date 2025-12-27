@@ -6,6 +6,19 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { getCheckoutURL } from "@/actions/lemon";
 
+interface LemonSqueezy {
+  Url: {
+    Open: (url: string) => void;
+  };
+}
+
+declare global {
+  interface Window {
+    createLemonSqueezy?: () => void;
+    LemonSqueezy?: LemonSqueezy;
+  }
+}
+
 interface Plan {
   name?: string;
   variantid?: number;
@@ -28,9 +41,9 @@ export function CreditsButton(props: {
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
-      typeof (window as any).createLemonSqueezy === "function"
+      typeof window.createLemonSqueezy === "function"
     ) {
-      (window as any).createLemonSqueezy();
+      window.createLemonSqueezy();
     }
   }, []);
 
@@ -51,13 +64,15 @@ export function CreditsButton(props: {
           });
           return; // Exit early on error
         } finally {
-          embed && setLoading(false);
+          if (embed) {
+            setLoading(false);
+          }
         }
 
         if (embed) {
           if (checkoutUrl) {
-            if (typeof (window as any).LemonSqueezy !== "undefined") {
-              (window as any).LemonSqueezy.Url.Open(checkoutUrl);
+            if (typeof window.LemonSqueezy !== "undefined") {
+              window.LemonSqueezy.Url.Open(checkoutUrl);
             } else {
               console.error("❌ LemonSqueezy SDK not loaded!");
               toast.error("Payment system not loaded", {

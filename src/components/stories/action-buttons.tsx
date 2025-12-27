@@ -1,7 +1,7 @@
 // components/story/StoryActions.tsx
 "use client";
-import FormButton from "../common/form-button";
-import { BookOpen, Trash,MessagesSquare  } from "lucide-react";
+
+import { BookOpen, Trash, MessagesSquare } from "lucide-react";
 import { deleteStoryServerAction } from "@/actions/stories";
 import { openDreamJournal } from "@/actions/user-data";
 import { useState } from "react";
@@ -17,7 +17,7 @@ interface StoryActionsProps {
 }
 
 export default function StoryActionButtons({ storyId }: StoryActionsProps) {
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [, setIsDeleting] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const router = useRouter();
 
@@ -60,25 +60,39 @@ export default function StoryActionButtons({ storyId }: StoryActionsProps) {
   }
 
   return (
-    <div className="flex gap-1 pt-2 justify-between items-center">
-      <div className="flex items-center gap-1">
-        <Button asChild variant="outline" size="sm">
-          <Link href={`/stories/${storyId}`} className="flex items-center">
-            <BookOpen className="w-4 h-4 mr-1" /> Read
+    <div className="flex flex-col gap-2 pt-2">
+      <div className="flex items-center gap-2">
+        <Button
+          asChild
+          size="sm"
+          className="h-9 px-3 text-sm font-semibold bg-purple-400 text-white hover:bg-purple-500"
+        >
+          <Link
+            href={`/stories/${storyId}`}
+            className="flex items-center gap-2"
+          >
+            <BookOpen className="w-4 h-4" /> Read story
           </Link>
         </Button>
 
-        <Button onClick={handleDreamJournal} variant="outline" size="sm">
-          <MessagesSquare  className="w-4 h-4 mr-1" /> Test yourself
-        </Button>
-        <FormButton
-          onClick={handleDelete}
-          isLoading={isDeleting}
-          loadingText="Deleting..."
+        <Button
+          onClick={handleDreamJournal}
+          variant="outline"
           size="sm"
+          className="h-9 px-3 text-sm font-semibold border-purple-200 text-purple-700 hover:bg-purple-50"
         >
-          <Trash className="w-1" />
-        </FormButton>
+          <MessagesSquare className="w-4 h-4" />
+          <span>Test yourself</span>
+        </Button>
+
+        <Button
+          onClick={handleDelete}
+          variant="ghost"
+          size="sm"
+          className="h-9 px-3 text-sm font-semibold text-red-500 hover:text-red-600"
+        >
+          <Trash className="w-4 h-4" />
+        </Button>
       </div>
 
       <ConfirmationWindow

@@ -3,7 +3,6 @@
 import { createClient } from "@/lib/supabase/server";
 
 import {
-  getProduct,
   listPrices,
   listProducts,
   Variant,
@@ -11,6 +10,20 @@ import {
 } from "@lemonsqueezy/lemonsqueezy.js";
 
 import { configureLemonSqueezy } from "@/lib/lemonsqueezy/lemonsqueezy";
+
+interface PriceData {
+  attributes: {
+    currency?: string;
+    status?: string;
+    usage_aggregation: unknown;
+    renewal_interval_unit: string | null;
+    renewal_interval_quantity: number | null;
+    trial_interval_unit: string | null;
+    trial_interval_quantity: number | null;
+    unit_price_decimal: number | null;
+    unit_price: number | null;
+  };
+}
 
 export async function syncPlans() {
   try {
@@ -37,7 +50,7 @@ export async function syncPlans() {
 
   // Helper function to upsert a variant to Supabase and track it
   async function _addVariant(variant: {
-    name: any;
+    name: string;
     description?: string;
     price?: string;
     interval?: string | null;
@@ -88,7 +101,6 @@ export async function syncPlans() {
     return syncedVariants;
   }
 
-  /* eslint-disable no-await-in-loop */
   for (const product of allProducts) {
     const productAttributes = product.attributes;
 
@@ -105,14 +117,28 @@ export async function syncPlans() {
           filter: { variantId: product.id },
         });
 
-        const prices = (productPriceObject.data?.data as any[]) ?? [];
+        interface PriceData {
+          attributes: {
+            currency?: string;
+            status?: string;
+            usage_aggregation: unknown;
+            renewal_interval_unit: string | null;
+            renewal_interval_quantity: number | null;
+            trial_interval_unit: string | null;
+            trial_interval_quantity: number | null;
+            unit_price_decimal: number | null;
+            unit_price: number | null;
+          };
+        }
+
+        const prices = (productPriceObject.data?.data as PriceData[]) ?? [];
         const currentPriceObj =
           prices.find(
-            (p: any) =>
+            (p) =>
               p.attributes?.currency === "EUR" &&
               p.attributes?.status === "active"
           ) ||
-          prices.find((p: any) => p.attributes?.status === "active") ||
+          prices.find((p) => p.attributes?.status === "active") ||
           prices[0];
 
         if (currentPriceObj) {
@@ -141,7 +167,7 @@ export async function syncPlans() {
             variantid: parseInt(product.id, 10), // use product id as stand-in
             trialinterval: trialInterval,
             trialintervalcount: trialIntervalCount,
-            sort: (productAttributes as any)?.sort ?? 0,
+            sort: 0,
           });
         } else {
           console.warn(
@@ -179,15 +205,15 @@ export async function syncPlans() {
       });
       // console.log("Variant Price Object:", variantPriceObject);
 
-      const prices = (variantPriceObject.data?.data as any[]) ?? [];
+      const prices = (variantPriceObject.data?.data as PriceData[]) ?? [];
       // Prefer EUR active price; then any active; then first available
       const currentPriceObj =
         prices.find(
-          (p: any) =>
+          (p) =>
             p.attributes?.currency === "EUR" &&
             p.attributes?.status === "active"
         ) ||
-        prices.find((p: any) => p.attributes?.status === "active") ||
+        prices.find((p) => p.attributes?.status === "active") ||
         prices[0];
       if (!currentPriceObj) {
         console.warn(`⚠️ No price found for variant "${variant.name}"`);

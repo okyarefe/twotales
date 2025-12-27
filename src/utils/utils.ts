@@ -16,15 +16,15 @@ export function formatDate(dateString: string): string {
 
 export function getLevelColor(level: languageLevel) {
   switch (level) {
-    case "daily":
+    case "A1":
       return "bg-green-100 text-green-800";
-    case "academic":
+    case "A2":
       return "bg-blue-100 text-blue-800";
-    case "formal":
-      return "bg-purple-100 text-purple-800";
-    case "casual":
+    case "B1":
       return "bg-yellow-100 text-yellow-800";
-    case "technical":
+    case "B2":
+      return "bg-orange-100 text-orange-800";
+    case "C1/C2":
       return "bg-red-100 text-red-800";
     default:
       return "bg-gray-100 text-gray-800"; // fallback, though shouldn't happen if type is enforced

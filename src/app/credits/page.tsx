@@ -1,14 +1,19 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import Image from "next/image";
+import { Card } from "@/components/ui/card";
 import { CreditsButton } from "@/components/common/credits-button";
 import { syncPlans } from "@/actions/lemon";
+
+interface Plan {
+  id?: number | string;
+  variantid?: number;
+  variantId?: number;
+  productname?: string;
+  name?: string;
+  price?: string | number;
+  story_credits?: number;
+  description?: string;
+}
 
 export const metadata = {
   title: "Credits & Pricing - TwoTales",
@@ -43,11 +48,8 @@ export default async function GetCreditsPage() {
 
           {(() => {
             const seen = new Set<number | string>();
-            const uniquePlans = allPlans.filter((plan) => {
-              const key =
-                (plan as any).variantid ??
-                (plan as any).variantId ??
-                (plan as any).id;
+            const uniquePlans = allPlans.filter((plan: Plan) => {
+              const key = plan.variantid ?? plan.variantId ?? plan.id;
               if (key === undefined || key === null) return true;
               if (seen.has(key)) return false;
               seen.add(key);
@@ -55,9 +57,9 @@ export default async function GetCreditsPage() {
             });
 
             // Sort cards by ascending `id`; items without `id` go last
-            const sortedPlans = [...uniquePlans].sort((a, b) => {
-              const ai = (a as any).id;
-              const bi = (b as any).id;
+            const sortedPlans = [...uniquePlans].sort((a: Plan, b: Plan) => {
+              const ai = a.id;
+              const bi = b.id;
               if (ai == null && bi == null) return 0;
               if (ai == null) return 1;
               if (bi == null) return -1;
@@ -106,10 +108,11 @@ export default async function GetCreditsPage() {
                   >
                     {/* Hero Banner with Image */}
                     <div className="relative h-32 bg-linear-to-r from-accent-gold/10 to-accent-gold-light/10 border-b border-accent-gold/20 flex items-center justify-center overflow-hidden">
-                      <img
+                      <Image
                         src={planImage}
                         alt={title}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
                       />
                       {/* Credits Badge */}
                       <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full">

@@ -3,7 +3,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { configureLemonSqueezy } from "@/lib/lemonsqueezy/lemonsqueezy";
 import { webhookHasData } from "@/lib/typeguards";
-import { getPrice } from "@lemonsqueezy/lemonsqueezy.js";
+
 import { addStoryCreditsToUser } from "@/lib/supabase/queries";
 
 interface WebhookEvent {

@@ -16,10 +16,10 @@ interface StoryCardProps {
 
 export function StoryCard({ story }: StoryCardProps) {
   return (
-  <Card className="shadow-sm transform transition-all duration-200 motion-reduce:transition-none hover:shadow-lg hover:scale-100 sm:hover:scale-105 hover:-translate-y-1 border-slate-200 overflow-hidden min-w-0">
+    <Card className="shadow-sm transform transition-all duration-200 motion-reduce:transition-none hover:shadow-lg hover:scale-100 sm:hover:scale-105 hover:-translate-y-1 border-slate-200 overflow-hidden min-w-0">
       <CardHeader className="pb-3">
         <div className="flex flex-col sm:flex-row items-start justify-between gap-2 sm:gap-0">
-          <CardTitle className="text-base font-semibold text-slate-800 tracking-tight leading-tight break-words flex-1">
+          <CardTitle className="text-base font-semibold text-slate-800 tracking-tight leading-tight wrap-break-word flex-1">
             {story.title}
           </CardTitle>
           <Badge
