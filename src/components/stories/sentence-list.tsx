@@ -32,13 +32,13 @@ const SentenceList: React.FC<SentenceListProps> = ({
         onMouseLeave={
           hoverable && setHoveredIdx ? () => setHoveredIdx(null) : undefined
         }
-        className={`px-2 sm:px-3 py-2 sm:py-3 rounded transition-colors duration-150 flex items-start sm:items-center justify-between gap-2 min-h-[48px] sm:min-h-[56px] ${
-          hoveredIdx === idx ? "bg-purple-100" : ""
+        className={`px-2 sm:px-3 py-3 sm:py-4 rounded-lg transition-colors duration-150 flex items-start sm:items-center justify-between gap-2 min-h-[52px] sm:min-h-[60px] ${
+          hoveredIdx === idx ? "bg-purple-50/50" : ""
         } ${hoverable ? "cursor-pointer" : ""}`}
       >
         <span
           aria-hidden={hiddenMask ? !!hiddenMask[idx] : false}
-          className={`text-sm sm:text-base leading-relaxed flex-1 ${hiddenMask && hiddenMask[idx] ? "opacity-0 select-none" : ""}`}
+          className={`text-base sm:text-lg leading-relaxed flex-1 font-normal tracking-normal ${hiddenMask && hiddenMask[idx] ? "opacity-0 select-none" : ""}`}
         >
           {sentences[idx] || ""}
         </span>
@@ -55,7 +55,10 @@ const SentenceList: React.FC<SentenceListProps> = ({
             {hiddenMask && hiddenMask[idx] ? "Show" : "Hide"}
           </Button>
         ) : (
-          <span className="inline-block h-8 w-[48px] sm:w-[64px] shrink-0" aria-hidden="true" />
+          <span
+            className="inline-block h-8 w-[48px] sm:w-[64px] shrink-0"
+            aria-hidden="true"
+          />
         )}
       </div>
     ))}

@@ -7,7 +7,11 @@ import { createClient } from "@/lib/supabase/server";
 import { getUserData } from "@/actions/user-data";
 import { Toaster } from "sonner";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ 
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "TwoTales",
@@ -26,6 +30,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
+      </head>
       <body className={inter.className}>
         <UserProvider
           initialUser={user?.data.user}

@@ -1,5 +1,5 @@
 import FeatureCard from "@/app/login/feature-card";
-import { PenTool, Target, MessageSquare } from "lucide-react";
+import { PenTool, Target, MessageSquare, BookOpen } from "lucide-react";
 
 export default function FeaturesSection() {
   return (
@@ -15,12 +15,18 @@ export default function FeaturesSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 w-full">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
           <FeatureCard
-            icon={<PenTool className="h-6 w-6 text-purple-600" />}
-            bgColor="bg-purple-100"
+            icon={<PenTool className="h-6 w-6 text-purple-500" />}
+            bgColor="bg-purple-50"
             title="AI Story Creation"
             description="Create stories about any topic you choose, target specific grammar points, and get your personalized bilingual story in seconds."
+          />
+          <FeatureCard
+            icon={<BookOpen className="h-6 w-6 text-fuchsia-600" />}
+            bgColor="bg-fuchsia-100"
+            title="Side-by-Side Stories"
+            description="Read native and target languages together. Navigate effortlessly between both versions for seamless comprehension."
           />
           <FeatureCard
             icon={<Target className="h-6 w-6 text-pink-600" />}

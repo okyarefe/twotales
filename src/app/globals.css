@@ -118,3 +118,38 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Tydal-inspired typography utilities */
+@layer utilities {
+  .text-hero {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  
+  .text-display {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  
+  .text-subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.6;
+    font-weight: 400;
+    color: #6B7280;
+  }
+  
+  .text-accent-gold {
+    color: #FFA500;
+  }
+  
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}

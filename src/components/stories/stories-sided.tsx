@@ -58,7 +58,7 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
         <Button
           variant="outline"
           size="sm"
-          className="text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2 text-purple-700 border-purple-300 hover:bg-purple-50 font-medium"
+          className="text-sm sm:text-base px-4 py-2 sm:px-5 sm:py-2.5 text-purple-700 border-purple-300 hover:bg-purple-50 font-semibold tracking-wide transition-all"
           onClick={hideAllB}
         >
           Hide all
@@ -66,7 +66,7 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
         <Button
           variant="outline"
           size="sm"
-          className="text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2 text-purple-700 border-purple-300 hover:bg-purple-50 font-medium"
+          className="text-sm sm:text-base px-4 py-2 sm:px-5 sm:py-2.5 text-purple-700 border-purple-300 hover:bg-purple-50 font-semibold tracking-wide transition-all"
           onClick={showAllB}
         >
           Show all

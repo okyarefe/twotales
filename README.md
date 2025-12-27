@@ -16,6 +16,7 @@ It uses Supabase for authentication and database, OpenAI for AI-powered story an
 ## Quick Start
 
 1. **Install dependencies:**
+
    ```sh
    npm install
    ```
@@ -23,11 +24,13 @@ It uses Supabase for authentication and database, OpenAI for AI-powered story an
 2. **Set up environment variables:**
    Before running the project, create a `.env.local` file in the root directory and add the following variables:
 
-  - `DATABASE_URL`: Your PostgreSQL connection string (from Supabase).
-  - `OPENAI_API_KEY`: Your OpenAI API key for story and quiz generation.
-  - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL.
-  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anon public key.
-  - `NEXT_PUBLIC_SITE_URL`: The base URL for your site (e.g., `http://localhost:3000`).
+- `DATABASE_URL`: Your PostgreSQL connection string (from Supabase).
+- `OPENAI_API_KEY`: Your OpenAI API key for story and quiz generation.
+- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL.
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anon public key.
+- `NEXT_PUBLIC_SITE_URL`: The base URL for your site (e.g., `http://localhost:3000`).
+- `SUPABASE_SERVICE_ROLE_KEY`: Server-only service role key for secure webhooks (never expose to client).
+- `LEMONSQUEEZY_WEBHOOK_SECRET`: Secret used to verify Lemon Squeezy webhook signatures.
 
 3. **Run the development server:**
    ```sh

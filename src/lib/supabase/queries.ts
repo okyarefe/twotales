@@ -71,7 +71,7 @@ export async function searchUserStories(
   if (limit) query.limit(limit);
 
   const { data, error } = await query;
-  
+
   if (error) {
     throw new Error(error.message);
   }
@@ -98,7 +98,6 @@ export async function saveQuizQuestions(
   questions: { question: string; answer: string }[],
   totalTokens: number = 0
 ) {
- 
   const supabase = await createClient();
   const {
     data: { user },
@@ -194,11 +193,8 @@ export async function getUserStoriesCount(userId: string): Promise<number> {
 
 export async function deleteStoryById(storyId: string): Promise<boolean> {
   const supabase = await createClient();
-  const {  error } = await supabase
-    .from("stories")
-    .delete()
-    .eq("id", storyId);
-  
+  const { error } = await supabase.from("stories").delete().eq("id", storyId);
+
   if (error) {
     console.error("Error deleting story:", error.message);
     return false;
@@ -227,7 +223,7 @@ export async function saveFeedback(
   targetLanguage: string
 ) {
   const supabase = await createClient();
-  
+
   // Get authenticated user
   const {
     data: { user },
@@ -261,13 +257,11 @@ export async function markStoryFeedbackGenerated(
   storyId: string
 ): Promise<boolean> {
   const supabase = await createClient();
-  
+
   // First, verify the story exists and get current user
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  
- 
 
   // Check if story exists first
   const { data: existingStory, error: fetchError } = await supabase
@@ -281,8 +275,6 @@ export async function markStoryFeedbackGenerated(
     throw new Error("Story not found");
   }
 
-
-
   // Now try to update
   const { data, error } = await supabase
     .from("stories")
@@ -292,21 +284,28 @@ export async function markStoryFeedbackGenerated(
 
   if (error) {
     console.error("Error updating story feedback status:", error);
-    throw new Error(`Failed to mark story as feedback generated: ${error.message}`);
+    throw new Error(
+      `Failed to mark story as feedback generated: ${error.message}`
+    );
   }
 
   if (!data || data.length === 0) {
-    console.error("Update returned no rows. Possible RLS policy blocking update.");
-    console.error("Story user_id:", existingStory.user_id, "Current user_id:", user?.id);
+    console.error(
+      "Update returned no rows. Possible RLS policy blocking update."
+    );
+    console.error(
+      "Story user_id:",
+      existingStory.user_id,
+      "Current user_id:",
+      user?.id
+    );
     throw new Error("Update blocked - check RLS policies");
   }
 
   return true;
 }
 
-export async function checkStoryHasFeedback(
-  storyId: string
-): Promise<boolean> {
+export async function checkStoryHasFeedback(storyId: string): Promise<boolean> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -325,7 +324,7 @@ export async function checkStoryHasFeedback(
 
 export async function getFeedbackByStoryId(storyId: string) {
   const supabase = await createClient();
- 
+
   const { data, error } = await supabase
     .from("feedbacks")
     .select("*")
@@ -340,4 +339,15 @@ export async function getFeedbackByStoryId(storyId: string) {
   }
 
   return data;
+}
+
+export async function addStoryCreditsToUser(userId: string, amount: number) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.rpc("add_story_credits", {
+    user_id_param: userId,
+    amount_param: amount,
+  });
+
+  if (error) throw error;
 }

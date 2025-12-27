@@ -7,11 +7,11 @@ import React from "react";
 type Variant = "signin" | "signup" | "learn";
 
 const variantStyles: Record<Variant, string> = {
-  signin: "bg-purple-400 text-white hover:bg-purple-400",
+  signin: "bg-purple-400 text-white hover:bg-purple-300",
   signup:
-    "bg-white text-purple-600 border border-purple-600 hover:bg-purple-50",
+    "bg-white text-purple-500 border border-purple-500 hover:bg-purple-50",
   learn:
-    "bg-gradient-to-r from-purple-400 to-purple-600 text-white hover:from-purple-500 hover:to-gray-900",
+    "bg-gradient-to-r from-purple-300 to-purple-500 text-white hover:from-purple-400 hover:to-purple-600",
 };
 
 export default function GoogleSignInButton({
@@ -31,7 +31,7 @@ export default function GoogleSignInButton({
   return (
     <Button
       size="sm"
-      className={`${variantStyles[variant]} inline-flex items-center gap-2 rounded-md text-sm md:text-base h-8 px-2 sm:px-3 md:px-6`}
+      className={`${variantStyles[variant]} inline-flex items-center gap-2 rounded-md text-xs md:text-sm h-8 px-2 sm:px-3 md:px-6`}
       onClick={signInWithGoogle}
       aria-label={label}
       title={label}
