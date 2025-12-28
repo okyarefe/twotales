@@ -75,13 +75,19 @@ export default async function GetCreditsPage() {
               const storyCredits = plan.story_credits || 0;
               const isPopular = sortedPlans.length === 3 && idx === 1;
 
-              // Map index to image
-              const planImages = [
-                "/basicplan.png",
-                "/wanderer.png",
-                "/explorer.png",
-              ];
-              const planImage = planImages[idx] || "/basicplan.png";
+              // Choose image from /public by plan name (fallback to basic)
+              const t = title.toLowerCase();
+              const planImage = t.includes("explorer")
+                ? "/explorer.png"
+                : t.includes("wanderer")
+                  ? "/wanderer.png"
+                  : t.includes("basic") || t.includes("starter")
+                    ? "/basicplan.png"
+                    : idx === 1
+                      ? "/wanderer.png"
+                      : idx >= 2
+                        ? "/explorer.png"
+                        : "/basicplan.png";
 
               return (
                 <div

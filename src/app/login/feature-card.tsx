@@ -22,7 +22,7 @@ export default function FeatureCard({
     <Card className="border border-gray-200 bg-white">
       <CardHeader>
         <div
-          className={`w-12 h-12 ${bgColor} rounded-lg flex items-center justify-center mb-4`}
+          className={`w-12 h-12 ${bgColor} rounded-lg flex items-center justify-center mb-4 mx-auto md:mx-0`}
         >
           {icon}
         </div>

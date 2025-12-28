@@ -3,7 +3,7 @@ import GoogleSignInButton from "@/components/google-signin-button";
 
 export default function HeroSection() {
   return (
-    <section className="pb-16 px-6">
+    <section className="pb-16 px-6 overflow-x-hidden">
       <div className="container mx-auto max-w-6xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
@@ -114,20 +114,20 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="pt-4">
-              <div className="relative max-w-xl">
+              <div className="relative max-w-xl overflow-hidden">
                 <div
                   className="absolute -inset-x-8 -inset-y-4 bg-linear-to-r from-purple-200 via-pink-200 to-amber-200 opacity-60 blur-3xl"
                   aria-hidden
                 />
-                <div className="relative flex items-center gap-3 md:gap-6 rounded-3xl border border-purple-100 bg-white/95 shadow-[0_24px_60px_-28px_rgba(109,40,217,0.55)] px-4 md:px-5 py-3 md:py-4">
+                <div className="relative flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-6 rounded-3xl border border-purple-100 bg-white/95 shadow-[0_24px_60px_-28px_rgba(109,40,217,0.55)] px-4 md:px-5 py-3 md:py-4">
                   <GoogleSignInButton
                     variant="learn"
                     showTextOnXs
-                    className="h-12 px-6 md:px-7 text-sm md:text-base font-semibold rounded-2xl shadow-md shadow-purple-200 bg-black text-white hover:bg-gray-900"
+                    className="h-12 w-full md:w-auto px-6 md:px-7 text-sm md:text-base font-semibold rounded-2xl shadow-md shadow-purple-200 bg-black text-white hover:bg-gray-900"
                   >
                     Start learning for free
                   </GoogleSignInButton>
-                  <div className="flex items-center gap-2 text-sm md:text-base font-semibold text-gray-900">
+                  <div className="flex items-center gap-2 text-sm md:text-base font-semibold text-gray-900 min-w-0 w-full md:w-auto">
                     <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-purple-50 text-purple-600 shadow-inner shadow-purple-100">
                       <svg
                         className="w-4 h-4"
@@ -145,7 +145,9 @@ export default function HeroSection() {
                         />
                       </svg>
                     </span>
-                    <span>No credit card required</span>
+                    <span className="whitespace-normal break-words">
+                      No credit card required
+                    </span>
                   </div>
                 </div>
               </div>

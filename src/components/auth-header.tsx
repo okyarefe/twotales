@@ -41,7 +41,7 @@ export default function HeaderAuth() {
     return (
       <Popover>
         <PopoverTrigger asChild>
-          <Avatar className="border-2 border-purple-700 h-10 w-10 cursor-pointer">
+          <Avatar className="border-2 border-purple-300 h-10 w-10 cursor-pointer">
             <AvatarImage
               src={
                 typeof user.user_metadata.avatar_url === "string"
@@ -81,7 +81,7 @@ export default function HeaderAuth() {
             </div>
             <Button
               type="button"
-              className="w-full text-purple border-2 border-purple-700 bg-white hover:opacity-60"
+              className="w-full text-purple border-2 border-purple-300 bg-white hover:opacity-60"
               onClick={signOut}
             >
               Sign Out
