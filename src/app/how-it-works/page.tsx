@@ -1,13 +1,4 @@
 import { Metadata } from "next";
-import {
-  Sparkles,
-  BookOpen,
-  Brain,
-  Trophy,
-  CreditCard,
-  Zap,
-  Users,
-} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "How It Works | TwoTales AI",
