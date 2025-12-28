@@ -6,8 +6,9 @@ import { UserProvider } from "@/contexts/user-context";
 import { createClient } from "@/lib/supabase/server";
 import { getUserData } from "@/actions/user-data";
 import { Toaster } from "sonner";
+import { Analytics } from "@vercel/analytics/next";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   display: "swap",
@@ -42,6 +43,7 @@ export default async function RootLayout({
             <Header />
             <main className="container mx-auto px-4 max-w-8xl rounded bg-purple-100 flex-1">
               {children}
+              <Analytics />
               <Toaster />
             </main>
           </div>
