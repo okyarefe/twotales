@@ -14,9 +14,50 @@ const inter = Inter({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "TwoTales",
-  description: "AI-powered language learning platform",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "TwoTales",
+    template: "%s | TwoTales",
+  },
+  description:
+    "TwoTales helps you learn languages with AI-generated, interactive stories and quizzes.",
+  applicationName: "TwoTales",
+  keywords: [
+    "language learning",
+    "AI",
+    "stories",
+    "quizzes",
+    "vocabulary",
+    "grammar",
+  ],
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName: "TwoTales",
+    title: "TwoTales — AI Language Learning",
+    description:
+      "Learn languages with interactive AI stories, personalized practice, and quizzes.",
+  },
+  twitter: {
+    card: "summary",
+    title: "TwoTales — AI Language Learning",
+    description:
+      "Learn languages with interactive AI stories, personalized practice, and quizzes.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default async function RootLayout({
@@ -33,6 +74,33 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "TwoTales",
+              url: siteUrl,
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "TwoTales",
+              url: siteUrl,
+              potentialAction: {
+                "@type": "SearchAction",
+                target: `${siteUrl}/stories?query={search_term_string}`,
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
       </head>
       <body className={inter.className}>
         <UserProvider
