@@ -89,7 +89,7 @@ export default function StoryActionButtons({ storyId }: StoryActionsProps) {
           onClick={handleDelete}
           variant="ghost"
           size="sm"
-          className="h-9 px-3 text-sm font-semibold text-red-500 hover:text-red-600"
+          className="h-9 px-3 text-sm font-semibold text-red-500 hover:text-red-600 border border-red-500 hover:border-red-600"
         >
           <Trash className="w-4 h-4" />
         </Button>

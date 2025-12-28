@@ -33,7 +33,7 @@ const SentenceList: React.FC<SentenceListProps> = ({
           hoverable && setHoveredIdx ? () => setHoveredIdx(null) : undefined
         }
         className={`px-2 sm:px-3 py-3 sm:py-4 rounded-lg transition-colors duration-150 flex items-start sm:items-center justify-between gap-2 min-h-[52px] sm:min-h-[60px] ${
-          hoveredIdx === idx ? "bg-purple-50/50" : ""
+          hoveredIdx === idx ? "bg-purple-300" : ""
         } ${hoverable ? "cursor-pointer" : ""}`}
       >
         <span
