@@ -15,34 +15,43 @@ export default function HeroSection() {
             </div>
 
             {/* Main headline with Tydal-style hierarchy */}
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight leading-tight">
-              <span className="block mb-2">
-                Learn languages through stories about topics you actually care
-                about.
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight">
+              <span className="block mb-2 leading-tight">
+                Turn{" "}
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 font-extrabold">
+                  your creative ideas
+                </span>{" "}
+                into{" "}
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-500 font-extrabold">
+                  structured language lessons
+                </span>{" "}
+                in seconds.
               </span>
             </h1>
 
-            {/* Subtitle with muted color */}
-            <p className="text-subtitle max-w-2xl">
+            {/* Subtitle with muted color (refined spacing for readability) */}
+            <p className="text-lg text-gray-700 max-w-2xl leading-relaxed">
               No more boring textbooks about strangers at train stations. Our AI
               builds your perfect story instantly whether it&apos;s a sci-fi
               thriller or a recipe for pasta.
             </p>
             <div className="space-y-3">
-              <div className="flex items-start gap-2 text-gray-700">
-                <svg
-                  className="w-6 h-6 text-purple-500 shrink-0 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+              <div className="flex items-start gap-3 text-gray-700">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-purple-50 text-purple-600">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </span>
                 <span className="text-base">
                   Stories about{" "}
                   <span className="font-semibold text-purple-600">
@@ -51,20 +60,22 @@ export default function HeroSection() {
                   — generated in seconds
                 </span>
               </div>
-              <div className="flex items-start gap-2 text-gray-700">
-                <svg
-                  className="w-6 h-6 text-purple-500 shrink-0 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+              <div className="flex items-start gap-3 text-gray-700">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-purple-50 text-purple-600">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </span>
                 <span className="text-base">
                   <span className="font-semibold text-purple-600">
                     Side-by-side bilingual
@@ -72,20 +83,22 @@ export default function HeroSection() {
                   stories for easy navigation
                 </span>
               </div>
-              <div className="flex items-start gap-2 text-gray-700">
-                <svg
-                  className="w-6 h-6 text-purple-500 shrink-0 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+              <div className="flex items-start gap-3 text-gray-700">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-purple-50 text-purple-600">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </span>
                 <span className="text-base">
                   Target{" "}
                   <span className="font-semibold text-purple-600">
@@ -94,20 +107,22 @@ export default function HeroSection() {
                   you want to master
                 </span>
               </div>
-              <div className="flex items-start gap-2 text-gray-700">
-                <svg
-                  className="w-6 h-6 text-purple-500 shrink-0 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+              <div className="flex items-start gap-3 text-gray-700">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-purple-50 text-purple-600">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </span>
                 <span className="text-base">
                   Interactive quizzes + smart feedback that accelerates learning
                 </span>
@@ -123,12 +138,13 @@ export default function HeroSection() {
                   <GoogleSignInButton
                     variant="learn"
                     showTextOnXs
-                    className="h-12 w-full md:w-auto px-6 md:px-7 text-sm md:text-base font-semibold rounded-2xl shadow-md shadow-purple-200 bg-black text-white hover:bg-gray-900"
+                    className="h-12 w-full md:w-auto px-6 md:px-7 text-sm md:text-base font-semibold rounded-2xl shadow-lg bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:opacity-95"
                   >
                     Start learning for free
                   </GoogleSignInButton>
+
                   <div className="flex items-center gap-2 text-sm md:text-base font-semibold text-gray-900 min-w-0 w-full md:w-auto">
-                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-purple-50 text-purple-600 shadow-inner shadow-purple-100">
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white border border-purple-100 text-purple-600 shadow-sm">
                       <svg
                         className="w-4 h-4"
                         fill="none"

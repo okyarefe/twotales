@@ -43,18 +43,19 @@ export default function ContactPage() {
             Reach out to us directly at:
           </p>
           <a
-            href="mailto:feokyar@gmail.com"
+            href="mailto:support@twotalesai.com"
             className="text-purple-600 hover:text-purple-700 font-medium text-xl inline-block mb-2 break-all relative z-10"
           >
-            coming soon
+            support@twotalesai.com
           </a>
         </div>
 
         <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6 border border-purple-200">
-          <h3 className="text-xl font-semibold mb-3">Response Time</h3>
-          <p className="text-slate-600 dark:text-slate-300">
-            We typically respond to all inquiries within 24-48 hours during
-            business days. Thank you for your patience!
+          <h3 className="text-xl font-semibold mb-3 text-center">
+            Response Time
+          </h3>
+          <p className="text-slate-600 dark:text-slate-300 text-center">
+            We typically respond to all inquiries within 24 hours
           </p>
         </div>
       </div>
