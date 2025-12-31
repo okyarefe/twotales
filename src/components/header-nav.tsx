@@ -15,12 +15,12 @@ export default function HeaderNav() {
     {
       href: "/how-it-works",
       label: "How It Works",
-      icon: <HelpCircle className="w-5 h-5" />,
+      icon: <HelpCircle className="w-6 h-6" />,
     },
     {
       href: "/contact",
       label: "Contact",
-      icon: <Mail className="w-5 h-5" />,
+      icon: <Mail className="w-6 h-6" />,
     },
   ];
 
@@ -29,17 +29,17 @@ export default function HeaderNav() {
     {
       href: "/dashboard",
       label: "Dashboard",
-      icon: <Home className="w-5 h-5" />,
+      icon: <Home className="w-6 h-6" />,
     },
     {
       href: "/stories",
       label: "My Stories",
-      icon: <BookOpen className="w-5 h-5" />,
+      icon: <BookOpen className="w-6 h-6" />,
     },
     {
       href: "/credits",
       label: "Get Credits",
-      icon: <CreditCard className="w-4 h-4" />,
+      icon: <CreditCard className="w-5 h-5" />,
     },
   ];
 
@@ -49,7 +49,7 @@ export default function HeaderNav() {
   const navLinks = user ? privateLinks : publicLinks;
 
   return (
-    <div className="flex flex-row items-center gap-2 md:gap-4 lg:gap-6 min-w-0">
+    <div className="flex flex-row items-center gap-3 md:gap-4 lg:gap-6 min-w-0">
       {navLinks.map((link) => {
         const isActive =
           normalize(pathname) === normalize(link.href) ||
@@ -59,7 +59,7 @@ export default function HeaderNav() {
             key={link.href}
             href={link.href}
             className={cn(
-              "relative px-3 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center gap-1 truncate",
+              "relative px-4 py-2 rounded-md text-base font-medium transition-colors flex items-center gap-2 truncate",
               isActive
                 ? "bg-purple-200 text-purple-700 border-purple-600"
                 : "text-slate-700 hover:bg-slate-50 hover:text-purple-700"
@@ -67,7 +67,7 @@ export default function HeaderNav() {
             aria-current={isActive ? "page" : undefined}
           >
             {link.icon && link.icon}
-            <span className="hidden md:inline">{link.label}</span>
+            <span className="hidden sm:inline">{link.label}</span>
           </Link>
         );
       })}
