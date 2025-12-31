@@ -35,7 +35,9 @@ export function CreditsButton(props: {
   const [loading, setLoading] = useState(false);
   const isCurrent = plan.variantid === currentPlan?.variantid;
 
-  const label = isCurrent ? "Your plan" : "Choose Plan";
+  // Payments are not available until Lemon Squeezy is approved.
+  const paymentsAvailable = false;
+  const label = isCurrent ? "Your plan" : "Payments available next week";
 
   // Make sure Lemon.js is loaded, you need to enqueue the Lemon Squeezy SDK in your app first.
   useEffect(() => {
@@ -89,7 +91,7 @@ export function CreditsButton(props: {
           router.push(checkoutUrl ?? "/");
         }
       }}
-      disabled={loading || isCurrent}
+      disabled={!paymentsAvailable || loading || isCurrent}
       variant="createStory"
       className="w-full"
     >

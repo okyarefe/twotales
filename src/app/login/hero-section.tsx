@@ -8,7 +8,7 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <div className="inline-block">
-              <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-wider uppercase text-black px-3 py-1 rounded-full border border-amber-800/30">
+              <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-wider uppercase text-black px-3 py-1 rounded-full border border-purple-300">
                 AI-Powered Language Learning
               </span>
             </div>
