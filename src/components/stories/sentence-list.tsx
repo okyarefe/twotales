@@ -22,7 +22,7 @@ const SentenceList: React.FC<SentenceListProps> = ({
   hiddenMask,
   onToggle,
 }) => (
-  <div className="flex-1">
+  <div className="flex-1 sentence-list">
     {Array.from({ length: maxLen }).map((_, idx) => (
       <div
         key={`${side}-${idx}`}
@@ -32,13 +32,13 @@ const SentenceList: React.FC<SentenceListProps> = ({
         onMouseLeave={
           hoverable && setHoveredIdx ? () => setHoveredIdx(null) : undefined
         }
-        className={`px-2 sm:px-3 py-3 sm:py-4 rounded-lg transition-colors duration-150 flex items-start sm:items-center justify-between gap-2 min-h-[52px] sm:min-h-[60px] ${
+        className={`sentence-list__item px-2 sm:px-3 py-3 sm:py-4 rounded-lg transition-colors duration-150 flex items-start sm:items-center justify-between gap-2 min-h-[52px] sm:min-h-[60px] ${
           hoveredIdx === idx ? "bg-purple-300" : ""
         } ${hoverable ? "cursor-pointer" : ""}`}
       >
         <span
           aria-hidden={hiddenMask ? !!hiddenMask[idx] : false}
-          className={`text-base sm:text-lg leading-relaxed flex-1 font-normal tracking-normal ${hiddenMask && hiddenMask[idx] ? "opacity-0 select-none" : ""}`}
+          className={`sentence-list__text text-base sm:text-lg leading-relaxed flex-1 font-normal tracking-normal ${hiddenMask && hiddenMask[idx] ? "opacity-0 select-none" : ""}`}
         >
           {sentences[idx] || ""}
         </span>

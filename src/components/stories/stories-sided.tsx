@@ -54,11 +54,11 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-wrap justify-center sm:justify-end gap-2 mb-3 sm:mb-4">
+      <div className="flex flex-wrap justify-center sm:justify-end gap-2 mb-3 sm:mb-4 sentence-controls">
         <Button
           variant="outline"
           size="sm"
-          className="text-sm sm:text-base px-4 py-2 sm:px-5 sm:py-2.5 text-purple-700 border-purple-300 hover:bg-purple-50 font-semibold tracking-wide transition-all"
+          className="sentence-controls__btn text-sm sm:text-base px-4 py-2 sm:px-5 sm:py-2.5 text-purple-700 border-purple-300 hover:bg-purple-50 font-semibold tracking-wide transition-all"
           onClick={hideAllB}
         >
           Hide all
@@ -66,7 +66,7 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
         <Button
           variant="outline"
           size="sm"
-          className="text-sm sm:text-base px-4 py-2 sm:px-5 sm:py-2.5 text-purple-700 border-purple-300 hover:bg-purple-50 font-semibold tracking-wide transition-all"
+          className="sentence-controls__btn text-sm sm:text-base px-4 py-2 sm:px-5 sm:py-2.5 text-purple-700 border-purple-300 hover:bg-purple-50 font-semibold tracking-wide transition-all"
           onClick={showAllB}
         >
           Show all

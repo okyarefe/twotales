@@ -16,46 +16,42 @@ interface StoryCardProps {
 
 export function StoryCard({ story }: StoryCardProps) {
   return (
-    <Card className="shadow-sm transform transition-all duration-200 motion-reduce:transition-none hover:shadow-lg hover:scale-100 sm:hover:scale-105 hover:-translate-y-1 border-slate-200 overflow-hidden min-w-0">
-      <CardHeader className="pb-3">
-        <div className="flex flex-col sm:flex-row items-start justify-between gap-2 sm:gap-0">
-          <CardTitle className="text-base font-semibold text-slate-800 tracking-tight leading-tight wrap-break-word flex-1">
+    <Card className="shadow-lg transform transition-all duration-300 motion-reduce:transition-none hover:shadow-2xl hover:scale-100 sm:hover:scale-105 hover:-translate-y-1 border-0 overflow-hidden min-w-0 bg-gradient-to-br from-white to-slate-50 group">
+      {/* Accent Line Top */}
+      <div className="h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-slate-300" />
+
+      <CardHeader className="pt-3 pb-2.5 sm:pt-4 sm:pb-3">
+        {/* Title with Level */}
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <CardTitle className="text-base sm:text-lg font-bold text-slate-900 leading-snug flex-1 break-words">
             {story.title}
           </CardTitle>
           <Badge
-            className={`text-xs font-medium shrink-0 ${getLevelColor(story.level)}`}
+            className={`text-xs font-semibold shrink-0 px-2.5 py-1.5 rounded-full mt-0.5 ${getLevelColor(story.level)}`}
           >
             {story.level}
           </Badge>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Language Badges */}
-        <div className="flex flex-wrap gap-2">
+
+        {/* Languages and Metadata in one row */}
+        <div className="flex flex-wrap items-center gap-2">
           <Badge
-            className={`text-xs font-medium ${getLanguageColors("English")}`}
+            className={`text-xs font-medium px-2 py-1 rounded-full ${getLanguageColors("English")}`}
           >
             English
           </Badge>
           <Badge
-            className={`text-xs font-medium ${getLanguageColors(
+            className={`text-xs font-medium px-2 py-1 rounded-full ${getLanguageColors(
               story.translate_to
             )}`}
           >
             {story.translate_to}
           </Badge>
-        </div>
-
-        {/* Story Stats */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs text-slate-600 font-sans">
-          <div className="flex items-center gap-1 min-w-0">
-            <Calendar className="w-3 h-3 shrink-0" />
-            <span className="truncate">{formatDate(story.created_at)}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <BookOpen className="w-3 h-3 shrink-0" />
+          <div className="flex items-center gap-1 text-xs text-slate-500 ml-auto">
+            <BookOpen className="w-3 h-3 text-slate-400" />
             <Badge
-              className={`text-xs font-medium ${getStoryLengthColors(
+              variant="outline"
+              className={`text-xs font-medium px-2 py-1 rounded-full border-slate-200 ${getStoryLengthColors(
                 story.length
               )}`}
             >
@@ -63,9 +59,19 @@ export function StoryCard({ story }: StoryCardProps) {
             </Badge>
           </div>
         </div>
+      </CardHeader>
+
+      <CardContent className="pt-1.5 pb-3 sm:pt-2 sm:pb-4 space-y-3">
+        {/* Date */}
+        <div className="flex items-center gap-2 text-xs text-slate-500 group-hover:text-slate-600 transition-colors">
+          <Calendar className="w-3.5 h-3.5 text-slate-400" />
+          <span className="font-medium">{formatDate(story.created_at)}</span>
+        </div>
 
         {/* Action Buttons */}
-        <StoryActionButtons storyId={story.id} />
+        <div className="pt-1">
+          <StoryActionButtons storyId={story.id} />
+        </div>
       </CardContent>
     </Card>
   );
