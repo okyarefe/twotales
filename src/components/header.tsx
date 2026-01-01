@@ -46,7 +46,7 @@ export default function Header() {
               TwoTales
             </Link>
           </div>
-          
+
           <div>
             <HeaderAuth />
           </div>
@@ -73,12 +73,12 @@ export default function Header() {
             TwoTales
           </Link>
         </div>
-        
+
         {/* Nav links - Hidden on mobile */}
         <div className="hidden md:block">
           <HeaderNav />
         </div>
-        
+
         <div>
           <HeaderAuth />
         </div>

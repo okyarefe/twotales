@@ -65,7 +65,7 @@ export default function HeroSection() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
               <div className="flex items-start gap-3 text-black">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-purple-400">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full text-purple-400 border border-purple-400 bg-purple-50">
                   ✓
                 </span>
                 <div>
@@ -76,7 +76,7 @@ export default function HeroSection() {
                 </div>
               </div>
               <div className="flex items-start gap-3 text-black">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-purple-400">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full text-purple-400 border border-purple-400 bg-purple-50">
                   ✓
                 </span>
                 <div>
