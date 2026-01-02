@@ -5,7 +5,7 @@ interface FormButtonProps {
   isLoading: boolean;
   loadingText?: string;
   onClick?: () => void;
-  size?: "sm" | "lg" | "default"
+  size?: "sm" | "lg" | "default";
 }
 
 export default function FormButton({
@@ -43,7 +43,7 @@ export default function FormButton({
               cy="25"
               r="20"
               fill="none"
-              stroke="#888"
+              stroke="#000"
               strokeWidth="5"
               strokeDasharray="90"
               strokeDashoffset="60"

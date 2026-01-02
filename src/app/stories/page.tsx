@@ -31,18 +31,19 @@ export default async function StoriesPage({
   return (
     <div className="bg-gradient-to-br from-slate-50 to-blue-50 font-sans min-h-full">
       <div className="container mx-auto px-4 py-4 max-w-6xl">
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <TopicCreateForm />
-          </div>
-          <p className="text-sm text-slate-600 font-sans mt-1">
-            Your personalized language learning journey
-          </p>
-          <div className="flex items-center gap-4">
-            <h2 className="text-md sm:text-lg md:text-2xl font-semibold text-slate-800 tracking-tight">
-              My Stories
-            </h2>
-            <StorySearch initial={q} />
+        <div className="space-y-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3 flex-1 w-full sm:w-auto">
+              <h2 className="text-md sm:text-lg md:text-2xl font-semibold text-slate-800 tracking-tight whitespace-nowrap">
+                My Stories
+              </h2>
+              <div className="flex-1 min-w-[220px] sm:min-w-[260px] md:min-w-[320px] max-w-[420px]">
+                <StorySearch initial={q} />
+              </div>
+            </div>
+            <div className="w-full sm:w-auto flex justify-start sm:justify-end">
+              <TopicCreateForm />
+            </div>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {stories.map((story) => (

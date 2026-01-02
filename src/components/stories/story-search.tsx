@@ -18,7 +18,7 @@ export default function StorySearch({ initial = "" }: StorySearchProps) {
   useEffect(() => {
     const t = setTimeout(() => {
       const trimmed = value.trim();
-      
+
       if (trimmed === "") {
         setDebounced("");
       } else if (trimmed.length >= 2) {
@@ -31,36 +31,35 @@ export default function StorySearch({ initial = "" }: StorySearchProps) {
 
   useEffect(() => {
     // push search param when debounced value changes
-      const params = new URLSearchParams(window.location.search);
-      if (debounced) {
-        params.set("q", debounced);
-      } else {
-        params.delete("q");
-      }
+    const params = new URLSearchParams(window.location.search);
+    if (debounced) {
+      params.set("q", debounced);
+    } else {
+      params.delete("q");
+    }
 
-      const qs = params.toString();
-      const url = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
-      
-      startTransition(() => {
-        router.push(url);
-      });
-    
+    const qs = params.toString();
+    const url = qs
+      ? `${window.location.pathname}?${qs}`
+      : window.location.pathname;
+
+    startTransition(() => {
+      router.push(url);
+    });
   }, [debounced, router]);
-
-    
 
   const onClear = useCallback(() => {
     setValue("");
   }, []);
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 w-full">
       <input
         aria-label="Search stories by title"
         placeholder="Search by title..."
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="px-3 py-2 border rounded-md text-sm w-64 focus:outline-none focus:ring-2 focus:ring-purple-300"
+        className="px-3 py-2 border rounded-md text-sm w-full min-w-[200px] sm:min-w-[240px] md:min-w-[280px] focus:outline-none focus:ring-2 focus:ring-purple-300"
       />
       {isPending ? (
         <div
@@ -76,7 +75,11 @@ export default function StorySearch({ initial = "" }: StorySearchProps) {
           <X className="w-6 h-6 text-slate-600 border border-violet-400 rounded-md" />
         </button>
       ) : null}
-      {isPending ? <span className="sr-only" aria-live="polite">Searching…</span> : null}
+      {isPending ? (
+        <span className="sr-only" aria-live="polite">
+          Searching…
+        </span>
+      ) : null}
     </div>
   );
 }

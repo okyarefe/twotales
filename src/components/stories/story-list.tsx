@@ -22,9 +22,6 @@ export function MyStoriesView({
           <h2 className="text-sm sm:text-lg md:text-2xl font-semibold text-slate-800 tracking-tight">
             My Stories
           </h2>
-          <p className="text-sm text-slate-600 font-sans mt-1">
-            Your personalized language learning journey
-          </p>
         </div>
         <Button
           onClick={() => setIsCreateModalOpen(true)}

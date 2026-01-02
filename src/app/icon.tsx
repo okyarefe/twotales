@@ -22,7 +22,7 @@ export default function Icon() {
         "Cache-Control": "public, max-age=3600",
       },
     });
-  } catch (error) {
+  } catch {
     return new ImageResponse(
       <div
         style={{

@@ -17,12 +17,9 @@ interface StoryCardProps {
 export function StoryCard({ story }: StoryCardProps) {
   return (
     <Card className="shadow-lg transform transition-all duration-300 motion-reduce:transition-none hover:shadow-2xl hover:scale-100 sm:hover:scale-105 hover:-translate-y-1 border-0 overflow-hidden min-w-0 bg-gradient-to-br from-white to-slate-50 group">
-      {/* Accent Line Top */}
-      <div className="h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-slate-300" />
-
-      <CardHeader className="pt-3 pb-2.5 sm:pt-4 sm:pb-3">
+      <CardHeader className="pt-2 pb-1.5 sm:pt-2.5 sm:pb-2">
         {/* Title with Level */}
-        <div className="flex items-start justify-between gap-2 mb-2">
+        <div className="flex items-start justify-between gap-2 mb-1.5">
           <CardTitle className="text-base sm:text-lg font-bold text-slate-900 leading-snug flex-1 break-words">
             {story.title}
           </CardTitle>
@@ -32,6 +29,9 @@ export function StoryCard({ story }: StoryCardProps) {
             {story.level}
           </Badge>
         </div>
+
+        {/* Accent Line Under Title */}
+        <div className="h-1 w-full bg-gradient-to-r from-purple-500 via-blue-500 to-slate-300 rounded-full mb-1" />
 
         {/* Languages and Metadata in one row */}
         <div className="flex flex-wrap items-center gap-2">
@@ -61,7 +61,7 @@ export function StoryCard({ story }: StoryCardProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="pt-1.5 pb-3 sm:pt-2 sm:pb-4 space-y-3">
+      <CardContent className="pt-1 pb-2.5 sm:pt-1.5 sm:pb-3 space-y-2.5">
         {/* Date */}
         <div className="flex items-center gap-2 text-xs text-slate-500 group-hover:text-slate-600 transition-colors">
           <Calendar className="w-3.5 h-3.5 text-slate-400" />
@@ -69,7 +69,7 @@ export function StoryCard({ story }: StoryCardProps) {
         </div>
 
         {/* Action Buttons */}
-        <div className="pt-1">
+        <div className="pt-0.5">
           <StoryActionButtons storyId={story.id} />
         </div>
       </CardContent>
