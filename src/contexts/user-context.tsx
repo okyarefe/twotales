@@ -124,7 +124,22 @@ export function UserProvider({
             router.push("/dashboard");
           }
         } else {
-          router.push("/");
+          // Only redirect to / if not on a public route
+          const publicRoutes = [
+            "/login",
+            "/blogs",
+            "/contact",
+            "/how-it-works",
+          ];
+          const currentPath = window.location.pathname;
+          const isPublicRoute = publicRoutes.some(
+            (route) =>
+              currentPath === route || currentPath.startsWith(route + "/")
+          );
+
+          if (!isPublicRoute) {
+            router.push("/");
+          }
           setUserData(null);
         }
       }
