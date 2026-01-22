@@ -15,7 +15,8 @@ export const blogs: BlogPost[] = [
     id: "2",
     slug: "stop-forcing-yourself-to-read-boring-spanish-stories",
     title: "Stop Forcing Yourself to Read Boring Spanish Stories",
-    excerpt: "Most learning materials force you to read generic stories about the weather or grocery shopping. Discover how to learn Spanish by reading about topics you actually care about.",
+    excerpt:
+      "Most learning materials force you to read generic stories about the weather or grocery shopping. Discover how to learn Spanish by reading about topics you actually care about.",
     author: "TwoTales Team",
     date: "2026-01-04",
     readTime: 4,
@@ -84,7 +85,8 @@ Stop reading generic stories that put you to sleep. Start reading stories that k
     id: "1",
     slug: "how-to-learn-a-language-by-reading-what-you-actually-love",
     title: "How to Learn a Language by Reading What You Actually Love",
-    excerpt: "Stop waiting until you're fluent to read about your passions. Learn the science behind the i+1 method and how TwoTalesAI helps you stay in the Goldilocks zone of language learning.",
+    excerpt:
+      "Stop waiting until you're fluent to read about your passions. Learn the science behind the i+1 method and how TwoTalesAI helps you stay in the Goldilocks zone of language learning.",
     author: "TwoTales Team",
     date: "2026-01-03",
     readTime: 5,
@@ -154,5 +156,7 @@ export function getBlogBySlug(slug: string): BlogPost | undefined {
 }
 
 export function getAllBlogs(): BlogPost[] {
-  return blogs.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return blogs.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 }
