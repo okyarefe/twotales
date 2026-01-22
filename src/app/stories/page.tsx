@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/utils/supabase/auth-server";
 import StorySearch from "@/components/stories/story-search";
 import TopicCreateForm from "@/components/stories/story-create-form";
-import StoriesListServer from "@/components/stories/stories-list-server";
+import StoryListServer from "@/components/stories/story-list-server";
 import { StoryGridSkeleton } from "@/components/stories/story-skeleton";
 
 type SearchParams = {
@@ -25,26 +25,29 @@ export default async function StoriesPage({
   const q = Array.isArray(query) ? (query[0] ?? "") : (query ?? "");
 
   return (
-    <main className="min-h-screen bg-slate-50/50">
-      {/* Hero / Header Section */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-6 max-w-6xl">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div className="space-y-1">
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
+    <div className="flex-1 bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Header Section - Matches Dashboard structure for seamless transition */}
+      <div className="bg-white/50 backdrop-blur-sm border-b border-slate-200 sticky top-[72px] z-20 w-full shadow-sm">
+        <div className="container mx-auto px-4 py-4 max-w-6xl">
+          <div className="space-y-6">
+            <div className="flex flex-row items-center justify-between">
+              <h2 className="text-2xl font-semibold text-slate-800 tracking-tight">
                 My Stories
-              </h1>
-              <p className="text-slate-500 text-sm md:text-base">
-                Access and manage all your generated stories in one place.
-              </p>
+              </h2>
+              <div className="flex items-center gap-3">
+                <div className="hidden sm:block relative w-[300px] md:w-[400px]">
+                  <StorySearch initial={q} />
+                </div>
+                <TopicCreateForm />
+              </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <div className="relative w-full sm:w-[300px] md:w-[400px]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <p className="text-sm text-slate-600 font-sans">
+                Access and manage all your generated stories in one place.
+              </p>
+              <div className="sm:hidden relative w-full">
                 <StorySearch initial={q} />
-              </div>
-              <div className="shrink-0">
-                <TopicCreateForm />
               </div>
             </div>
           </div>
@@ -57,9 +60,9 @@ export default async function StoriesPage({
             <StoryGridSkeleton />
           </div>
         }>
-          <StoriesListServer userId={user.id} query={q} />
+          <StoryListServer userId={user.id} query={q} />
         </Suspense>
       </div>
-    </main>
+    </div>
   );
 }
