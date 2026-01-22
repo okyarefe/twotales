@@ -1,20 +1,23 @@
-import UserDashboard from "@/app/dashboard/user-dashboard";
+import { Suspense } from "react";
 import TopicCreateForm from "@/components/stories/story-create-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Coins } from "lucide-react";
 
 import { getUserData } from "@/actions/user-data";
-
 import { getUser } from "@/utils/supabase/auth-server";
+import { CardSkeleton } from "./components/card-skeleton";
+import {
+  RoleMembershipCard,
+  StoryCreditsCard,
+  TTSCreditsCard,
+  StoriesCreatedCard,
+} from "./components/dashboard-cards";
 
 export default async function DashboardPage() {
+  // Get user first (we need the ID)
   const user = await getUser();
 
-  const userData = await getUserData(user.id);
-
-  if (!userData) {
-    return <p>User data not found.</p>;
-  }
+  // Start fetching user data WITHOUT awaiting - this kicks off the request
+  const userDataPromise = getUserData(user.id);
 
   return (
     <div className="bg-gradient-to-br from-slate-50 to-blue-50 font-sans">
@@ -31,54 +34,25 @@ export default async function DashboardPage() {
             progress
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Role & Membership
-                </CardTitle>
-                <BookOpen className="h-4 w-4 text-purple-600" />
-              </CardHeader>
-              <CardContent>
-                <UserDashboard userData={userData} type="role" />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Story Credits
-                </CardTitle>
-                <Coins className="h-4 w-4 text-yellow-600" />
-              </CardHeader>
-              <CardContent>
-                <UserDashboard userData={userData} type="storyCredit" />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  TTS Credits
-                </CardTitle>
-                <Coins className="h-4 w-4 text-blue-600" />
-              </CardHeader>
-              <CardContent>
-                <UserDashboard userData={userData} type="ttsCredit" />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Stories Created
-                </CardTitle>
-                <BookOpen className="h-4 w-4 text-green-600" />
-              </CardHeader>
-              <CardContent>
-                <UserDashboard
-                  userData={userData}
-                  numberOfStories={userData.storiesCreated}
-                  type="storiesCreated"
-                />
-              </CardContent>
-            </Card>
+            {/* Role & Membership Card */}
+            <Suspense fallback={<CardSkeleton title="Role & Membership" icon={<BookOpen className="h-4 w-4 text-purple-600" />} />}>
+              <RoleMembershipCard userDataPromise={userDataPromise} />
+            </Suspense>
+
+            {/* Story Credits Card */}
+            <Suspense fallback={<CardSkeleton title="Story Credits" icon={<Coins className="h-4 w-4 text-yellow-600" />} />}>
+              <StoryCreditsCard userDataPromise={userDataPromise} />
+            </Suspense>
+
+            {/* TTS Credits Card */}
+            <Suspense fallback={<CardSkeleton title="TTS Credits" icon={<Coins className="h-4 w-4 text-blue-600" />} />}>
+              <TTSCreditsCard userDataPromise={userDataPromise} />
+            </Suspense>
+
+            {/* Stories Created Card */}
+            <Suspense fallback={<CardSkeleton title="Stories Created" icon={<BookOpen className="h-4 w-4 text-green-600" />} />}>
+              <StoriesCreatedCard userDataPromise={userDataPromise} />
+            </Suspense>
           </div>
         </div>
       </div>

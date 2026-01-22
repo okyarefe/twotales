@@ -25,6 +25,14 @@ interface PriceData {
   };
 }
 
+
+/**
+ * Sync plans from Lemon Squeezy to database (slow, use sparingly)
+ * This should only be called:
+ * - On initial setup
+ * - Via admin panel/webhook when products change
+ * - NOT on regular page loads (use getPlans() instead)
+ */
 export async function syncPlans() {
   try {
     configureLemonSqueezy();
@@ -101,154 +109,135 @@ export async function syncPlans() {
     return syncedVariants;
   }
 
-  for (const product of allProducts) {
-    const productAttributes = product.attributes;
+  // Collect all variants that need price fetching
+  const variantsToProcess: Array<{
+    variantId: string;
+    product: typeof allProducts[0];
+    variant?: Variant["data"];
+    isProductWithoutVariants: boolean;
+  }> = [];
 
-    // Get variants for this product from the included array
+  for (const product of allProducts) {
     const productVariantsList =
       allVariants?.filter(
         (v) => v.attributes.product_id === parseInt(product.id, 10)
       ) || [];
 
-    // Fallback: product without variants
     if (productVariantsList.length === 0) {
-      try {
-        const productPriceObject = await listPrices({
-          filter: { variantId: product.id },
+      // Product without variants
+      variantsToProcess.push({
+        variantId: product.id,
+        product,
+        isProductWithoutVariants: true,
+      });
+    } else {
+      // Product with variants
+      for (const v of productVariantsList) {
+        const variant = v.attributes;
+        if (
+          variant.status === "draft" ||
+          (productVariantsList.length !== 1 && variant.status === "pending")
+        ) {
+          continue;
+        }
+        variantsToProcess.push({
+          variantId: v.id,
+          product,
+          variant: v,
+          isProductWithoutVariants: false,
         });
+      }
+    }
+  }
 
-        interface PriceData {
-          attributes: {
-            currency?: string;
-            status?: string;
-            usage_aggregation: unknown;
-            renewal_interval_unit: string | null;
-            renewal_interval_quantity: number | null;
-            trial_interval_unit: string | null;
-            trial_interval_quantity: number | null;
-            unit_price_decimal: number | null;
-            unit_price: number | null;
-          };
-        }
+  // Fetch all prices in parallel
 
-        const prices = (productPriceObject.data?.data as PriceData[]) ?? [];
-        const currentPriceObj =
-          prices.find(
-            (p) =>
-              p.attributes?.currency === "EUR" &&
-              p.attributes?.status === "active"
-          ) ||
-          prices.find((p) => p.attributes?.status === "active") ||
-          prices[0];
+  const pricePromises = variantsToProcess.map((item) =>
+    listPrices({ filter: { variantId: item.variantId } })
+      .then((priceObject) => ({ ...item, priceObject }))
+      .catch((err) => {
+        console.error(`❌ Error fetching price for variant ${item.variantId}:`, err);
+        return { ...item, priceObject: null };
+      })
+  );
 
-        if (currentPriceObj) {
-          const isUsageBased =
-            currentPriceObj.attributes.usage_aggregation !== null;
-          const interval = currentPriceObj.attributes.renewal_interval_unit;
-          const intervalCount =
-            currentPriceObj.attributes.renewal_interval_quantity;
-          const trialInterval = currentPriceObj.attributes.trial_interval_unit;
-          const trialIntervalCount =
-            currentPriceObj.attributes.trial_interval_quantity;
-          const price = isUsageBased
-            ? currentPriceObj.attributes.unit_price_decimal
-            : currentPriceObj.attributes.unit_price;
-          const priceString = price !== null ? price.toString() : "";
+  const variantsWithPrices = await Promise.all(pricePromises);
 
-          await _addVariant({
-            name: productAttributes.name,
-            description: productAttributes.description ?? "",
-            price: priceString,
-            interval,
-            intervalcount: intervalCount,
-            isusagebased: isUsageBased,
-            productid: parseInt(product.id, 10),
-            productname: productAttributes.name,
-            variantid: parseInt(product.id, 10), // use product id as stand-in
-            trialinterval: trialInterval,
-            trialintervalcount: trialIntervalCount,
-            sort: 0,
-          });
-        } else {
-          console.warn(
-            `⚠️ No price found for product without variants: ${productAttributes.name}`
-          );
-        }
+  // Process all variants with their fetched prices
+  for (const item of variantsWithPrices) {
+    if (!item.priceObject) continue;
+
+    const productAttributes = item.product.attributes;
+    const prices = (item.priceObject.data?.data as PriceData[]) ?? [];
+    const currentPriceObj =
+      prices.find(
+        (p) =>
+          p.attributes?.currency === "EUR" &&
+          p.attributes?.status === "active"
+      ) ||
+      prices.find((p) => p.attributes?.status === "active") ||
+      prices[0];
+
+    if (!currentPriceObj) {
+      const name = item.isProductWithoutVariants
+        ? productAttributes.name
+        : item.variant?.attributes.name;
+      console.warn(`⚠️ No price found for variant "${name}"`);
+      continue;
+    }
+
+    const isUsageBased =
+      currentPriceObj.attributes.usage_aggregation !== null;
+    const interval = currentPriceObj.attributes.renewal_interval_unit;
+    const intervalCount =
+      currentPriceObj.attributes.renewal_interval_quantity;
+    const trialInterval = currentPriceObj.attributes.trial_interval_unit;
+    const trialIntervalCount =
+      currentPriceObj.attributes.trial_interval_quantity;
+    const price = isUsageBased
+      ? currentPriceObj.attributes.unit_price_decimal
+      : currentPriceObj.attributes.unit_price;
+    const priceString = price !== null ? price.toString() : "";
+
+    if (item.isProductWithoutVariants) {
+      // Product without variants
+      try {
+        await _addVariant({
+          name: productAttributes.name,
+          description: productAttributes.description ?? "",
+          price: priceString,
+          interval,
+          intervalcount: intervalCount,
+          isusagebased: isUsageBased,
+          productid: parseInt(item.product.id, 10),
+          productname: productAttributes.name,
+          variantid: parseInt(item.product.id, 10),
+          trialinterval: trialInterval,
+          trialintervalcount: trialIntervalCount,
+          sort: 0,
+        });
       } catch (err) {
         console.error(
           `❌ Error syncing product without variants: ${productAttributes.name}`,
           err
         );
       }
-      // proceed to next product
-      continue;
-    }
-
-    for (const v of productVariantsList) {
-      const variant = v.attributes;
-
-      if (
-        variant.status === "draft" ||
-        (productVariantsList.length !== 1 && variant.status === "pending")
-      ) {
-        continue;
-      }
-
-      // Use product info from the parent loop
-      const productName = productAttributes.name;
+    } else if (item.variant) {
+      // Product with variants
+      const variant = item.variant.attributes;
       const productDescription =
         productAttributes.description ?? variant.description ?? "";
-
-      // Fetch price info for variant
-      const variantPriceObject = await listPrices({
-        filter: { variantId: v.id },
-      });
-      // console.log("Variant Price Object:", variantPriceObject);
-
-      const prices = (variantPriceObject.data?.data as PriceData[]) ?? [];
-      // Prefer EUR active price; then any active; then first available
-      const currentPriceObj =
-        prices.find(
-          (p) =>
-            p.attributes?.currency === "EUR" &&
-            p.attributes?.status === "active"
-        ) ||
-        prices.find((p) => p.attributes?.status === "active") ||
-        prices[0];
-      if (!currentPriceObj) {
-        console.warn(`⚠️ No price found for variant "${variant.name}"`);
-        continue;
-      }
-
-      const isUsageBased =
-        currentPriceObj.attributes.usage_aggregation !== null;
-      const interval = currentPriceObj.attributes.renewal_interval_unit;
-      const intervalCount =
-        currentPriceObj.attributes.renewal_interval_quantity;
-      const trialInterval = currentPriceObj.attributes.trial_interval_unit;
-      const trialIntervalCount =
-        currentPriceObj.attributes.trial_interval_quantity;
-
-      const price = isUsageBased
-        ? currentPriceObj.attributes.unit_price_decimal
-        : currentPriceObj.attributes.unit_price;
-
-      const priceString = price !== null ? price.toString() : "";
-
-      // console.log(
-      //   `✅ Adding variant to database: ${variant.name} (ID: ${v.id})`
-      // );
 
       await _addVariant({
         name: variant.name,
         description: productDescription,
         price: priceString,
         interval,
-        intervalcount: intervalCount, // lowercase no underscore
+        intervalcount: intervalCount,
         isusagebased: isUsageBased,
         productid: variant.product_id,
-        productname: productName,
-        variantid: parseInt(v.id, 10),
+        productname: productAttributes.name,
+        variantid: parseInt(item.variant.id, 10),
         trialinterval: trialInterval,
         trialintervalcount: trialIntervalCount,
         sort: variant.sort,
@@ -260,6 +249,26 @@ export async function syncPlans() {
   //   `✅ Successfully synced ${syncedVariants.length} variants to database`
   // );
   return syncedVariants;
+}
+
+/**
+ * Get plans from database cache (fast, recommended for most use cases)
+ * This reads from the local database without hitting Lemon Squeezy API
+ */
+export async function getPlans() {
+  const supabase = await createClient();
+  
+  const { data: plans, error } = await supabase
+    .from("plan")
+    .select("*")
+    .order("sort", { ascending: true });
+
+  if (error) {
+    console.error("❌ Error fetching plans from database:", error);
+    throw error;
+  }
+
+  return plans || [];
 }
 
 export async function getCheckoutURL(variantId: number, embed = false) {
