@@ -11,6 +11,7 @@ export default function StoryPreview() {
             width={720}
             height={420}
             className="w-full h-auto object-cover rounded-lg"
+            priority
           />
         </div>
       </div>
