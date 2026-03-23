@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit, Fraunces } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import { UserProvider } from "@/contexts/user-context";
@@ -9,8 +9,16 @@ import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
 import styles from "./layout.module.css";
 
-const inter = Inter({
+const outfit = Outfit({
   subsets: ["latin"],
+  variable: "--font-outfit",
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
   weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
@@ -100,7 +108,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={inter.className}>
+      <body className={`${outfit.variable} ${fraunces.variable} font-sans`}>
         <UserProvider
           initialUser={user?.data.user}
           initialUserData={userFromSupabase}

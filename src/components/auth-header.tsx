@@ -6,8 +6,20 @@ import { Button } from "./ui/button";
 import { ClipLoader } from "react-spinners";
 
 import { useUser } from "@/contexts/user-context";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { CSSProperties } from "react";
+
+function useMobileLandscape() {
+  const [isML, setIsML] = useState(false);
+  useEffect(() => {
+    const check = () =>
+      setIsML(window.innerWidth <= 920 && window.innerHeight < window.innerWidth);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isML;
+}
 import GoogleSignInButton from "./google-signin-button";
 
 export default function HeaderAuth({
@@ -17,6 +29,7 @@ export default function HeaderAuth({
 }) {
   const { user, userData, isLoading, signOut } = useUser();
   const [isSigningOut] = useState(false);
+  const mobileLandscape = useMobileLandscape();
 
   const getInitial = (email?: string) => email?.charAt(0).toUpperCase() || "?";
 
@@ -107,12 +120,12 @@ export default function HeaderAuth({
     >
       <div className={orientation === "vertical" ? "block" : "hidden sm:block"}>
         <GoogleSignInButton variant="signin">
-          {orientation === "vertical" ? "In" : "Sign In"}
+          {mobileLandscape ? "" : orientation === "vertical" ? "In" : "Sign In"}
         </GoogleSignInButton>
       </div>
 
       <GoogleSignInButton variant="signup">
-        {orientation === "vertical" ? "Up" : "Sign Up"}
+        {mobileLandscape ? "" : orientation === "vertical" ? "Up" : "Sign Up"}
       </GoogleSignInButton>
     </div>
   );

@@ -7,11 +7,9 @@ import React from "react";
 type Variant = "signin" | "signup" | "learn";
 
 const variantStyles: Record<Variant, string> = {
-  signin: "bg-purple-400 text-white hover:bg-purple-300",
-  signup:
-    "bg-white text-purple-500 border border-purple-500 hover:bg-purple-50",
-  learn:
-    "bg-gradient-to-r from-purple-300 to-purple-500 text-white hover:from-purple-400 hover:to-purple-600",
+  signin: "bg-primary text-primary-foreground hover:bg-primary/90",
+  signup: "bg-white text-primary border border-primary/30 hover:bg-primary/5",
+  learn: "bg-primary text-primary-foreground hover:bg-primary/90",
 };
 
 export default function GoogleSignInButton({
