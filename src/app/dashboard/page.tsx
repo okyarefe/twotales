@@ -5,18 +5,10 @@ import { BookOpen, Coins } from "lucide-react";
 import { getUserData } from "@/actions/user-data";
 import { getUser } from "@/utils/supabase/auth-server";
 import { CardSkeleton } from "./components/card-skeleton";
-import {
-  RoleMembershipCard,
-  StoryCreditsCard,
-  TTSCreditsCard,
-  StoriesCreatedCard,
-} from "./components/dashboard-cards";
+import { DashboardCard } from "./components/dashboard-card";
 
 export default async function DashboardPage() {
-  // Get user first (we need the ID)
   const user = await getUser();
-
-  // Start fetching user data WITHOUT awaiting - this kicks off the request
   const userDataPromise = getUserData(user.id);
 
   return (
@@ -34,24 +26,53 @@ export default async function DashboardPage() {
             progress
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-            {/* Role & Membership Card */}
             <Suspense fallback={<CardSkeleton title="Role & Membership" icon={<BookOpen className="h-4 w-4 text-purple-600" />} />}>
-              <RoleMembershipCard userDataPromise={userDataPromise} />
+              <DashboardCard
+                title="Role & Membership"
+                icon={<BookOpen className="h-4 w-4 text-purple-600" />}
+                userDataPromise={userDataPromise}
+                renderContent={(userData) => (
+                  <div className="flex items-center gap-2">
+                    <div className="text-lg font-bold capitalize">{userData.role}</div>
+                    <p className="text-sm text-muted-foreground capitalize">
+                      {userData.membershipType} membership
+                    </p>
+                  </div>
+                )}
+              />
             </Suspense>
 
-            {/* Story Credits Card */}
             <Suspense fallback={<CardSkeleton title="Story Credits" icon={<Coins className="h-4 w-4 text-yellow-600" />} />}>
-              <StoryCreditsCard userDataPromise={userDataPromise} />
+              <DashboardCard
+                title="Story Credits"
+                icon={<Coins className="h-4 w-4 text-yellow-600" />}
+                userDataPromise={userDataPromise}
+                renderContent={(userData) => (
+                  <div className="text-2xl font-bold">{userData.storyCredit}</div>
+                )}
+              />
             </Suspense>
 
-            {/* TTS Credits Card */}
             <Suspense fallback={<CardSkeleton title="TTS Credits" icon={<Coins className="h-4 w-4 text-blue-600" />} />}>
-              <TTSCreditsCard userDataPromise={userDataPromise} />
+              <DashboardCard
+                title="TTS Credits"
+                icon={<Coins className="h-4 w-4 text-blue-600" />}
+                userDataPromise={userDataPromise}
+                renderContent={(userData) => (
+                  <div className="text-2xl font-bold">{userData.ttsCredit}</div>
+                )}
+              />
             </Suspense>
 
-            {/* Stories Created Card */}
             <Suspense fallback={<CardSkeleton title="Stories Created" icon={<BookOpen className="h-4 w-4 text-green-600" />} />}>
-              <StoriesCreatedCard userDataPromise={userDataPromise} />
+              <DashboardCard
+                title="Stories Created"
+                icon={<BookOpen className="h-4 w-4 text-green-600" />}
+                userDataPromise={userDataPromise}
+                renderContent={(userData) => (
+                  <div className="text-2xl font-bold">{userData.storiesCreated}</div>
+                )}
+              />
             </Suspense>
           </div>
         </div>

@@ -4,7 +4,7 @@ import Footer from "@/app/login/footer";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#fafafa] overflow-x-hidden">
       <HeroSection />
       <FeaturesSection />
       <Footer />

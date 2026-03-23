@@ -30,7 +30,7 @@ export default function StorySearch({ initial = "" }: StorySearchProps) {
   }, [value]);
 
   useEffect(() => {
-    // push search param when debounced value changes
+    // build the URL we'd navigate to
     const params = new URLSearchParams(window.location.search);
     if (debounced) {
       params.set("q", debounced);
@@ -42,6 +42,11 @@ export default function StorySearch({ initial = "" }: StorySearchProps) {
     const url = qs
       ? `${window.location.pathname}?${qs}`
       : window.location.pathname;
+
+    // skip if URL already matches — avoids redundant fetches on mount
+    if (url === `${window.location.pathname}${window.location.search}`) {
+      return;
+    }
 
     startTransition(() => {
       router.push(url);

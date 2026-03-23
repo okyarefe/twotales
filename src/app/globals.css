@@ -132,85 +132,8 @@
     @apply bg-background text-foreground;
   }
 
-  /* Support for sidebar layout in mobile landscape */
-  .mobile-landscape-row {
-    @apply flex-col h-full w-full overflow-hidden;
-  }
-
-  @media (max-width: 920px) and (orientation: landscape) {
-    .mobile-landscape-row {
-      height: 100vh !important;
-      flex-direction: row !important;
-      overflow: hidden !important;
-    }
-    .mobile-landscape-row > main {
-      flex: 1 1 0% !important;
-      height: 100% !important;
-      overflow-y: auto !important;
-    }
-  }
 }
 
-/* Compact landscape overrides for small mobile devices */
-@media (max-width: 920px) and (orientation: landscape) {
-  .story-quiz-tabs {
-    padding: 0.25rem !important;
-    height: 100% !important;
-    min-height: auto !important;
-    border-radius: 0 !important;
-  }
-
-  .story-quiz-tabs__list {
-    padding: 0.125rem !important;
-  }
-
-  .story-quiz-tabs__trigger {
-    padding: 0.375rem 0.5rem !important;
-    font-size: 0.8rem !important;
-  }
-
-  .story-quiz-tabs .bg-white.bg-opacity-80 {
-    padding: 0.25rem !important;
-    border-radius: 0.5rem !important;
-  }
-
-  .story-quiz-tabs .max-h-\[70vh\] {
-    max-height: 85vh !important;
-  }
-
-  /* Reduce header spacing and sentence spacing in compact landscape */
-  .story-quiz-tabs .tabs-header {
-    margin-bottom: 0.25rem !important;
-  }
-
-  .story-quiz-tabs .sentence-list__item {
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
-    padding-top: 0.35rem !important;
-    padding-bottom: 0.35rem !important;
-    min-height: 40px !important;
-    gap: 0.5rem !important;
-  }
-
-  .story-quiz-tabs .sentence-list__text {
-    font-size: 0.85rem !important;
-    line-height: 1.2 !important;
-  }
-
-  .story-quiz-tabs .flex.flex-col > .flex.flex-wrap {
-    gap: 0.25rem !important;
-  }
-
-  /* Smaller hide/show buttons in compact landscape */
-  .story-quiz-tabs .sentence-controls .sentence-controls__btn {
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
-    padding-top: 0.25rem !important;
-    padding-bottom: 0.25rem !important;
-    font-size: 0.75rem !important;
-    line-height: 1 !important;
-  }
-}
 
 /* Tydal-inspired typography utilities */
 @layer utilities {

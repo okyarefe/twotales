@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getUserData } from "@/actions/user-data";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
+import styles from "./layout.module.css";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -104,7 +105,7 @@ export default async function RootLayout({
           initialUser={user?.data.user}
           initialUserData={userFromSupabase}
         >
-          <div className="h-full flex flex-col mobile-landscape-row">
+          <div className={`h-full flex flex-col ${styles.landscapeRow}`}>
             <Header />
             <main className="flex-1 flex flex-col overflow-y-auto">{children}</main>
             <Analytics />

@@ -1,8 +1,6 @@
 "use server";
 
 import { z } from "zod";
-
-
 import { revalidatePath } from "next/cache";
 import { languages, languageLevels, grammarTopics } from "@/constants";
 import {
@@ -19,13 +17,15 @@ import {
 } from "@/services/openai/generateStory";
 import { createClient } from "@/lib/supabase/server";
 import { Story, storyLength } from "@/types";
-import { deleteStoryById } from "@/lib/supabase/queries";
+import { deleteStoryById, getStoryById } from "@/lib/supabase/queries";
 
 const createStorySchema = z.object({
   title: z
     .string()
     .min(3, { message: "Title should be at least 3 characters long" })
-    .regex(/[a-z-]/),
+    .regex(/^[a-zA-Z\s-]+$/, {
+      message: "Title can only contain letters, spaces, and hyphens",
+    }),
   prompt: z
     .string()
     .min(10, { message: "Description should be at least 10 characters long" }),
@@ -56,7 +56,7 @@ interface CreateStoryFormState {
 
 export async function createStory(
   formState: CreateStoryFormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<CreateStoryFormState> {
   const result = createStorySchema.safeParse({
     title: formData.get("title"),
@@ -112,7 +112,7 @@ export async function createStory(
 
     const quiz = await generateQuizFromStory(story);
 
-    saveQuizQuestions(savedStory.id, quiz.questions, story.totalTokens);
+    await saveQuizQuestions(savedStory.id, quiz.questions, story.totalTokens);
 
     // DECREASE THE USER'S CREDIT with supabase stored procedure
     // Modify user table to keep track of number of stories created ?
@@ -141,8 +141,24 @@ export async function createStory(
 }
 
 export async function deleteStoryServerAction(storyId: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("You must be signed in to delete a story");
+  }
+
+  const story = await getStoryById(storyId);
+  if (!story || story.user_id !== user.id) {
+    throw new Error(
+      "Story not found or you do not have permission to delete it",
+    );
+  }
+
   await deleteStoryById(storyId);
-  revalidatePath("/dashboard"); // or the path you want to refresh after deletion
+  revalidatePath("/dashboard");
 }
 
 export async function markStoryFeedbackGeneratedAction(storyId: string) {

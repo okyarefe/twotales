@@ -1,97 +1,82 @@
 import StoryPreview from "@/app/login/story-preview";
 import GoogleSignInButton from "@/components/google-signin-button";
+import { Sparkles, BookOpen, Languages } from "lucide-react";
 
 export default function HeroSection() {
   return (
-    <section className="pb-20 px-6 overflow-x-hidden text-black">
-      <div className="container mx-auto max-w-6xl">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <div className="inline-block">
-              <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-wider uppercase text-black px-3 py-1 rounded-full border border-purple-300">
+    <section className="relative min-h-[92vh] flex items-center overflow-hidden">
+      {/* Background — soft radial glow */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-violet-200/40 blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[50%] h-[50%] rounded-full bg-indigo-200/30 blur-[100px]" />
+        <div className="absolute top-[30%] right-[20%] w-[30%] h-[30%] rounded-full bg-fuchsia-100/40 blur-[80px]" />
+      </div>
+
+      <div className="container mx-auto max-w-6xl px-6 py-16 lg:py-0">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+          {/* Left — copy */}
+          <div className="space-y-8 max-w-xl">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white/70 backdrop-blur-sm px-4 py-1.5 shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-violet-500" />
+              <span className="text-xs font-semibold tracking-wide uppercase text-violet-600">
                 AI-Powered Language Learning
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl">
-              <span className="block">
-                <span>Turn </span>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-fuchsia-500">
-                  your creative ideas
-                </span>
-                <span> into </span>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-fuchsia-500">
-                  structured language lessons
-                </span>
-                <span> in seconds.</span>
+            {/* Headline */}
+            <h1 className="text-hero leading-[1.08] tracking-tight text-slate-900">
+              Learn languages through{" "}
+              <span className="bg-gradient-to-r from-violet-600 via-purple-500 to-fuchsia-500 bg-clip-text text-transparent">
+                stories you create
               </span>
             </h1>
 
-            <p className="text-lg text-black max-w-2xl leading-relaxed">
-              No more boring textbooks. Generate bilingual lessons,
-              auto-quizzes, and targeted grammar practice tailored to your goals
-              and interests
+            {/* Sub-copy */}
+            <p className="text-lg leading-relaxed text-slate-500 max-w-md">
+              Generate bilingual stories on any topic, test yourself with
+              auto-generated quizzes, and get AI feedback on your writing — all
+              in seconds.
             </p>
 
-            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 gap-3">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full">
-                <GoogleSignInButton
-                  variant="learn"
-                  showTextOnXs
-                  className="w-full md:w-auto h-14 md:h-16 px-6 sm:px-9 md:px-12 lg:px-16 text-lg md:text-xl font-semibold rounded-2xl shadow-2xl bg-gradient-to-r from-indigo-600 to-violet-500 text-white transition-transform transform hover:-translate-y-0.5 hover:shadow-[0_22px_48px_-12px_rgba(99,102,241,0.38)] duration-200 focus:outline-none focus:ring-4 focus:ring-indigo-400/30 text-center"
-                >
-                  Start Learning Free
-                </GoogleSignInButton>
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <GoogleSignInButton
+                variant="learn"
+                showTextOnXs
+                className="h-13 px-8 text-base font-semibold rounded-xl shadow-lg shadow-violet-500/20 bg-gradient-to-r from-violet-600 to-purple-500 text-white transition-all duration-200 hover:shadow-xl hover:shadow-violet-500/30 hover:-translate-y-0.5"
+              >
+                Start Learning Free
+              </GoogleSignInButton>
 
-                <span className="mt-3 sm:mt-0 inline-flex items-center gap-2 text-sm text-black bg-white/10 px-3 py-1 rounded-full border border-black/10">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4 text-black"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  <span>No credit card required</span>
-                </span>
-              </div>
+              <span className="text-sm text-slate-400">
+                No credit card required
+              </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
-              <div className="flex items-start gap-3 text-black">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full text-purple-400 border border-purple-400 bg-purple-50">
-                  ✓
-                </span>
-                <div>
-                  <div className="font-semibold text-black">
-                    Stories about anything
-                  </div>
-                  <div className="text-sm text-black">Generated in seconds</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3 text-black">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full text-purple-400 border border-purple-400 bg-purple-50">
-                  ✓
-                </span>
-                <div>
-                  <div className="font-semibold text-black">
-                    Side-by-side bilingual
-                  </div>
-                  <div className="text-sm text-black">Easy navigation</div>
-                </div>
-              </div>
+            {/* Trust pills */}
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Pill icon={<BookOpen className="w-3.5 h-3.5" />} text="Bilingual stories" />
+              <Pill icon={<Languages className="w-3.5 h-3.5" />} text="10+ languages" />
+              <Pill icon={<Sparkles className="w-3.5 h-3.5" />} text="AI quizzes" />
             </div>
           </div>
 
-          <StoryPreview />
+          {/* Right — preview */}
+          <div className="flex justify-center lg:justify-end">
+            <StoryPreview />
+          </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function Pill({ icon, text }: { icon: React.ReactNode; text: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/80 border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 shadow-sm backdrop-blur-sm">
+      {icon}
+      {text}
+    </span>
   );
 }

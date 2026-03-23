@@ -35,18 +35,15 @@ export default async function StoriesPage({
                 My Stories
               </h2>
               <div className="flex items-center gap-3">
-                <div className="hidden sm:block relative w-[300px] md:w-[400px]">
-                  <StorySearch initial={q} />
-                </div>
                 <TopicCreateForm />
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <p className="text-sm text-slate-600 font-sans">
+              <p className="text-sm text-slate-600 font-sans hidden sm:block">
                 Access and manage all your generated stories in one place.
               </p>
-              <div className="sm:hidden relative w-full">
+              <div className="relative w-full sm:w-[300px] md:w-[400px] sm:order-first">
                 <StorySearch initial={q} />
               </div>
             </div>
