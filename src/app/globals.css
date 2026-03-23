@@ -111,6 +111,14 @@
 }
 
 @layer base {
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
   html {
     overflow-y: scroll;
     scrollbar-gutter: stable;
@@ -123,14 +131,33 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Support for sidebar layout in mobile landscape */
+  .mobile-landscape-row {
+    @apply flex-col h-full w-full overflow-hidden;
+  }
+
+  @media (max-width: 900px) and (orientation: landscape) {
+    .mobile-landscape-row {
+      height: 100vh !important;
+      flex-direction: row !important;
+      overflow: hidden !important;
+    }
+    .mobile-landscape-row > main {
+      flex: 1 1 0% !important;
+      height: 100% !important;
+      overflow-y: auto !important;
+    }
+  }
 }
 
 /* Compact landscape overrides for small mobile devices */
 @media (max-width: 900px) and (orientation: landscape) {
   .story-quiz-tabs {
     padding: 0.25rem !important;
+    height: 100% !important;
     min-height: auto !important;
-    border-radius: 0.5rem !important;
+    border-radius: 0 !important;
   }
 
   .story-quiz-tabs__list {
@@ -148,7 +175,7 @@
   }
 
   .story-quiz-tabs .max-h-\[70vh\] {
-    max-height: 60vh !important;
+    max-height: 85vh !important;
   }
 
   /* Reduce header spacing and sentence spacing in compact landscape */

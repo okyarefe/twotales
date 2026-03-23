@@ -3,9 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 export async function signIn() {
   const supabase = await createClient();
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  console.log(
-    " +000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-  );
+
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {

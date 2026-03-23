@@ -23,10 +23,10 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        duration: 0.4, 
+      transition={{
+        duration: 0.4,
         delay: Math.min(index * 0.1, 0.5),
-        ease: "easeOut" 
+        ease: "easeOut",
       }}
     >
       <Card className="shadow-lg transform transition-all duration-300 motion-reduce:transition-none hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 border-0 overflow-hidden min-w-0 bg-gradient-to-br from-white to-slate-50 group h-full">
@@ -55,7 +55,7 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
             </Badge>
             <Badge
               className={`text-xs font-medium px-2 py-1 rounded-full ${getLanguageColors(
-                story.translate_to
+                story.translate_to,
               )}`}
             >
               {story.translate_to}
@@ -65,7 +65,7 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
               <Badge
                 variant="outline"
                 className={`text-xs font-medium px-2 py-1 rounded-full border-slate-200 ${getStoryLengthColors(
-                  story.length
+                  story.length,
                 )}`}
               >
                 {story.length}

@@ -10,7 +10,11 @@ import { useState } from "react";
 import type { CSSProperties } from "react";
 import GoogleSignInButton from "./google-signin-button";
 
-export default function HeaderAuth() {
+export default function HeaderAuth({
+  orientation = "horizontal",
+}: {
+  orientation?: "horizontal" | "vertical";
+}) {
   const { user, userData, isLoading, signOut } = useUser();
   const [isSigningOut] = useState(false);
 
@@ -94,12 +98,22 @@ export default function HeaderAuth() {
 
   // User is not logged in - show sign in/up buttons
   return (
-    <div className="flex flex-row gap-2">
-      <div className="hidden sm:block">
-        <GoogleSignInButton variant="signin">Sign In</GoogleSignInButton>
+    <div
+      className={
+        orientation === "vertical"
+          ? "flex flex-col gap-3 items-center"
+          : "flex flex-row gap-2"
+      }
+    >
+      <div className={orientation === "vertical" ? "block" : "hidden sm:block"}>
+        <GoogleSignInButton variant="signin">
+          {orientation === "vertical" ? "In" : "Sign In"}
+        </GoogleSignInButton>
       </div>
 
-      <GoogleSignInButton variant="signup">Sign Up</GoogleSignInButton>
+      <GoogleSignInButton variant="signup">
+        {orientation === "vertical" ? "Up" : "Sign Up"}
+      </GoogleSignInButton>
     </div>
   );
 }

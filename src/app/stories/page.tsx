@@ -27,7 +27,7 @@ export default async function StoriesPage({
   return (
     <div className="flex-1 bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header Section - Matches Dashboard structure for seamless transition */}
-      <div className="bg-white/50 backdrop-blur-sm border-b border-slate-200 sticky top-[72px] z-20 w-full shadow-sm">
+      <div className="bg-white/50 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-20 w-full shadow-sm">
         <div className="container mx-auto px-4 py-4 max-w-6xl">
           <div className="space-y-6">
             <div className="flex flex-row items-center justify-between">
@@ -41,7 +41,7 @@ export default async function StoriesPage({
                 <TopicCreateForm />
               </div>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <p className="text-sm text-slate-600 font-sans">
                 Access and manage all your generated stories in one place.
@@ -55,11 +55,14 @@ export default async function StoriesPage({
       </div>
 
       <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <Suspense key={q} fallback={
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <StoryGridSkeleton />
-          </div>
-        }>
+        <Suspense
+          key={q}
+          fallback={
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <StoryGridSkeleton />
+            </div>
+          }
+        >
           <StoryListServer userId={user.id} query={q} />
         </Suspense>
       </div>

@@ -104,9 +104,9 @@ export default async function RootLayout({
           initialUser={user?.data.user}
           initialUserData={userFromSupabase}
         >
-          <div className="min-h-screen flex flex-col">
+          <div className="h-full flex flex-col mobile-landscape-row">
             <Header />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 flex flex-col overflow-y-auto">{children}</main>
             <Analytics />
             <Toaster />
           </div>
