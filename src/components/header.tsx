@@ -31,27 +31,27 @@ export default function Header() {
   // In mobile landscape, show sidebar instead of navbar
   if (isMobileLandscape) {
     return (
-      <header className="h-full w-14 sm:w-16 sticky top-0 left-0 bg-white/90 dark:bg-card/95 backdrop-blur border-r border-border shadow-md z-40 flex flex-col items-center justify-between py-4 shrink-0 overflow-hidden">
+      <header className="h-dvh w-14 sm:w-16 sticky top-0 left-0 bg-white/90 dark:bg-card/95 backdrop-blur border-r border-border shadow-md z-40 flex flex-col items-center justify-between py-2 shrink-0">
         {/* Mobile Menu Button - Top */}
-        <div className="flex-none w-full flex justify-center">
+        <div className="shrink-0 w-full flex justify-center">
           <MobileSidebar className="!flex items-center justify-center" />
         </div>
 
-        {/* Mascot - Center (Takes all available space and centers itself) */}
-        <div className="flex-1 flex items-center justify-center min-h-0 w-full px-1">
+        {/* Mascot - Center (shrinks to give space to siblings) */}
+        <div className="flex-1 flex items-center justify-center min-h-0 w-full px-1 overflow-hidden">
           <Link href="/" className="w-full flex justify-center">
             <Image
               src="/mascot.png"
               alt="Mascot"
               width={48}
               height={48}
-              className="w-full h-auto max-h-[120px] object-contain hover:scale-110 transition-transform"
+              className="w-full h-auto max-h-[80px] object-contain hover:scale-110 transition-transform"
             />
           </Link>
         </div>
 
         {/* User Profile - Bottom */}
-        <div className="flex-none">
+        <div className="shrink-0">
           <HeaderAuth orientation="vertical" />
         </div>
       </header>
