@@ -101,7 +101,7 @@ export default function HeaderAuth({
     <div
       className={
         orientation === "vertical"
-          ? "flex flex-col gap-3 items-center"
+          ? "flex flex-col gap-1 items-center"
           : "flex flex-row gap-2"
       }
     >

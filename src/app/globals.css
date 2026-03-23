@@ -137,7 +137,7 @@
     @apply flex-col h-full w-full overflow-hidden;
   }
 
-  @media (max-width: 900px) and (orientation: landscape) {
+  @media (max-width: 920px) and (orientation: landscape) {
     .mobile-landscape-row {
       height: 100vh !important;
       flex-direction: row !important;
@@ -152,7 +152,7 @@
 }
 
 /* Compact landscape overrides for small mobile devices */
-@media (max-width: 900px) and (orientation: landscape) {
+@media (max-width: 920px) and (orientation: landscape) {
   .story-quiz-tabs {
     padding: 0.25rem !important;
     height: 100% !important;

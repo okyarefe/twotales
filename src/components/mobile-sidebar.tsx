@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
-export default function MobileSidebar() {
+export default function MobileSidebar({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const { user } = useUser();
@@ -68,7 +68,11 @@ export default function MobileSidebar() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden">
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn("md:hidden", className)}
+        >
           <Menu className="h-6 w-6" />
           <span className="sr-only">Toggle menu</span>
         </Button>

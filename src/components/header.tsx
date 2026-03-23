@@ -12,8 +12,8 @@ export default function Header() {
 
   useEffect(() => {
     const checkOrientation = () => {
-      // Check if mobile (width < 768px) AND landscape (width > height)
-      const isMobile = window.innerWidth < 768;
+      // Check if mobile (width < 920px) AND landscape (width > height)
+      const isMobile = window.innerWidth < 920;
       const isLandscape = window.innerWidth > window.innerHeight;
       setIsMobileLandscape(isMobile && isLandscape);
     };
@@ -31,27 +31,27 @@ export default function Header() {
   // In mobile landscape, show sidebar instead of navbar
   if (isMobileLandscape) {
     return (
-      <header className="h-screen w-14 sm:w-16 sticky top-0 left-0 bg-white/90 dark:bg-card/95 backdrop-blur border-r border-border shadow-md z-40 flex flex-col items-center py-4 gap-6 shrink-0">
+      <header className="h-full w-14 sm:w-16 sticky top-0 left-0 bg-white/90 dark:bg-card/95 backdrop-blur border-r border-border shadow-md z-40 flex flex-col items-center justify-between py-4 shrink-0 overflow-hidden">
         {/* Mobile Menu Button - Top */}
-        <div className="flex-none">
-          <MobileSidebar />
+        <div className="flex-none w-full flex justify-center">
+          <MobileSidebar className="!flex items-center justify-center" />
         </div>
 
-        {/* Mascot - Center */}
-        <div className="flex-1 flex items-center justify-center overflow-hidden w-full px-2">
-          <Link href="/">
+        {/* Mascot - Center (Takes all available space and centers itself) */}
+        <div className="flex-1 flex items-center justify-center min-h-0 w-full px-1">
+          <Link href="/" className="w-full flex justify-center">
             <Image
               src="/mascot.png"
               alt="Mascot"
-              width={64}
-              height={64}
+              width={48}
+              height={48}
               className="w-full h-auto max-h-[120px] object-contain hover:scale-110 transition-transform"
             />
           </Link>
         </div>
 
         {/* User Profile - Bottom */}
-        <div className="flex-none mt-auto">
+        <div className="flex-none">
           <HeaderAuth orientation="vertical" />
         </div>
       </header>
