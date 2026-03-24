@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import SentenceList from "./sentence-list";
 import { Button } from "@/components/ui/button";
 
@@ -20,8 +20,8 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
   storyA,
   storyB,
 }) => {
-  const sentencesA = splitSentences(storyA);
-  const sentencesB = splitSentences(storyB);
+  const sentencesA = useMemo(() => splitSentences(storyA), [storyA]);
+  const sentencesB = useMemo(() => splitSentences(storyB), [storyB]);
   const maxLen = Math.max(sentencesA.length, sentencesB.length);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [hiddenB, setHiddenB] = useState<boolean[]>(Array(maxLen).fill(true));
@@ -36,21 +36,21 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
     });
   }, [maxLen]);
 
-  const toggleSentenceB = (idx: number) => {
+  const toggleSentenceB = useCallback((idx: number) => {
     setHiddenB((prev) => {
       const next = [...prev];
       next[idx] = !next[idx];
       return next;
     });
-  };
+  }, []);
 
-  const hideAllB = () => {
+  const hideAllB = useCallback(() => {
     setHiddenB(Array(maxLen).fill(true));
-  };
+  }, [maxLen]);
 
-  const showAllB = () => {
+  const showAllB = useCallback(() => {
     setHiddenB(Array(maxLen).fill(false));
-  };
+  }, [maxLen]);
 
   return (
     <div className="flex flex-col">

@@ -32,12 +32,14 @@ export function DreamJournalForm({
   feedbackGenerated,
   existingFeedback,
 }: DreamJournalFormProps) {
-  const [userAnswer, setuserAnswer] = useState(existingFeedback?.user_answer || "");
+  const [userAnswer, setuserAnswer] = useState(
+    existingFeedback?.user_answer || "",
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<FeedbackResponse | null>(
-    existingFeedback?.feedback_data || null
+    existingFeedback?.feedback_data || null,
   );
-  
+
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
@@ -86,10 +88,19 @@ export function DreamJournalForm({
       <div className="flex justify-end">
         <Button
           onClick={handleSubmit}
-          disabled={!userAnswer.trim() || isSubmitting || !storyCheckReference || feedbackGenerated}
+          disabled={
+            !userAnswer.trim() ||
+            isSubmitting ||
+            !storyCheckReference ||
+            feedbackGenerated
+          }
           variant="secondary"
         >
-          {feedbackGenerated ? "Feedback Already Generated" : isSubmitting ? "Submitting..." : "Submit for Feedback"}
+          {feedbackGenerated
+            ? "Feedback Already Generated"
+            : isSubmitting
+              ? "Submitting..."
+              : "Submit for Feedback"}
         </Button>
       </div>
 
@@ -137,7 +148,7 @@ export function DreamJournalForm({
                       <div className="text-green-700">
                         Correct: {topic.example.corrected || "—"}
                       </div>
-                      <div className="text-muted text-xs">
+                      <div className="text-xs text-black">
                         {topic.example.explanation}
                       </div>
                     </div>
