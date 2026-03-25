@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { createFlashcard } from "@/lib/supabase/queries/flashcards";
 
 export async function addSentenceToFlashcard(
   flashcardId: string,
@@ -56,4 +57,25 @@ export async function addSentenceToFlashcard(
   }
 
   revalidatePath("/flashcards");
+}
+
+export type FormState = { error: string } | { success: true } | null;
+
+export async function createFlashcardFormAction(
+  userId: string,
+  prevState: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const name = formData.get("name") as string;
+  const description = formData.get("description") as string;
+
+  try {
+    await createFlashcard(userId, name, description);
+    revalidatePath("/flashcards");
+    return { success: true };
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Failed to create flashcard";
+    return { error: message };
+  }
 }

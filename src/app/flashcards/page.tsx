@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { getUser } from "@/utils/supabase/auth-server";
 import FlashcardListServer from "./flashcard-list-server";
+import CreateFlashcardForm from "./create-flashcard-form";
 
 type SearchParams = {
   page?: string | string[] | undefined;
@@ -21,7 +22,7 @@ export default async function FlashcardsPage({
   return (
     <div className="flex-1 bg-gradient-to-br from-slate-50 to-blue-50">
       <div className="bg-white/50 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-20 w-full shadow-sm">
-        <div className="container mx-auto px-4 py-4 max-w-6xl">
+        <div className="container mx-auto px-4 py-4 max-w-6xl flex flex-col justify-between md:flex-row">
           <div className="space-y-6">
             <div className="flex flex-row items-center justify-between">
               <h2 className="text-2xl font-semibold text-slate-800 tracking-tight">
@@ -34,6 +35,9 @@ export default async function FlashcardsPage({
                 Access and manage all your generated flashcards in one place.
               </p>
             </div>
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-white p-2 md:p-6 shadow-sm">
+            <CreateFlashcardForm userId={user.id} />
           </div>
         </div>
       </div>

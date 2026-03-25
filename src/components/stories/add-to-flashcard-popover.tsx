@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Plus, Layers, Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Plus, Layers, Loader2, Search, Link } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +13,7 @@ import { useUser } from "@/contexts/user-context";
 import { createClient } from "@/lib/supabase/client";
 import { addSentenceToFlashcard } from "@/actions/flashcards";
 import { type FlashcardListItem } from "@/lib/supabase/queries/stories";
-import { getUserFlashcardList } from "@/lib/supabase/queries/flashcards";
+import { getUserFlashcardList } from "@/lib/supabase/queries/client/flashcards";
 
 export default function AddToFlashcardPopover({
   sourceSentence,
@@ -27,25 +27,37 @@ export default function AddToFlashcardPopover({
   const [flashcards, setFlashcards] = useState<FlashcardListItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [adding, setAdding] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!open || !user) return;
 
-    async function fetchFlashcards() {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    debounceRef.current = setTimeout(async () => {
       setLoading(true);
       try {
-        console.log("Fetching data");
-        const list = await getUserFlashcardList(user!.id, await createClient());
+        const list = await getUserFlashcardList(user!.id, createClient(), {
+          search,
+        });
         setFlashcards(list);
       } catch {
         toast.error("Failed to load flashcards");
       } finally {
         setLoading(false);
       }
-    }
+    }, 1000);
 
-    fetchFlashcards();
-  }, [open, user]);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [open, user, search]);
+
+  function handleOpenChange(next: boolean) {
+    setOpen(next);
+    if (!next) setSearch("");
+  }
 
   async function handleAdd(flashcardId: string) {
     setAdding(flashcardId);
@@ -63,7 +75,7 @@ export default function AddToFlashcardPopover({
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <Button
           variant="ghost"
@@ -79,6 +91,17 @@ export default function AddToFlashcardPopover({
           <p className="text-sm font-medium text-slate-700">Add to flashcard</p>
         </div>
 
+        <div className="px-3 py-2 border-b border-slate-100 flex items-center gap-2">
+          <Search className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search flashcards..."
+            className="text-sm text-slate-700 placeholder:text-slate-400 outline-none bg-transparent w-full"
+          />
+        </div>
+
         {loading ? (
           <div className="flex items-center justify-center py-6">
             <Loader2 className="w-5 h-5 text-purple-500 animate-spin" />
@@ -86,13 +109,21 @@ export default function AddToFlashcardPopover({
         ) : flashcards.length === 0 ? (
           <div className="px-3 py-4 text-center">
             <Layers className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-            <p className="text-sm text-slate-500">No flashcards yet</p>
-            <a
-              href="/flashcards"
-              className="text-xs text-purple-600 hover:underline mt-1 inline-block"
-            >
-              Go to flashcards
-            </a>
+            {search.trim() ? (
+              <p className="text-sm text-slate-500">
+                No flashcards match &quot;{search}&quot;
+              </p>
+            ) : (
+              <>
+                <p className="text-sm text-slate-500">No flashcards yet</p>
+                <Link
+                  href="/flashcards"
+                  className="text-xs text-purple-600 hover:underline mt-1 inline-block"
+                >
+                  Go to flashcards
+                </Link>
+              </>
+            )}
           </div>
         ) : (
           <div className="max-h-48 overflow-y-auto">

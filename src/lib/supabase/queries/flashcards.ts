@@ -1,29 +1,26 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/server";
 
-export interface FlashcardListItem {
-  id: string;
-  name: string;
-  sentence_count: number;
-}
-
-export async function getUserFlashcardList(
+export async function createFlashcard(
   userId: string,
-  supabase: SupabaseClient,
-): Promise<FlashcardListItem[]> {
-  const { data, error } = await supabase
+  name: string,
+  description: string,
+) {
+  const { data, error } = await (
+    await createClient()
+  )
     .from("flashcards")
-    .select("id, name, flashcard_sentences(count)")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .insert({
+      name: name,
+      description: description,
+      user_id: userId,
+      language_pair: "tr-en",
+    })
+    .select("*");
 
-  if (error) {
-    throw new Error("Failed to load flashcards");
+  if (!data || error) {
+    console.log("--errorr", error);
+    throw new Error("Error creating flashcard");
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (data ?? []).map((fc: any) => ({
-    id: fc.id,
-    name: fc.name,
-    sentence_count: fc.flashcard_sentences?.[0]?.count ?? 0,
-  }));
+  return data[0];
 }
