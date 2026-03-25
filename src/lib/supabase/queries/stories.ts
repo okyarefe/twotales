@@ -2,6 +2,12 @@ import { createClient } from "@/lib/supabase/server";
 
 import type { Story, StoryInsert, Flashcard } from "@/types";
 
+export interface FlashcardListItem {
+  id: string;
+  name: string;
+  sentence_count: number;
+}
+
 export async function saveStory(storyData: StoryInsert, userId: string) {
   const finalObject = { ...storyData, user_id: userId };
 

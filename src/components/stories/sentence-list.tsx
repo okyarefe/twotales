@@ -10,6 +10,7 @@ export interface SentenceListProps {
   hoverable?: boolean;
   hiddenMask?: boolean[];
   onToggle?: (idx: number) => void;
+  renderAction?: (idx: number) => React.ReactNode;
 }
 
 const SentenceList: React.FC<SentenceListProps> = ({
@@ -21,6 +22,7 @@ const SentenceList: React.FC<SentenceListProps> = ({
   hoverable = false,
   hiddenMask,
   onToggle,
+  renderAction,
 }) => {
   return (
     <div className="flex-1 sentence-list">
@@ -57,6 +59,8 @@ const SentenceList: React.FC<SentenceListProps> = ({
             >
               {hiddenMask && hiddenMask[idx] ? "Show" : "Hide"}
             </Button>
+          ) : renderAction ? (
+            renderAction(idx)
           ) : (
             <span
               className="inline-block h-8 w-[48px] sm:w-[64px] shrink-0"
