@@ -4,12 +4,12 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   ReactNode,
 } from "react";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
 
 // UPDATE THE CONTEXT WHEN MUTATION HAPPENS (E.G. CREDIT USAGE, MEMBERSHIP CHANGE)
 
@@ -51,14 +51,16 @@ export function UserProvider({
   const [isLoading, setIsLoading] = useState(!initialUser || !initialUserData);
 
   const supabase = createClient();
-  const router = useRouter();
+  const isSigningOut = useRef(false);
 
   const signOut = async () => {
+    // Set flag BEFORE signOut so the onAuthStateChange listener
+    // knows to ignore the event and not update any React state.
+    isSigningOut.current = true;
     await supabase.auth.signOut();
-    setUser(null);
-    setUserData(null);
-    setIsLoading(false);
-    router.push("/");
+    // Full page navigation — lets the middleware handle the redirect
+    // and the server re-render everything fresh. No staggered state.
+    window.location.href = "/login";
   };
 
   const fetchUserData = async (userId: string) => {
@@ -90,65 +92,55 @@ export function UserProvider({
   };
 
   useEffect(() => {
-    // If initial data is provided, skip client-side session check
-    if (userData && initialUserData) {
-      setIsLoading(false);
-      return;
-    }
+    // If the server already gave us user data, no need to re-fetch on mount.
+    // But we always set up the auth listener regardless.
+    if (!initialUser || !initialUserData) {
+      // No server data — check session client-side
+      async function checkSession() {
+        setIsLoading(true);
 
-    async function checkSession() {
-      setIsLoading(true);
+        const { data } = await supabase.auth.getSession();
+        const currentUser = data.session?.user ?? null;
+        setUser(currentUser);
 
-      const { data } = await supabase.auth.getSession();
-      const currentUser = data.session?.user ?? null;
-      setUser(currentUser);
-
-      if (currentUser?.id) {
-        await fetchUserData(currentUser.id);
-      } else {
-        setUserData(null);
-        setIsLoading(false);
+        if (currentUser?.id) {
+          await fetchUserData(currentUser.id);
+        } else {
+          setUserData(null);
+          setIsLoading(false);
+        }
       }
+
+      checkSession();
+    } else {
+      setIsLoading(false);
     }
 
-    checkSession();
-
+    // Always listen for auth changes (token refresh, sign-in from another tab, etc.)
     const { data: listener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (_event, session) => {
+        // During sign-out, skip all state updates — the full page reload
+        // will handle everything. Without this, React state updates cause
+        // client components (header) to flash before the page navigates.
+
+        if (isSigningOut.current) return;
+
         const currentUser = session?.user ?? null;
         setUser(currentUser);
 
         if (currentUser?.id) {
           await fetchUserData(currentUser.id);
-          if (event === "SIGNED_IN") {
-            router.push("/dashboard");
-          }
         } else {
-          // Only redirect to / if not on a public route
-          const publicRoutes = [
-            "/login",
-            "/blogs",
-            "/contact",
-            "/how-it-works",
-          ];
-          const currentPath = window.location.pathname;
-          const isPublicRoute = publicRoutes.some(
-            (route) =>
-              currentPath === route || currentPath.startsWith(route + "/")
-          );
-
-          if (!isPublicRoute) {
-            router.push("/");
-          }
           setUserData(null);
         }
-      }
+      },
     );
 
     return () => {
       listener?.subscription.unsubscribe();
     };
-  }, [supabase, router, initialUser, initialUserData, userData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <UserContext.Provider

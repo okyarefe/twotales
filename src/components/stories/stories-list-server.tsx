@@ -13,7 +13,7 @@ export default async function StoriesListServer({
   query,
 }: StoriesListServerProps) {
   const stories: Story[] = query
-    ? await searchUserStories(userId, query, 50)
+    ? await searchUserStories(userId, query, 25)
     : (await getUserStories(userId)).stories;
 
   if (stories.length === 0) {

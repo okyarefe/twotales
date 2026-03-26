@@ -17,17 +17,17 @@ export async function updateSession(request: NextRequest) {
         setAll(cookiesToSet) {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           cookiesToSet.forEach(({ name, value, options }) =>
-            request.cookies.set(name, value)
+            request.cookies.set(name, value),
           );
           supabaseResponse = NextResponse.next({
             request,
           });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, options),
           );
         },
       },
-    }
+    },
   );
 
   // Do not run code between createServerClient and
@@ -52,14 +52,20 @@ export async function updateSession(request: NextRequest) {
   const isPublicRoute = publicRoutes.some(
     (route) =>
       request.nextUrl.pathname === route ||
-      request.nextUrl.pathname.startsWith(route + "/")
+      request.nextUrl.pathname.startsWith(route + "/"),
   );
 
   if (!user && !isPublicRoute) {
-    // no user, potentially respond by redirecting the user to the login page
-    console.log("no user and not a public route");
+    // No user on a private route → send to login
     const url = request.nextUrl.clone();
     url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
+  if (user && request.nextUrl.pathname === "/login") {
+    // Logged-in user on login page → send to dashboard
+    const url = request.nextUrl.clone();
+    url.pathname = "/dashboard";
     return NextResponse.redirect(url);
   }
 
