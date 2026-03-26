@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import SentenceList from "./sentence-list";
 import { Button } from "@/components/ui/button";
+import AddToFlashcardPopover from "./add-to-flashcard-popover";
 
 interface StorySideBySideProps {
   storyA: string;
@@ -52,6 +53,21 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
     setHiddenB(Array(maxLen).fill(false));
   }, [maxLen]);
 
+  const renderFlashcardAction = useCallback(
+    (idx: number) => {
+      const source = sentencesA[idx];
+      const target = sentencesB[idx];
+      if (!source || !target) return null;
+      return (
+        <AddToFlashcardPopover
+          sourceSentence={source}
+          targetSentence={target}
+        />
+      );
+    },
+    [sentencesA, sentencesB],
+  );
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-wrap justify-center sm:justify-end gap-2 mb-3 sm:mb-4 sentence-controls">
@@ -80,6 +96,7 @@ export const StorySideBySide: React.FC<StorySideBySideProps> = ({
           setHoveredIdx={setHoveredIdx}
           side="A"
           hoverable
+          renderAction={renderFlashcardAction}
         />
         <SentenceList
           sentences={sentencesB}

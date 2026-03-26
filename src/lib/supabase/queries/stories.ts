@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 
-import type { Story, StoryInsert } from "@/types";
+import type { Story, StoryInsert, Flashcard } from "@/types";
+
+export interface FlashcardListItem {
+  id: string;
+  name: string;
+  sentence_count: number;
+}
 
 export async function saveStory(storyData: StoryInsert, userId: string) {
   const finalObject = { ...storyData, user_id: userId };
@@ -118,4 +124,71 @@ export async function deleteStoryById(storyId: string): Promise<boolean> {
   }
 
   return true;
+}
+
+export async function getUserFlashcards(
+  userId: string,
+  page: number = 1,
+  pageSize: number = 4,
+): Promise<{ flashcards: Flashcard[]; total: number }> {
+  const supabase = await createClient();
+
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const { data, error, count } = await supabase
+    .from("flashcards")
+    .select(
+      `
+    id,
+    name,
+    description,
+    language_pair,
+    flashcard_sentences (
+      id,
+      source_sentence,
+      target_sentence
+    )
+  `,
+      { count: "exact" },
+    )
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .range(from, to);
+
+  if (error) {
+    throw new Error("Error fetching user flashcards");
+  }
+
+  return { flashcards: data as Flashcard[], total: count ?? 0 };
+}
+
+export async function getFlashcardById(
+  flashcardId: string,
+): Promise<Flashcard> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("flashcards")
+    .select(
+      `
+    id,
+    name,
+    description,
+    language_pair,
+    flashcard_sentences (
+      id,
+      source_sentence,
+      target_sentence
+    )
+  `,
+    )
+    .eq("id", flashcardId)
+    .single();
+
+  if (error || !data) {
+    throw new Error("Flashcard not found");
+  }
+
+  return data as Flashcard;
 }

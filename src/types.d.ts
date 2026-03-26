@@ -79,6 +79,20 @@ export interface Item {
   description: string;
 }
 
+export interface FlashcardSentence {
+  id: string;
+  source_sentence: string;
+  target_sentence: string;
+}
+
+export interface Flashcard {
+  id: string;
+  name: string;
+  description: string | null;
+  language_pair: string | null;
+  flashcard_sentences: FlashcardSentence[];
+}
+
 export interface UserProgress {
   points: number;
   totalPoints: number;

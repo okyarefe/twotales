@@ -3,16 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Menu,
-  BookOpen,
-  CreditCard,
-  Home,
-  HelpCircle,
-  Mail,
-} from "lucide-react";
+import { Menu } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { useUser } from "@/contexts/user-context";
+import { publicLinks, privateLinks } from "@/config/nav-links";
 import {
   Sheet,
   SheetContent,
@@ -29,39 +23,6 @@ export default function MobileSidebar({ className }: { className?: string }) {
 
   // Helper to normalize paths
   const normalize = (path: string) => path.replace(/\/+$/, "");
-
-  // Public links visible only when not logged in
-  const publicLinks = [
-    {
-      href: "/how-it-works",
-      label: "How It Works",
-      icon: <HelpCircle className="w-5 h-5" />,
-    },
-    {
-      href: "/contact",
-      label: "Contact",
-      icon: <Mail className="w-5 h-5" />,
-    },
-  ];
-
-  // Private links visible only to logged-in users
-  const privateLinks = [
-    {
-      href: "/dashboard",
-      label: "Dashboard",
-      icon: <Home className="w-5 h-5" />,
-    },
-    {
-      href: "/stories",
-      label: "My Stories",
-      icon: <BookOpen className="w-5 h-5" />,
-    },
-    {
-      href: "/credits",
-      label: "Get Credits",
-      icon: <CreditCard className="w-4 h-4" />,
-    },
-  ];
 
   const navLinks = user ? privateLinks : publicLinks;
 
@@ -103,7 +64,7 @@ export default function MobileSidebar({ className }: { className?: string }) {
                   "flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-colors",
                   isActive
                     ? "bg-purple-100 text-purple-700"
-                    : "text-slate-700 hover:bg-slate-100 hover:text-purple-700"
+                    : "text-slate-700 hover:bg-slate-100 hover:text-purple-700",
                 )}
               >
                 {link.icon}
