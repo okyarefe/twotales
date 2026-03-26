@@ -30,9 +30,7 @@ export default function ConfirmationWindow({
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
       style={{
-        backdropFilter: "blur(6px)",
-        background: "rgba(255,255,255,0.1)",
-        WebkitBackdropFilter: "blur(6px)",
+        background: "rgba(0,0,0,0.4)",
       }}
       // Prevent pointer events from reaching underlying UI which can
       // sometimes trigger hover/focus handlers that mutate parent state.
