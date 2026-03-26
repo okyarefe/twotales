@@ -115,7 +115,9 @@ export default async function RootLayout({
         >
           <div className={`h-full flex flex-col ${styles.landscapeRow}`}>
             <Header />
-            <main className="flex-1 flex flex-col overflow-y-auto">{children}</main>
+            <main className="flex-1 flex flex-col overflow-y-auto">
+              {children}
+            </main>
             <Analytics />
             <Toaster />
           </div>
