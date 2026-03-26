@@ -106,7 +106,7 @@ export default function TopicCreateForm() {
             <h3>Create a Topic</h3>
             <div className="flex flex-col gap-4 w-full">
               <div className="w-full">
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                   <DropdownMenuTrigger
                     className={`w-full p-2 border rounded-md text-left ${
                       formState.errors.language
@@ -116,7 +116,10 @@ export default function TopicCreateForm() {
                   >
                     {selectedLanguage || "Select a language"}
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent>
+                  <DropdownMenuContent
+                    collisionPadding={8}
+                    className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  >
                     <DropdownMenuLabel>Languages</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     {languages.map((lang) => (
@@ -141,7 +144,7 @@ export default function TopicCreateForm() {
                 />
               </div>
               <div className="w-full">
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                   <DropdownMenuTrigger
                     className={`w-full p-2 border rounded-md text-left ${
                       formState.errors.languageLevel
@@ -151,7 +154,10 @@ export default function TopicCreateForm() {
                   >
                     {selectedLanguageLevel || "Select a Level"}
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent>
+                  <DropdownMenuContent
+                    collisionPadding={8}
+                    className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  >
                     <DropdownMenuLabel>
                       Language Levels (CEFR)
                     </DropdownMenuLabel>
@@ -185,7 +191,7 @@ export default function TopicCreateForm() {
                 />
               </div>
               <div className="w-full">
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                   <DropdownMenuTrigger
                     className={`w-full p-2 border rounded-md text-left ${
                       formState.errors.topic
@@ -195,7 +201,10 @@ export default function TopicCreateForm() {
                   >
                     {selectedTopic || "Select a topic"}
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent>
+                  <DropdownMenuContent
+                    collisionPadding={8}
+                    className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  >
                     <DropdownMenuLabel>Topics</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     {grammarTopics.map((topic) => (

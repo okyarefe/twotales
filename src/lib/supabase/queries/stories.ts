@@ -31,38 +31,43 @@ export async function saveStory(storyData: StoryInsert, userId: string) {
   return data[0];
 }
 
-export async function getUserStories(userId: string, limit?: number) {
-  const query = (await createClient())
+export async function getUserStories(
+  userId: string,
+  page: number = 1,
+  pageSize: number = 8,
+): Promise<{ stories: Story[]; total: number }> {
+  const supabase = await createClient();
+
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const { data, error, count } = await supabase
     .from("stories")
-    .select("*")
+    .select("*", { count: "exact" })
     .eq("user_id", userId)
-    .order("created_at", { ascending: false });
-
-  if (limit) {
-    query.limit(limit);
-  }
-
-  const { data, error } = await query;
+    .order("created_at", { ascending: false })
+    .range(from, to);
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data;
+  return { stories: data as Story[], total: count ?? 0 };
 }
 
 export async function searchUserStories(
   userId: string,
   titleQuery: string,
   limit?: number,
-) {
+): Promise<Story[]> {
   const supabase = await createClient();
 
   const cleanQuery = titleQuery?.trim();
 
   // If empty search, fallback to getUserStories
   if (!cleanQuery) {
-    return getUserStories(userId, limit);
+    const result = await getUserStories(userId);
+    return result.stories;
   }
 
   const ilikePattern = `%${cleanQuery.replace(/%/g, "\\%").replace(/_/g, "\\_")}%`;
