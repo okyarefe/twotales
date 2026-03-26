@@ -37,6 +37,7 @@ export default function StorySearch({ initial = "" }: StorySearchProps) {
     } else {
       params.delete("q");
     }
+    params.delete("page");
 
     const qs = params.toString();
     const url = qs

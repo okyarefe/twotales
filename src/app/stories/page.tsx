@@ -8,6 +8,7 @@ import { StoryGridSkeleton } from "@/components/stories/story-skeleton";
 
 type SearchParams = {
   q?: string | string[] | undefined;
+  page?: string | string[] | undefined;
 };
 
 export default async function StoriesPage({
@@ -23,6 +24,9 @@ export default async function StoriesPage({
   const params = await searchParams;
   const query = params.q ?? "";
   const q = Array.isArray(query) ? (query[0] ?? "") : (query ?? "");
+
+  const rawPage = Array.isArray(params.page) ? params.page[0] : params.page;
+  const page = Math.max(1, Number(rawPage) || 1);
 
   return (
     <div className="flex-1 bg-gradient-to-br from-slate-50 to-blue-50">
@@ -53,14 +57,14 @@ export default async function StoriesPage({
 
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <Suspense
-          key={q}
+          key={`${q}-${page}`}
           fallback={
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <StoryGridSkeleton />
             </div>
           }
         >
-          <StoryListServer userId={user.id} query={q} />
+          <StoryListServer userId={user.id} query={q} page={page} />
         </Suspense>
       </div>
     </div>
