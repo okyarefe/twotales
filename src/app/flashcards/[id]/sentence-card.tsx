@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { cn } from "@/utils/utils";
 import type { FlashcardSentence } from "@/types";
 
 export default function SentenceCard({

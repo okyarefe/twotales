@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { ArrowLeft, BookOpen, Languages, Layers } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getFlashcardById } from "@/lib/supabase/queries/stories";
