@@ -12,12 +12,9 @@ export default async function StoriesListServer({
   userId,
   query,
 }: StoriesListServerProps) {
-  // Increase limit for better UX
-  const limit = query ? 50 : 24;
-  
   const stories: Story[] = query
-    ? await searchUserStories(userId, query, limit)
-    : await getUserStories(userId, limit);
+    ? await searchUserStories(userId, query, 50)
+    : (await getUserStories(userId)).stories;
 
   if (stories.length === 0) {
     return <EmptyStoriesState isSearch={!!query} />;
