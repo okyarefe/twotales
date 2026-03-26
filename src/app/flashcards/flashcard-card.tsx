@@ -1,5 +1,8 @@
+"use client";
+
+import { useState, useTransition } from "react";
 import Link from "next/link";
-import { BookOpen, Languages, Layers } from "lucide-react";
+import { BookOpen, Languages, Layers, Trash2 } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -9,6 +12,8 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { deleteFlashcardAction } from "@/actions/flashcards";
 import type { Flashcard } from "@/types";
 
 function formatLanguagePair(pair: string | null) {
@@ -30,16 +35,26 @@ function formatLanguagePair(pair: string | null) {
   return `${sourceName} → ${targetName}`;
 }
 
-export default function FlashcardCard({
-  flashcard,
-}: {
-  flashcard: Flashcard;
-}) {
+export default function FlashcardCard({ flashcard }: { flashcard: Flashcard }) {
   const sentenceCount = flashcard.flashcard_sentences.length;
+  const [isPending, startTransition] = useTransition();
+  const [isDeleted, setIsDeleted] = useState(false);
+
+  function handleDelete(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    startTransition(async () => {
+      await deleteFlashcardAction(flashcard.id);
+      setIsDeleted(true);
+    });
+  }
+
+  if (isDeleted) return null;
 
   return (
     <Link href={`/flashcards/${flashcard.id}`}>
-      <Card className="h-full cursor-pointer border-slate-200 bg-gradient-to-br from-white to-slate-50 overflow-hidden group">
+      <Card className="h-full cursor-pointer border-slate-200 bg-gradient-to-br from-white to-slate-50 overflow-hidden group relative">
         {/* Accent line at top */}
         <div className="h-1 bg-gradient-to-r from-indigo-500 to-violet-500" />
 
@@ -48,8 +63,19 @@ export default function FlashcardCard({
             <CardTitle className="text-lg leading-snug line-clamp-2 group-hover:text-purple-700 transition-colors">
               {flashcard.name}
             </CardTitle>
-            <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center">
-              <Layers className="w-4 h-4 text-purple-600" />
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                onClick={handleDelete}
+                disabled={isPending}
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+              <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center">
+                <Layers className="w-4 h-4 text-purple-600" />
+              </div>
             </div>
           </div>
           {flashcard.description && (

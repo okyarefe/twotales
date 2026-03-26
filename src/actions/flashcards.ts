@@ -2,7 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { createFlashcard } from "@/lib/supabase/queries/flashcards";
+import {
+  createFlashcard,
+  deleteFlashcard,
+} from "@/lib/supabase/queries/flashcards";
 
 export async function addSentenceToFlashcard(
   flashcardId: string,
@@ -56,6 +59,20 @@ export async function addSentenceToFlashcard(
     throw new Error("Error adding sentence to flashcard");
   }
 
+  revalidatePath("/flashcards");
+}
+
+export async function deleteFlashcardAction(flashcardId: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("You must be signed in to delete flashcards");
+  }
+
+  await deleteFlashcard(user.id, flashcardId);
   revalidatePath("/flashcards");
 }
 

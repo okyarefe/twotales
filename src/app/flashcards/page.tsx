@@ -36,7 +36,7 @@ export default async function FlashcardsPage({
               </p>
             </div>
           </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-2 md:p-6 shadow-sm">
+          <div>
             <CreateFlashcardForm userId={user.id} />
           </div>
         </div>

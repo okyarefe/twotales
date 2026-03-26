@@ -24,3 +24,17 @@ export async function createFlashcard(
 
   return data[0];
 }
+
+export async function deleteFlashcard(userId: string, flashcardId: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("flashcards")
+    .delete()
+    .eq("id", flashcardId)
+    .eq("user_id", userId);
+
+  if (error) {
+    throw new Error("Error deleting flashcard");
+  }
+}
