@@ -152,7 +152,8 @@ export async function getUserFlashcards(
     flashcard_sentences (
       id,
       source_sentence,
-      target_sentence
+      target_sentence,
+      is_learned
     )
   `,
       { count: "exact" },
@@ -184,7 +185,8 @@ export async function getFlashcardById(
     flashcard_sentences (
       id,
       source_sentence,
-      target_sentence
+      target_sentence,
+      is_learned
     )
   `,
     )

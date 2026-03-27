@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { BookOpen, Languages, Layers, Trash2 } from "lucide-react";
+import { BookOpen, CheckCircle, Languages, Layers, Trash2 } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -37,6 +37,9 @@ function formatLanguagePair(pair: string | null) {
 
 export default function FlashcardCard({ flashcard }: { flashcard: Flashcard }) {
   const sentenceCount = flashcard.flashcard_sentences.length;
+  const learnedCount = flashcard.flashcard_sentences.filter(
+    (s) => s.is_learned,
+  ).length;
   const [isPending, startTransition] = useTransition();
   const [isDeleted, setIsDeleted] = useState(false);
 
@@ -96,6 +99,15 @@ export default function FlashcardCard({ flashcard }: { flashcard: Flashcard }) {
             <BookOpen className="w-3 h-3" />
             {sentenceCount} {sentenceCount === 1 ? "sentence" : "sentences"}
           </Badge>
+          {learnedCount > 0 && (
+            <Badge
+              variant="outline"
+              className="gap-1.5 border-green-200 text-green-700 bg-green-50"
+            >
+              <CheckCircle className="w-3 h-3" />
+              {learnedCount}/{sentenceCount}
+            </Badge>
+          )}
         </CardContent>
 
         <CardFooter>

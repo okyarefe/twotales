@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, BookOpen, Languages, Layers } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle, Languages, Layers } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getFlashcardById } from "@/lib/supabase/queries/stories";
 import SentenceCard from "./sentence-card";
@@ -32,6 +32,9 @@ export default async function FlashcardDetailPage({
   console.log("Fetched flashcard:", flashcard);
 
   const sentenceCount = flashcard.flashcard_sentences.length;
+  const learnedCount = flashcard.flashcard_sentences.filter(
+    (s) => s.is_learned,
+  ).length;
 
   return (
     <div className="flex-1 bg-gradient-to-br from-slate-50 to-blue-50">
@@ -68,6 +71,15 @@ export default async function FlashcardDetailPage({
                   {sentenceCount}{" "}
                   {sentenceCount === 1 ? "sentence" : "sentences"}
                 </Badge>
+                {sentenceCount > 0 && (
+                  <Badge
+                    variant="outline"
+                    className="gap-1.5 border-green-200 text-green-700 bg-green-50"
+                  >
+                    <CheckCircle className="w-3 h-3" />
+                    {learnedCount}/{sentenceCount} learned
+                  </Badge>
+                )}
               </div>
             </div>
 
