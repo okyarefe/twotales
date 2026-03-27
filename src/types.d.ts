@@ -94,6 +94,10 @@ export interface Flashcard {
   flashcard_sentences: FlashcardSentence[];
 }
 
+export type ActionResult<T = void> =
+  | { success: true; data: T }
+  | { success: false; error: string };
+
 export interface UserProgress {
   points: number;
   totalPoints: number;

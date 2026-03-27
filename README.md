@@ -1,5 +1,7 @@
 # TwoTales
 
+[Try it live](https://www.twotalesai.com/login)
+
 ## Description
 
 TwoTales is an AI-powered storytelling platform designed to help language learners improve their skills through engaging, personalized stories and quizzes. Users can generate stories in English and a target language, track their progress, and test their understanding with quizzes.
@@ -11,7 +13,9 @@ Learning a new language can be challenging, especially when it comes to reading 
 ## Tech Stack
 
 This project is built with Next.js, TypeScript, Supabase, OpenAI API, and Drizzle ORM.  
-It uses Supabase for authentication and database, OpenAI for AI-powered story and quiz generation, and Drizzle for ORM.
+It uses Supabase for authentication and database, OpenAI for AI-powered story and quiz generation, and Drizzle for database migrations.
+
+![TwoTales](/public/twotalesimage.png)
 
 ## Quick Start
 
@@ -43,6 +47,8 @@ It uses Supabase for authentication and database, OpenAI for AI-powered story an
 - Sign in with Google to create an account.
 - Generate a new story by selecting a language, level, and providing a prompt.
 - Read stories side-by-side in English and your target language.
+- Save sentences from stories as flashcards for review.
+- Track your flashcard progress as you learn.
 - Take quizzes to test your comprehension.
 - Track your credits and progress on the dashboard.
 

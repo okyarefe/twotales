@@ -11,7 +11,7 @@ import {
   getFlashcardSentenceWithOwner,
   updateSentenceLearned,
 } from "@/lib/supabase/queries/flashcards";
-import type { ActionResult } from "@/lib/types/action-result";
+import type { ActionResult } from "@/types";
 
 export async function addSentenceToFlashcard(
   flashcardId: string,
