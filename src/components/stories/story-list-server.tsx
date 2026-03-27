@@ -22,7 +22,6 @@ export default async function StoryListServer({
 
   if (query) {
     stories = await searchUserStories(userId, query, 50);
-    console.log("Stories fetched ", stories);
   } else {
     const result = await getUserStories(userId, page, PAGE_SIZE);
     stories = result.stories;

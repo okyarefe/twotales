@@ -65,7 +65,7 @@ export async function getStoryFeedback({
     const promptForAI = generateFeedbackPrompt(
       combinedText,
       targetLanguage,
-      topics
+      topics,
     );
 
     const response = await openAiClient.responses.create({
@@ -94,7 +94,7 @@ export async function getStoryFeedback({
       console.error("JSON parsing failed:", parseError);
       console.error("Raw feedback content:", feedbackText);
       throw new Error(
-        "Failed to parse AI feedback response. Please try again."
+        "Failed to parse AI feedback response. Please try again.",
       );
     }
 
@@ -103,10 +103,11 @@ export async function getStoryFeedback({
 
     // Save feedback to database
     const savedFeedback = await saveFeedback(
+      user.id,
       storyId,
       validated,
       userAnswer,
-      targetLanguage
+      targetLanguage,
     );
 
     // Mark story as feedback generated

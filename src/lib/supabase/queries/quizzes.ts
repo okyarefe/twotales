@@ -1,24 +1,21 @@
 import { createClient } from "@/lib/supabase/server";
 
 export async function saveQuizQuestions(
+  userId: string,
   storyId: string,
   questions: { question: string; answer: string }[],
-  totalTokens: number = 0
+  totalTokens: number = 0,
 ) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await (await createClient()).auth.getUser();
   const { data, error } = await supabase.rpc("create_quiz_with_questions", {
     input_story_id: storyId,
-    input_user_id: user?.id,
+    input_user_id: userId,
     input_total_tokens: totalTokens,
     input_questions: questions,
   });
 
   if (error) {
-    console.error("Error creating quiz:", error.message);
-    return null;
+    throw new Error("Error creating quiz");
   }
 
   return data;
@@ -33,8 +30,8 @@ export async function getQuizQuestionsById(quizId: string) {
     .eq("quiz_id", cleanQuizId);
 
   if (error) {
-    console.error("Error fetching quiz questions:", error.message);
-    return null;
+    console.log("getQuizQuestionsById throw error");
+    throw new Error("Error fetching quiz questions");
   }
 
   return data;
@@ -48,11 +45,12 @@ export async function getQuizIdByStoryId(storyId: string) {
     .from("quizzes")
     .select("id") // quiz id
     .eq("story_id", cleanStoryId)
-    .single();
+    .maybeSingle();
 
   if (error) {
-    console.error("Error fetching quiz ID:", error.message);
-    return null;
+    console.log("getQuizIdByStoryId error");
+
+    throw new Error("Error fetching quiz ID");
   }
 
   return data?.id || null;

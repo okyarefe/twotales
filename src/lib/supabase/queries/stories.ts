@@ -95,9 +95,10 @@ export async function getStoryById(storyId: string): Promise<Story | null> {
     .from("stories")
     .select("*")
     .eq("id", storyId)
-    .single(); // ensures only one result
+    .maybeSingle(); // ensures only one result
 
   if (error) {
+    console.log("getStoryById error");
     throw new Error(error.message);
   }
 
@@ -171,7 +172,7 @@ export async function getUserFlashcards(
 
 export async function getFlashcardById(
   flashcardId: string,
-): Promise<Flashcard> {
+): Promise<Flashcard | null> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -193,8 +194,12 @@ export async function getFlashcardById(
     .eq("id", flashcardId)
     .single();
 
-  if (error || !data) {
-    throw new Error("Flashcard not found");
+  if (error) {
+    throw new Error("Error fetching flashcard");
+  }
+
+  if (!data) {
+    return null;
   }
 
   return data as Flashcard;

@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { BookOpen, CheckCircle, Languages, Layers, Trash2 } from "lucide-react";
 import {
   Card,
@@ -48,8 +49,12 @@ export default function FlashcardCard({ flashcard }: { flashcard: Flashcard }) {
     e.stopPropagation();
 
     startTransition(async () => {
-      await deleteFlashcardAction(flashcard.id);
-      setIsDeleted(true);
+      const result = await deleteFlashcardAction(flashcard.id);
+      if (result.success) {
+        setIsDeleted(true);
+      } else {
+        toast.error(result.error);
+      }
     });
   }
 

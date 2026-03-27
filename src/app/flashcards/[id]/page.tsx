@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, CheckCircle, Languages, Layers } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +30,8 @@ export default async function FlashcardDetailPage({
   const { id } = await params;
 
   const flashcard = await getFlashcardById(id);
-  console.log("Fetched flashcard:", flashcard);
+
+  if (!flashcard) notFound();
 
   const sentenceCount = flashcard.flashcard_sentences.length;
   const learnedCount = flashcard.flashcard_sentences.filter(

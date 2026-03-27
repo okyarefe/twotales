@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 
 export async function saveFeedback(
+  userId: string,
   storyId: string,
   feedbackData: {
     topics_to_review: Array<{
@@ -17,23 +18,14 @@ export async function saveFeedback(
     mistakes_count: number;
   },
   userAnswer: string,
-  targetLanguage: string
+  targetLanguage: string,
 ) {
   const supabase = await createClient();
-
-  // Get authenticated user
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    throw new Error("User not authenticated");
-  }
 
   const { data, error } = await supabase
     .from("feedbacks")
     .insert({
-      user_id: user.id,
+      user_id: userId,
       story_id: storyId,
       feedback_data: feedbackData, // JSONB column
       user_answer: userAnswer,
@@ -51,14 +43,9 @@ export async function saveFeedback(
 }
 
 export async function markStoryFeedbackGenerated(
-  storyId: string
+  storyId: string,
 ): Promise<boolean> {
   const supabase = await createClient();
-
-  // First, verify the story exists and get current user
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
   // Check if story exists first
   const { data: existingStory, error: fetchError } = await supabase
@@ -68,7 +55,6 @@ export async function markStoryFeedbackGenerated(
     .single();
 
   if (fetchError) {
-    console.error("Error fetching story:", fetchError.message);
     throw new Error("Story not found");
   }
 
@@ -80,21 +66,14 @@ export async function markStoryFeedbackGenerated(
     .select();
 
   if (error) {
-    console.error("Error updating story feedback status:", error);
-    throw new Error(
-      `Failed to mark story as feedback generated: ${error.message}`
-    );
+    throw new Error("Failed to mark story as feedback generated");
   }
 
   if (!data || data.length === 0) {
     console.error(
-      "Update returned no rows. Possible RLS policy blocking update."
-    );
-    console.error(
+      "Update returned no rows. Possible RLS policy blocking update.",
       "Story user_id:",
       existingStory.user_id,
-      "Current user_id:",
-      user?.id
     );
     throw new Error("Update blocked - check RLS policies");
   }

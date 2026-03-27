@@ -11,72 +11,111 @@ import {
   getFlashcardSentenceWithOwner,
   updateSentenceLearned,
 } from "@/lib/supabase/queries/flashcards";
+import type { ActionResult } from "@/lib/types/action-result";
 
 export async function addSentenceToFlashcard(
   flashcardId: string,
   sourceSentence: string,
   targetSentence: string,
-) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+): Promise<ActionResult> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user) {
-    throw new Error("You must be signed in to add sentences");
+    if (!user) {
+      return {
+        success: false,
+        error: "You must be signed in to add sentences",
+      };
+    }
+
+    await verifyFlashcardOwnership(flashcardId, user.id);
+
+    const count = await getFlashcardSentenceCount(flashcardId);
+    if (count >= 10) {
+      return {
+        success: false,
+        error: "This flashcard is full (maximum 10 sentences)",
+      };
+    }
+
+    await insertFlashcardSentence(flashcardId, sourceSentence, targetSentence);
+
+    revalidatePath("/flashcards");
+    return { success: true, data: undefined };
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Failed to add sentence";
+    return { success: false, error: message };
   }
-
-  await verifyFlashcardOwnership(flashcardId, user.id);
-
-  const count = await getFlashcardSentenceCount(flashcardId);
-  if (count >= 10) {
-    throw new Error("This flashcard is full (maximum 10 sentences)");
-  }
-
-  await insertFlashcardSentence(flashcardId, sourceSentence, targetSentence);
-
-  revalidatePath("/flashcards");
 }
 
 export async function toggleSentenceLearnedAction(
   sentenceId: string,
   isLearned: boolean,
-) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+): Promise<ActionResult> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user) {
-    throw new Error("You must be signed in to update sentences");
+    if (!user) {
+      return {
+        success: false,
+        error: "You must be signed in to update sentences",
+      };
+    }
+
+    const sentence = await getFlashcardSentenceWithOwner(sentenceId);
+    const flashcardData = sentence.flashcards as unknown as { user_id: string };
+    if (flashcardData.user_id !== user.id) {
+      return {
+        success: false,
+        error: "You do not have permission to update this sentence",
+      };
+    }
+
+    await updateSentenceLearned(sentenceId, isLearned);
+
+    revalidatePath("/flashcards");
+    return { success: true, data: undefined };
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Failed to update sentence";
+    return { success: false, error: message };
   }
-
-  const sentence = await getFlashcardSentenceWithOwner(sentenceId);
-  const flashcardData = sentence.flashcards as unknown as { user_id: string };
-  if (flashcardData.user_id !== user.id) {
-    throw new Error("You do not have permission to update this sentence");
-  }
-
-  await updateSentenceLearned(sentenceId, isLearned);
-
-  revalidatePath("/flashcards");
 }
 
-export async function deleteFlashcardAction(flashcardId: string) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+export async function deleteFlashcardAction(
+  flashcardId: string,
+): Promise<ActionResult> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user) {
-    throw new Error("You must be signed in to delete flashcards");
+    if (!user) {
+      return {
+        success: false,
+        error: "You must be signed in to delete flashcards",
+      };
+    }
+
+    await deleteFlashcard(user.id, flashcardId);
+    revalidatePath("/flashcards");
+    return { success: true, data: undefined };
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Failed to delete flashcard";
+    return { success: false, error: message };
   }
-
-  await deleteFlashcard(user.id, flashcardId);
-  revalidatePath("/flashcards");
 }
 
-export type FormState = { error: string } | { success: true } | null;
+export type FormState = ActionResult | null;
 
 export async function createFlashcardFormAction(
   userId: string,
@@ -89,10 +128,10 @@ export async function createFlashcardFormAction(
   try {
     await createFlashcard(userId, name, description);
     revalidatePath("/flashcards");
-    return { success: true };
+    return { success: true, data: undefined };
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Failed to create flashcard";
-    return { error: message };
+    return { success: false, error: message };
   }
 }
