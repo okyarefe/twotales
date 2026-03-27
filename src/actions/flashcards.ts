@@ -5,6 +5,11 @@ import { createClient } from "@/lib/supabase/server";
 import {
   createFlashcard,
   deleteFlashcard,
+  verifyFlashcardOwnership,
+  getFlashcardSentenceCount,
+  insertFlashcardSentence,
+  getFlashcardSentenceWithOwner,
+  updateSentenceLearned,
 } from "@/lib/supabase/queries/flashcards";
 
 export async function addSentenceToFlashcard(
@@ -21,45 +26,14 @@ export async function addSentenceToFlashcard(
     throw new Error("You must be signed in to add sentences");
   }
 
-  // Verify the flashcard belongs to the user
-  const { data: flashcard, error: flashcardError } = await supabase
-    .from("flashcards")
-    .select("id, user_id")
-    .eq("id", flashcardId)
-    .single();
+  await verifyFlashcardOwnership(flashcardId, user.id);
 
-  if (flashcardError || !flashcard || flashcard.user_id !== user.id) {
-    throw new Error("Flashcard not found or you do not have permission");
-  }
-
-  // Check sentence count limit
-  const { count, error: countError } = await supabase
-    .from("flashcard_sentences")
-    .select("id", { count: "exact", head: true })
-    .eq("flashcard_id", flashcardId);
-
-  if (countError) {
-    throw new Error("Error checking flashcard capacity");
-  }
-
-  if ((count ?? 0) >= 10) {
+  const count = await getFlashcardSentenceCount(flashcardId);
+  if (count >= 10) {
     throw new Error("This flashcard is full (maximum 10 sentences)");
   }
 
-  // Insert the sentence pair
-  const { error: insertError } = await supabase
-    .from("flashcard_sentences")
-    .insert({
-      flashcard_id: flashcardId,
-      source_sentence: sourceSentence,
-      target_sentence: targetSentence,
-      is_learned: false,
-    });
-
-  if (insertError) {
-    console.log("-- insert error", insertError);
-    throw new Error("Error adding sentence to flashcard");
-  }
+  await insertFlashcardSentence(flashcardId, sourceSentence, targetSentence);
 
   revalidatePath("/flashcards");
 }
@@ -77,30 +51,13 @@ export async function toggleSentenceLearnedAction(
     throw new Error("You must be signed in to update sentences");
   }
 
-  // Verify ownership through the parent flashcard
-  const { data: sentence, error: fetchError } = await supabase
-    .from("flashcard_sentences")
-    .select("id, flashcards!inner(user_id)")
-    .eq("id", sentenceId)
-    .single();
-
-  if (fetchError || !sentence) {
-    throw new Error("Sentence not found");
-  }
-
+  const sentence = await getFlashcardSentenceWithOwner(sentenceId);
   const flashcardData = sentence.flashcards as unknown as { user_id: string };
   if (flashcardData.user_id !== user.id) {
     throw new Error("You do not have permission to update this sentence");
   }
 
-  const { error: updateError } = await supabase
-    .from("flashcard_sentences")
-    .update({ is_learned: isLearned })
-    .eq("id", sentenceId);
-
-  if (updateError) {
-    throw new Error("Error updating sentence");
-  }
+  await updateSentenceLearned(sentenceId, isLearned);
 
   revalidatePath("/flashcards");
 }
