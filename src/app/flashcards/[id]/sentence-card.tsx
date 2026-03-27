@@ -21,9 +21,8 @@ export default function SentenceCard({
     const newValue = !learned;
     setLearned(newValue);
     startTransition(async () => {
-      try {
-        await toggleSentenceLearnedAction(sentence.id, newValue);
-      } catch {
+      const result = await toggleSentenceLearnedAction(sentence.id, newValue);
+      if (!result.success) {
         setLearned(!newValue);
       }
     });

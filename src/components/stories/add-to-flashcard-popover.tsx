@@ -61,17 +61,14 @@ export default function AddToFlashcardPopover({
 
   async function handleAdd(flashcardId: string) {
     setAdding(flashcardId);
-    try {
-      await addSentenceToFlashcard(flashcardId, sourceSentence, targetSentence);
+    const result = await addSentenceToFlashcard(flashcardId, sourceSentence, targetSentence);
+    if (result.success) {
       toast.success("Sentence added to flashcard");
       setOpen(false);
-    } catch (error: unknown) {
-      const message =
-        error instanceof Error ? error.message : "Failed to add sentence";
-      toast.error(message);
-    } finally {
-      setAdding(null);
+    } else {
+      toast.error(result.error);
     }
+    setAdding(null);
   }
 
   return (

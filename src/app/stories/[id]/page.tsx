@@ -1,28 +1,26 @@
+import { notFound } from "next/navigation";
 import {
   getQuizQuestionsById,
   getStoryById,
   getQuizIdByStoryId,
 } from "@/lib/supabase/queries";
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
 export default async function StoryShowPage({ params }: PageProps) {
-  try {
-    const id = (await params).id;
-    const [story, quizId] = await Promise.all([
-      getStoryById(id),
-      getQuizIdByStoryId(id),
-    ]);
-    const quizQuestions = await getQuizQuestionsById(quizId);
-    if (!story) {
-      return <div>Story does not exist.</div>;
-    }
+  const id = (await params).id;
+  const [story, quizId] = await Promise.all([
+    getStoryById(id),
+    getQuizIdByStoryId(id),
+  ]);
 
-    const StoryQuizTabs = (await import("@/components/stories/story-quiz-tabs"))
-      .StoryQuizTabs;
-    return <StoryQuizTabs story={story} quizQuestions={quizQuestions || []} />;
-  } catch {
-    return <div>Something went wrong..</div>;
-  }
+  if (!story) notFound();
+
+  const quizQuestions = quizId ? await getQuizQuestionsById(quizId) : [];
+
+  const StoryQuizTabs = (await import("@/components/stories/story-quiz-tabs"))
+    .StoryQuizTabs;
+  return <StoryQuizTabs story={story} quizQuestions={quizQuestions || []} />;
 }

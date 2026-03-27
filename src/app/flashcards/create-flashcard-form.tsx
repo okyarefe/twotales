@@ -40,10 +40,10 @@ export default function CreateFlashcardForm({ userId }: { userId: string }) {
         </button>
       </div>
       <form action={formAction}>
-        {state && "error" in state && (
+        {state && !state.success && (
           <p className="text-sm text-red-500 mb-2">{state.error}</p>
         )}
-        {state && "success" in state && (
+        {state?.success && (
           <p className="text-sm text-green-600 mb-2">Flashcard created!</p>
         )}
         <div>

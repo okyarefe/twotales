@@ -112,7 +112,12 @@ export async function createStory(
 
     const quiz = await generateQuizFromStory(story);
 
-    await saveQuizQuestions(savedStory.id, quiz.questions, story.totalTokens);
+    await saveQuizQuestions(
+      user.id,
+      savedStory.id,
+      quiz.questions,
+      story.totalTokens,
+    );
 
     // DECREASE THE USER'S CREDIT with supabase stored procedure
     // Modify user table to keep track of number of stories created ?
