@@ -83,6 +83,7 @@ export interface FlashcardSentence {
   id: string;
   source_sentence: string;
   target_sentence: string;
+  is_learned: boolean;
 }
 
 export interface Flashcard {

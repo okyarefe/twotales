@@ -62,6 +62,47 @@ export async function addSentenceToFlashcard(
   revalidatePath("/flashcards");
 }
 
+export async function toggleSentenceLearnedAction(
+  sentenceId: string,
+  isLearned: boolean,
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("You must be signed in to update sentences");
+  }
+
+  // Verify ownership through the parent flashcard
+  const { data: sentence, error: fetchError } = await supabase
+    .from("flashcard_sentences")
+    .select("id, flashcards!inner(user_id)")
+    .eq("id", sentenceId)
+    .single();
+
+  if (fetchError || !sentence) {
+    throw new Error("Sentence not found");
+  }
+
+  const flashcardData = sentence.flashcards as unknown as { user_id: string };
+  if (flashcardData.user_id !== user.id) {
+    throw new Error("You do not have permission to update this sentence");
+  }
+
+  const { error: updateError } = await supabase
+    .from("flashcard_sentences")
+    .update({ is_learned: isLearned })
+    .eq("id", sentenceId);
+
+  if (updateError) {
+    throw new Error("Error updating sentence");
+  }
+
+  revalidatePath("/flashcards");
+}
+
 export async function deleteFlashcardAction(flashcardId: string) {
   const supabase = await createClient();
   const {
