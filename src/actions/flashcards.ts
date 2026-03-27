@@ -53,9 +53,11 @@ export async function addSentenceToFlashcard(
       flashcard_id: flashcardId,
       source_sentence: sourceSentence,
       target_sentence: targetSentence,
+      is_learned: false,
     });
 
   if (insertError) {
+    console.log("-- insert error", insertError);
     throw new Error("Error adding sentence to flashcard");
   }
 
