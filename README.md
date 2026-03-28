@@ -12,35 +12,85 @@ Learning a new language can be challenging, especially when it comes to reading 
 
 ## Tech Stack
 
-This project is built with Next.js, TypeScript, Supabase, OpenAI API, and Drizzle ORM.  
-It uses Supabase for authentication and database, OpenAI for AI-powered story and quiz generation, and Drizzle for database migrations.
+This project is built with Next.js, TypeScript, Supabase, OpenAI API, and Lemon Squeezy.
+It uses Supabase for authentication and database, OpenAI for AI-powered story and quiz generation, and Supabase CLI for database migrations.
 
 ![TwoTales](/public/twotalesimage.png)
 
 ## Quick Start
 
-1. **Install dependencies:**
+### Prerequisites
 
-   ```sh
-   npm install
-   ```
+- [Node.js](https://nodejs.org/) (v18+)
+- [Docker Desktop](https://docs.docker.com/desktop/) (required for local Supabase)
+- [Supabase CLI](https://supabase.com/docs/guides/cli) (installed as a dev dependency)
 
-2. **Set up environment variables:**
-   Before running the project, create a `.env.local` file in the root directory and add the following variables:
+### 1. Install dependencies
 
-- `DATABASE_URL`: Your PostgreSQL connection string (from Supabase).
-- `OPENAI_API_KEY`: Your OpenAI API key for story and quiz generation.
-- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL.
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anon public key.
-- `NEXT_PUBLIC_SITE_URL`: The base URL for your site (e.g., `http://localhost:3000`).
-- `SUPABASE_SERVICE_ROLE_KEY`: Server-only service role key for secure webhooks (never expose to client).
-- `LEMONSQUEEZY_WEBHOOK_SECRET`: Secret used to verify Lemon Squeezy webhook signatures.
+```sh
+npm install
+```
 
-3. **Run the development server:**
-   ```sh
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+### 2. Set up environment variables
+
+This project uses separate env files per environment (Next.js loads them automatically):
+
+- **`.env`** — shared variables (OpenAI, Stripe, Lemon Squeezy)
+- **`.env.development`** — local Supabase credentials (used by `npm run dev`)
+- **`.env.production`** — production Supabase credentials (used by `npm run build`)
+
+Create these files in the root directory with the following variables:
+
+**`.env`** (shared):
+- `OPENAI_API_KEY` — OpenAI API key for story and quiz generation
+- `NEXT_PUBLIC_SITE_URL` — Base URL for your site (e.g., `http://localhost:3000`)
+- `LEMONSQUEEZY_API_KEY` — Lemon Squeezy API key
+- `LEMONSQUEEZY_STORE_ID` — Lemon Squeezy store ID
+- `LEMONSQUEEZY_WEBHOOK_SECRET` — Secret for verifying webhook signatures
+
+**`.env.development`** (local dev):
+- `NEXT_PUBLIC_SUPABASE_URL` — Local Supabase URL (`http://127.0.0.1:54321`)
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Local Supabase anon key
+- `SERVICE_KEY` — Local Supabase service role key
+
+**`.env.production`** (production):
+- `NEXT_PUBLIC_SUPABASE_URL` — Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Your Supabase anon public key
+- `SERVICE_KEY` — Server-only service role key (never expose to client)
+
+### 3. Start local Supabase
+
+Make sure Docker Desktop is running, then:
+
+```sh
+npx supabase start
+```
+
+This starts a local Supabase instance with all your tables, functions, and seed data.
+
+### 4. Run the development server
+
+```sh
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser. The app connects to your local Supabase — not production.
+
+### Local Supabase tools
+
+- **Dashboard:** http://127.0.0.1:54323
+- **Reset local DB:** `npx supabase db reset` (re-applies migrations + seed data)
+- **Stop local Supabase:** `npx supabase stop`
+
+### Database migrations
+
+Schema changes are tracked as SQL migration files in `supabase/migrations/`.
+
+```sh
+npx supabase migration new <migration_name>   # Create a new migration file
+npx supabase db push                           # Apply migrations to remote DB
+npx supabase db reset                          # Reset local DB from migrations
+```
 
 ## Usage
 

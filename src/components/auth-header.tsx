@@ -118,11 +118,13 @@ export default function HeaderAuth({
           : "flex flex-row gap-2"
       }
     >
-      <div className={orientation === "vertical" ? "block" : "hidden sm:block"}>
-        <GoogleSignInButton variant="signin">
-          {mobileLandscape ? "" : orientation === "vertical" ? "In" : "Sign In"}
-        </GoogleSignInButton>
-      </div>
+      {orientation !== "vertical" && (
+        <div className="hidden sm:block">
+          <GoogleSignInButton variant="signin">
+            {mobileLandscape ? "" : "Sign In"}
+          </GoogleSignInButton>
+        </div>
+      )}
 
       <GoogleSignInButton variant="signup">
         {mobileLandscape ? "" : orientation === "vertical" ? "Up" : "Sign Up"}
