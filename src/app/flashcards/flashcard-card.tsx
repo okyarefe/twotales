@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { BookOpen, CheckCircle, Languages, Layers, Trash2 } from "lucide-react";
+import { BookOpen, CheckCircle, Layers, Trash2 } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -16,25 +16,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { deleteFlashcardAction } from "@/actions/flashcards";
 import type { Flashcard } from "@/types";
-
-function formatLanguagePair(pair: string | null) {
-  if (!pair) return null;
-
-  const langMap: Record<string, string> = {
-    tr: "Turkish",
-    fi: "Finnish",
-    es: "Spanish",
-    fr: "French",
-    de: "German",
-    en: "English",
-  };
-
-  const [source, target] = pair.split("-");
-  const sourceName = langMap[source] ?? source.toUpperCase();
-  const targetName = langMap[target] ?? target.toUpperCase();
-
-  return `${sourceName} → ${targetName}`;
-}
 
 export default function FlashcardCard({ flashcard }: { flashcard: Flashcard }) {
   const sentenceCount = flashcard.flashcard_sentences.length;
@@ -94,12 +75,6 @@ export default function FlashcardCard({ flashcard }: { flashcard: Flashcard }) {
         </CardHeader>
 
         <CardContent className="flex flex-wrap gap-2">
-          {flashcard.language_pair && (
-            <Badge variant="secondary" className="gap-1.5">
-              <Languages className="w-3 h-3" />
-              {formatLanguagePair(flashcard.language_pair)}
-            </Badge>
-          )}
           <Badge variant="outline" className="gap-1.5">
             <BookOpen className="w-3 h-3" />
             {sentenceCount} {sentenceCount === 1 ? "sentence" : "sentences"}
