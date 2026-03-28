@@ -1,6 +1,12 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, BookOpen, CheckCircle, Languages, Layers } from "lucide-react";
+import {
+  ArrowLeft,
+  BookOpen,
+  CheckCircle,
+  Languages,
+  Layers,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getFlashcardById } from "@/lib/supabase/queries/stories";
 import SentenceCard from "./sentence-card";
