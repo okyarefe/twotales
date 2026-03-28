@@ -1,4 +1,4 @@
-import StoryPreview from "@/app/login/story-preview";
+import StoryPreview from "@/app/(auth)/login/story-preview";
 import GoogleSignInButton from "@/components/google-signin-button";
 import { Sparkles, BookOpen, Languages } from "lucide-react";
 
