@@ -40,12 +40,32 @@ No test framework is configured.
 
 Custom fonts: Outfit (sans) and Fraunces (serif). Custom sizes: `hero`, `hero-sm`, `display`, `subtitle`. Custom colors: `accent-gold`, `accent-gold-light`, `text-muted`, `text-light` (defined in `tailwind.config.ts`).
 
+## Best practices
+
+### Server vs Client components
+
+- **Pages should be async server components** — fetch data on the server and pass it down as props or promises. Follow the pattern in `src/app/(protected)/dashboard/page.tsx`.
+- **Only use `"use client"` when the component needs interactivity** (hooks, event handlers, browser APIs). Never default to `"use client"` for convenience.
+- **Use Suspense boundaries** with skeleton fallbacks for async server components. See `profile-header-skeleton.tsx` and `card-skeleton.tsx` for examples.
+- **Pass promises as props** to async child components so they can `await` independently inside their own Suspense boundary.
+
+### Error handling
+
+- **DB query functions** (`src/lib/supabase/queries/`) throw `Error` with user-friendly messages on failure.
+- **Server actions** (`src/actions/`) catch those errors and return `ActionResult<T>` (`{ success: true, data: T } | { success: false, error: string }`). Type defined in `src/types.d.ts`. See `src/actions/flashcards.ts` for the reference implementation.
+- Never let raw exceptions bubble out of server actions — always catch and return `ActionResult`.
+
+### Code quality
+
+- Follow existing patterns in the codebase before introducing new ones.
+- Keep components focused — one responsibility per component.
+- Use TypeScript types from `src/types` for shared interfaces like `UserData`.
+
 ## Gotchas
 
 - README mentions Drizzle — this is stale. Runtime code uses Supabase directly.
 - Don't edit cookie handling in `src/lib/supabase/server.ts` without understanding Next 15 server-component cookie behavior; `setAll` is intentionally tolerant of server-component calls.
 - DB schema changes must be coordinated with the Supabase project; SQL migrations are not stored in this repo.
-- Error handling pattern: server functions throw `Error` with user-friendly messages. Follow this convention.
 - AI prompt/model changes go in `src/services/openai/config.ts`. Schema changes go in `structured-outputs-schema/`. Keep the `zodTextFormat` → `JSON.parse` → validate pattern.
 
 ## Environment variables

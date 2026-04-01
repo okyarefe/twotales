@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls C:/Users/feoky/Desktop/projects/twotales/src/app/\\\\\\(protected\\\\\\)/profile/)"
+    ]
+  }
+}
