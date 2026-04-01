@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { languages, languageLevels, grammarTopics } from "@/constants";
 import {
   deductUserCredit,
@@ -163,6 +163,7 @@ export async function deleteStoryServerAction(storyId: string) {
   }
 
   await deleteStoryById(storyId);
+  revalidateTag(`story-${storyId}`);
   revalidatePath("/dashboard");
 }
 

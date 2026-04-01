@@ -1,6 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from '@/lib/supabase/server';
 
-import type { Story, StoryInsert, Flashcard } from "@/types";
+import type { Story, StoryInsert, Flashcard } from '@/types';
 
 export interface FlashcardListItem {
   id: string;
@@ -12,17 +12,17 @@ export async function saveStory(storyData: StoryInsert, userId: string) {
   const finalObject = { ...storyData, user_id: userId };
 
   const { data, error } = await (await createClient())
-    .from("stories")
+    .from('stories')
     .insert(finalObject)
-    .select("*");
+    .select('*');
   if (!data || error) {
-    throw new Error("Error saving story to database");
+    throw new Error('Error saving story to database');
   }
 
   // Increment the user's num_stories count using a stored procedure
   const { error: incrementError } = await (
     await createClient()
-  ).rpc("increment_num_stories", { user_id: userId });
+  ).rpc('increment_num_stories', { user_id: userId });
 
   if (incrementError) {
     throw new Error("Error updating user's story count");
@@ -42,10 +42,10 @@ export async function getUserStories(
   const to = from + pageSize - 1;
 
   const { data, error, count } = await supabase
-    .from("stories")
-    .select("*", { count: "exact" })
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
+    .from('stories')
+    .select('*', { count: 'exact' })
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
     .range(from, to);
 
   if (error) {
@@ -70,14 +70,14 @@ export async function searchUserStories(
     return result.stories;
   }
 
-  const ilikePattern = `%${cleanQuery.replace(/%/g, "\\%").replace(/_/g, "\\_")}%`;
+  const ilikePattern = `%${cleanQuery.replace(/%/g, '\\%').replace(/_/g, '\\_')}%`;
 
   const query = supabase
-    .from("stories")
-    .select("*")
-    .eq("user_id", userId)
-    .ilike("title", ilikePattern)
-    .order("created_at", { ascending: false });
+    .from('stories')
+    .select('*')
+    .eq('user_id', userId)
+    .ilike('title', ilikePattern)
+    .order('created_at', { ascending: false });
 
   if (limit) query.limit(limit);
 
@@ -91,14 +91,15 @@ export async function searchUserStories(
 }
 
 export async function getStoryById(storyId: string): Promise<Story | null> {
+  console.log('Fetching story ID');
   const { data, error } = await (await createClient())
-    .from("stories")
-    .select("*")
-    .eq("id", storyId)
+    .from('stories')
+    .select('*')
+    .eq('id', storyId)
     .maybeSingle(); // ensures only one result
 
   if (error) {
-    console.log("getStoryById error");
+    console.log('getStoryById error');
     throw new Error(error.message);
   }
 
@@ -111,21 +112,21 @@ export async function getUserStoriesCount(userId: string): Promise<number> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
-    .from("stories")
-    .select("id", { count: "exact" })
-    .eq("user_id", userId);
+    .from('stories')
+    .select('id', { count: 'exact' })
+    .eq('user_id', userId);
 
-  if (error) throw new Error("Error fetching user stories count");
+  if (error) throw new Error('Error fetching user stories count');
 
   return data?.length ?? 0; // number of stories
 }
 
 export async function deleteStoryById(storyId: string): Promise<boolean> {
   const supabase = await createClient();
-  const { error } = await supabase.from("stories").delete().eq("id", storyId);
+  const { error } = await supabase.from('stories').delete().eq('id', storyId);
 
   if (error) {
-    console.error("Error deleting story:", error.message);
+    console.error('Error deleting story:', error.message);
     return false;
   }
 
@@ -143,7 +144,7 @@ export async function getUserFlashcards(
   const to = from + pageSize - 1;
 
   const { data, error, count } = await supabase
-    .from("flashcards")
+    .from('flashcards')
     .select(
       `
     id,
@@ -157,14 +158,14 @@ export async function getUserFlashcards(
       is_learned
     )
   `,
-      { count: "exact" },
+      { count: 'exact' },
     )
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
     .range(from, to);
 
   if (error) {
-    throw new Error("Error fetching user flashcards");
+    throw new Error('Error fetching user flashcards');
   }
 
   return { flashcards: data as Flashcard[], total: count ?? 0 };
@@ -176,7 +177,7 @@ export async function getFlashcardById(
   const supabase = await createClient();
 
   const { data, error } = await supabase
-    .from("flashcards")
+    .from('flashcards')
     .select(
       `
     id,
@@ -191,11 +192,11 @@ export async function getFlashcardById(
     )
   `,
     )
-    .eq("id", flashcardId)
+    .eq('id', flashcardId)
     .single();
 
   if (error) {
-    throw new Error("Error fetching flashcard");
+    throw new Error('Error fetching flashcard');
   }
 
   if (!data) {

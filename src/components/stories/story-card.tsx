@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { BookOpen, Calendar } from "lucide-react";
-import StoryActionButtons from "./action-buttons";
-import type { Story } from "@/types";
+import { motion } from 'framer-motion';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { BookOpen, Calendar } from 'lucide-react';
+import StoryActionButtons from './action-buttons';
+import type { Story } from '@/types';
 import {
   formatDate,
   getLanguageColors,
   getLevelColor,
   getStoryLengthColors,
-} from "@/utils/utils";
+} from '@/utils/utils';
 
 interface StoryCardProps {
   story: Story;
@@ -26,7 +26,7 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
       transition={{
         duration: 0.4,
         delay: Math.min(index * 0.1, 0.5),
-        ease: "easeOut",
+        ease: 'easeOut',
       }}
     >
       <Card className="shadow-lg transform transition-all duration-300 motion-reduce:transition-none hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 border-0 overflow-hidden min-w-0 bg-gradient-to-br from-white to-slate-50 group h-full">
@@ -49,7 +49,7 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
           {/* Languages and Metadata in one row */}
           <div className="flex flex-wrap items-center gap-2">
             <Badge
-              className={`text-xs font-medium px-2 py-1 rounded-full ${getLanguageColors("English")}`}
+              className={`text-xs font-medium px-2 py-1 rounded-full ${getLanguageColors('English')}`}
             >
               English
             </Badge>

@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Flame, TrendingUp, Trophy, Zap } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Flame, TrendingUp, Trophy, Zap } from 'lucide-react';
 
 // Mock streak data — replace with real data when backend is ready
 const MOCK_STREAK = {
@@ -7,13 +7,13 @@ const MOCK_STREAK = {
   longestStreak: 14,
   totalActiveDays: 32,
   weeklyActivity: [
-    { day: "Mon", active: true },
-    { day: "Tue", active: true },
-    { day: "Wed", active: false },
-    { day: "Thu", active: true },
-    { day: "Fri", active: true },
-    { day: "Sat", active: true },
-    { day: "Sun", active: false },
+    { day: 'Mon', active: true },
+    { day: 'Tue', active: true },
+    { day: 'Wed', active: false },
+    { day: 'Thu', active: true },
+    { day: 'Fri', active: true },
+    { day: 'Sat', active: true },
+    { day: 'Sun', active: false },
   ],
   monthlyActivity: [
     [true, true, false, true, true, true, false],
@@ -41,7 +41,9 @@ export function StreakDisplay() {
             <div className="text-4xl font-bold text-orange-600">
               {streak.currentStreak}
             </div>
-            <div className="text-sm text-orange-500 font-medium">Day streak</div>
+            <div className="text-sm text-orange-500 font-medium">
+              Day streak
+            </div>
           </div>
         </div>
 
@@ -79,8 +81,8 @@ export function StreakDisplay() {
                 <div
                   className={`size-9 rounded-lg flex items-center justify-center text-sm font-medium transition-colors ${
                     day.active
-                      ? "bg-orange-500 text-white shadow-sm"
-                      : "bg-slate-100 text-slate-400"
+                      ? 'bg-orange-500 text-white shadow-sm'
+                      : 'bg-slate-100 text-slate-400'
                   }`}
                 >
                   {day.active ? (
@@ -106,7 +108,7 @@ export function StreakDisplay() {
                   <div
                     key={dayIdx}
                     className={`size-5 rounded-sm transition-colors ${
-                      active ? "bg-orange-400" : "bg-slate-100"
+                      active ? 'bg-orange-400' : 'bg-slate-100'
                     }`}
                   />
                 ))}
