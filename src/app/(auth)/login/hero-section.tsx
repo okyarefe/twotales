@@ -1,6 +1,6 @@
 import StoryPreview from "@/app/(auth)/login/story-preview";
 import GoogleSignInButton from "@/components/google-signin-button";
-import { Sparkles, BookOpen, Languages } from "lucide-react";
+import { Sparkles, BookOpen, Target } from "lucide-react";
 
 export default function HeroSection() {
   return (
@@ -20,23 +20,23 @@ export default function HeroSection() {
             <div className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.85_0.08_290)] bg-white/70 backdrop-blur-sm px-4 py-1.5 shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-[oklch(0.55_0.20_290)]" />
               <span className="text-xs font-semibold tracking-wide uppercase text-[oklch(0.45_0.15_290)]">
-                AI-Powered Language Learning
+                Made for readers
               </span>
             </div>
 
             {/* Headline */}
             <h1 className="text-hero text-foreground">
-              Learn languages through{" "}
+              Reading is how you actually learn a language.{" "}
               <span className="font-serif italic text-[oklch(0.50_0.20_290)]">
-                stories you create
+                The problem is finding something worth reading.
               </span>
             </h1>
 
             {/* Sub-copy */}
             <p className="text-subtitle max-w-md">
-              Generate bilingual stories on any topic, test yourself with
-              auto-generated quizzes, and get AI feedback on your writing — all
-              in seconds.
+              Graded readers bore you. News articles crush you. We write stories
+              at your level, on topics you pick, targeting the grammar you&apos;re
+              working on — so every session feels like reading, not studying.
             </p>
 
             {/* CTA */}
@@ -46,7 +46,7 @@ export default function HeroSection() {
                 showTextOnXs
                 className="h-13 px-8 text-base font-semibold rounded-2xl shadow-lg shadow-[oklch(0.52_0.20_290)]/20 bg-[oklch(0.52_0.20_290)] text-white transition-all duration-200 hover:shadow-xl hover:shadow-[oklch(0.52_0.20_290)]/30 hover:-translate-y-0.5"
               >
-                Start Learning Free
+                Write my first story
               </GoogleSignInButton>
 
               <span className="text-sm text-muted-foreground">
@@ -58,15 +58,15 @@ export default function HeroSection() {
             <div className="flex flex-wrap gap-3 pt-2">
               <Pill
                 icon={<BookOpen className="w-3.5 h-3.5" />}
-                text="Bilingual stories"
-              />
-              <Pill
-                icon={<Languages className="w-3.5 h-3.5" />}
-                text="10+ languages"
+                text="For intermediate+ readers"
               />
               <Pill
                 icon={<Sparkles className="w-3.5 h-3.5" />}
-                text="AI quizzes"
+                text="Any topic, any level"
+              />
+              <Pill
+                icon={<Target className="w-3.5 h-3.5" />}
+                text="Target specific grammar"
               />
             </div>
           </div>
