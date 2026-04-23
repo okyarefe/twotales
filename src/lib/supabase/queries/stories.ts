@@ -19,15 +19,6 @@ export async function saveStory(storyData: StoryInsert, userId: string) {
     throw new Error('Error saving story to database');
   }
 
-  // Increment the user's num_stories count using a stored procedure
-  const { error: incrementError } = await (
-    await createClient()
-  ).rpc('increment_num_stories', { user_id: userId });
-
-  if (incrementError) {
-    throw new Error("Error updating user's story count");
-  }
-
   return data[0];
 }
 
@@ -106,19 +97,17 @@ export async function getStoryById(storyId: string): Promise<Story | null> {
   return data;
 }
 
-// Implemented num_stories field to the users table instead of
-// using this function
 export async function getUserStoriesCount(userId: string): Promise<number> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const { count, error } = await supabase
     .from('stories')
-    .select('id', { count: 'exact' })
+    .select('id', { count: 'exact', head: true })
     .eq('user_id', userId);
 
   if (error) throw new Error('Error fetching user stories count');
 
-  return data?.length ?? 0; // number of stories
+  return count ?? 0;
 }
 
 export async function deleteStoryById(storyId: string): Promise<boolean> {

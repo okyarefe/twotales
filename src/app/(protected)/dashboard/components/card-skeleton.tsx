@@ -1,21 +1,18 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function CardSkeleton({ 
-  title, 
-  icon 
-}: { 
-  title: string; 
-  icon: React.ReactNode 
-}) {
+export function CardSkeleton() {
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        {icon}
+      <CardHeader>
+        <Skeleton className="h-6 w-40" />
       </CardHeader>
-      <CardContent>
-        <Skeleton className="h-8 w-24 mb-2" />
+      <CardContent className="space-y-4">
+        <Skeleton className="h-24 w-full rounded-lg" />
+        <div className="grid grid-cols-2 gap-3">
+          <Skeleton className="h-16 w-full rounded-lg" />
+          <Skeleton className="h-16 w-full rounded-lg" />
+        </div>
       </CardContent>
     </Card>
   );

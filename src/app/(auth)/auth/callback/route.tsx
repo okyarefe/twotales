@@ -45,7 +45,6 @@ export async function GET(request: Request) {
                 membership_type: "basic",
                 story_credit: 5,
                 tts_credit: 0,
-                num_stories: 0,
               });
 
             if (insertError) {

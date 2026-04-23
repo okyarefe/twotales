@@ -4,7 +4,7 @@ import { Sparkles, BookOpen, Target } from "lucide-react";
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[92vh] flex items-center overflow-hidden">
+    <section className="relative flex items-center overflow-hidden pt-6 pb-16 lg:pt-8 lg:pb-20">
       {/* Animated blob background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute top-[-15%] left-[-10%] w-[45%] h-[45%] rounded-full bg-[oklch(0.85_0.12_290)] opacity-40 blur-[100px] animate-blob" />
@@ -12,10 +12,10 @@ export default function HeroSection() {
         <div className="absolute top-[35%] right-[15%] w-[30%] h-[30%] rounded-full bg-[oklch(0.88_0.12_65)] opacity-30 blur-[80px] animate-blob animation-delay-4000" />
       </div>
 
-      <div className="container mx-auto max-w-6xl px-6 py-16 lg:py-0">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+      <div className="container mx-auto max-w-6xl px-6">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left — copy */}
-          <div className="space-y-8 max-w-xl">
+          <div className="space-y-6 max-w-xl">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.85_0.08_290)] bg-white/70 backdrop-blur-sm px-4 py-1.5 shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-[oklch(0.55_0.20_290)]" />
@@ -44,9 +44,12 @@ export default function HeroSection() {
               <GoogleSignInButton
                 variant="learn"
                 showTextOnXs
-                className="h-13 px-8 text-base font-semibold rounded-2xl shadow-lg shadow-[oklch(0.52_0.20_290)]/20 bg-[oklch(0.52_0.20_290)] text-white transition-all duration-200 hover:shadow-xl hover:shadow-[oklch(0.52_0.20_290)]/30 hover:-translate-y-0.5"
+                className="group h-14 px-8 text-lg font-semibold rounded-xl shadow-lg shadow-[oklch(0.52_0.20_290)]/40 bg-gradient-to-b from-[oklch(0.58_0.22_290)] to-[oklch(0.50_0.20_290)] text-white transition-all duration-200 hover:shadow-xl hover:shadow-[oklch(0.52_0.20_290)]/50 hover:-translate-y-0.5 hover:from-[oklch(0.60_0.22_290)] hover:to-[oklch(0.52_0.20_290)]"
               >
-                Write my first story
+                <span className="inline-flex items-center gap-2">
+                  Start for free
+                  <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+                </span>
               </GoogleSignInButton>
 
               <span className="text-sm text-muted-foreground">

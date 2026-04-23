@@ -1,40 +1,40 @@
-"use server";
+'use server';
 
-import { createClient } from "@/lib/supabase/server";
-import type { UserData } from "@/types";
+import { createClient } from '@/lib/supabase/server';
+import { getUserStoriesCount } from '@/lib/supabase/queries/stories';
+import type { UserData } from '@/types';
 
 export async function getUserData(userId: string): Promise<UserData | null> {
   const supabase = await createClient();
 
   try {
-    // Get user data from users table
-    const { data: userData, error: userError } = await supabase
-      .from("users")
-      .select(
-        "email, role, membership_type, story_credit, tts_credit,num_stories"
-      )
-      .eq("id", userId)
-      .single();
+    const [userResult, storiesCreated] = await Promise.all([
+      supabase
+        .from('users')
+        .select('email, role, membership_type, story_credit, tts_credit')
+        .eq('id', userId)
+        .single(),
+      getUserStoriesCount(userId),
+    ]);
+
+    const { data: userData, error: userError } = userResult;
 
     if (userError) {
-      console.error("Error fetching user data:", userError);
+      console.error('Error fetching user data:', userError);
       return null;
     }
 
-    // Return the data in the format expected by the context
     return {
       id: userId,
-      email: userData.email || "",
-      role: userData.role || "user",
-      membershipType: userData.membership_type || "free",
+      email: userData.email || '',
+      role: userData.role || 'user',
+      membershipType: userData.membership_type || 'free',
       storyCredit: userData.story_credit || 0,
       ttsCredit: userData.tts_credit || 0,
-      // For backward compatibility, keep storiesCreated as 0 for now
-      // You can add a stories table later if needed
-      storiesCreated: userData.num_stories || 0,
+      storiesCreated,
     };
   } catch (error) {
-    console.error("Error in getUserData:", error);
+    console.error('Error in getUserData:', error);
     return null;
   }
 }
@@ -44,9 +44,9 @@ export async function refreshUserCredits(userId: string) {
 
   try {
     const { data, error } = await supabase
-      .from("users")
-      .select("story_credit, tts_credit")
-      .eq("id", userId)
+      .from('users')
+      .select('story_credit, tts_credit')
+      .eq('id', userId)
       .single();
 
     if (error) throw error;
@@ -55,7 +55,7 @@ export async function refreshUserCredits(userId: string) {
       ttsCredit: data?.tts_credit || 0,
     };
   } catch (error) {
-    console.error("Error refreshing credits:", error);
+    console.error('Error refreshing credits:', error);
     return null;
   }
 }
@@ -70,7 +70,7 @@ export async function openDreamJournal() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error("You must be signed in to access the Dream Journal.");
+    throw new Error('You must be signed in to access the Dream Journal.');
   }
 
   // Fetch membership_type from users table
