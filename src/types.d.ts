@@ -22,6 +22,7 @@ export interface UserData {
   storyCredit: number;
   ttsCredit: number;
   storiesCreated: number;
+  flashcardsCreated: number;
 }
 
 type StoryInsert = Omit<Story, "id" | "created_at">;

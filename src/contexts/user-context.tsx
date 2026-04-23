@@ -21,6 +21,7 @@ interface UserData {
   storyCredit: number;
   ttsCredit: number;
   storiesCreated: number;
+  flashcardsCreated: number;
 }
 
 interface UserContextType {
