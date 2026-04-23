@@ -1,14 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, BookOpen, Brain, Headphones } from 'lucide-react';
+import { BarChart3, BookOpen, Headphones, Layers } from 'lucide-react';
 import type { UserData } from '@/types';
-
-// Mock stats — replace with real data when backend is ready
-// const MOCK_STATS = {
-//   quizzesCompleted: 18,
-//   quizAccuracy: 76,
-//   ttsUsed: 12,
-//   languagesPracticed: ["Spanish", "French"],
-// };
 
 interface StatsOverviewProps {
   userDataPromise: Promise<UserData | null>;
@@ -16,8 +8,6 @@ interface StatsOverviewProps {
 
 export async function StatsOverview({ userDataPromise }: StatsOverviewProps) {
   const userData = await userDataPromise;
-  // const stats = MOCK_STATS;
-  console.log('User data', userData);
 
   const statCards = [
     {
@@ -27,16 +17,10 @@ export async function StatsOverview({ userDataPromise }: StatsOverviewProps) {
       color: 'bg-green-50 border-green-100',
     },
     {
-      label: 'Quizzes Completed',
-      // value: stats.quizzesCompleted,
-      icon: <Brain className="size-4 text-blue-500" />,
+      label: 'Flashcards Created',
+      value: userData?.flashcardsCreated ?? 0,
+      icon: <Layers className="size-4 text-blue-500" />,
       color: 'bg-blue-50 border-blue-100',
-    },
-    {
-      label: 'Quiz Accuracy',
-      // value: `${stats.quizAccuracy}%`,
-      icon: <BarChart3 className="size-4 text-purple-500" />,
-      color: 'bg-purple-50 border-purple-100',
     },
     {
       label: 'TTS Listens',

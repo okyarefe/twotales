@@ -1,5 +1,18 @@
 import { createClient } from "@/lib/supabase/server";
 
+export async function getUserFlashcardsCount(userId: string): Promise<number> {
+  const supabase = await createClient();
+
+  const { count, error } = await supabase
+    .from("flashcards")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId);
+
+  if (error) throw new Error("Error fetching user flashcards count");
+
+  return count ?? 0;
+}
+
 export async function verifyFlashcardOwnership(
   flashcardId: string,
   userId: string,

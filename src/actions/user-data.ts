@@ -2,19 +2,21 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { getUserStoriesCount } from '@/lib/supabase/queries/stories';
+import { getUserFlashcardsCount } from '@/lib/supabase/queries/flashcards';
 import type { UserData } from '@/types';
 
 export async function getUserData(userId: string): Promise<UserData | null> {
   const supabase = await createClient();
 
   try {
-    const [userResult, storiesCreated] = await Promise.all([
+    const [userResult, storiesCreated, flashcardsCreated] = await Promise.all([
       supabase
         .from('users')
         .select('email, role, membership_type, story_credit, tts_credit')
         .eq('id', userId)
         .single(),
       getUserStoriesCount(userId),
+      getUserFlashcardsCount(userId),
     ]);
 
     const { data: userData, error: userError } = userResult;
@@ -32,6 +34,7 @@ export async function getUserData(userId: string): Promise<UserData | null> {
       storyCredit: userData.story_credit || 0,
       ttsCredit: userData.tts_credit || 0,
       storiesCreated,
+      flashcardsCreated,
     };
   } catch (error) {
     console.error('Error in getUserData:', error);
