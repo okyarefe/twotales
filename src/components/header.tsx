@@ -12,10 +12,10 @@ export default function Header() {
 
   useEffect(() => {
     const checkOrientation = () => {
-      const isTouch = window.matchMedia("(pointer: coarse)").matches;
+      // Check if mobile (width < 920px) AND landscape (width > height)
+      const isMobile = window.innerWidth < 920;
       const isLandscape = window.innerWidth > window.innerHeight;
-      const isShort = window.innerHeight < 500;
-      setIsMobileLandscape(isTouch && isLandscape && isShort);
+      setIsMobileLandscape(isMobile && isLandscape);
     };
 
     checkOrientation();
